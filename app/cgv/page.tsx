@@ -1,0 +1,163 @@
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
+
+export default function CGV() {
+  return (
+    <div className="pt-28 min-h-screen bg-gray-50 px-4">
+      <div className="max-w-4xl mx-auto py-12">
+        <h1 className="text-4xl font-display font-bold text-textDark mb-8">
+          Conditions Générales de Vente
+        </h1>
+        <div className="bg-white rounded-lg shadow-md p-8 space-y-6 text-gray-700">
+          <section>
+            <h2 className="text-2xl font-display font-semibold text-textDark mb-4">
+              1. Objet
+            </h2>
+            <p>
+              Les présentes Conditions Générales de Vente (CGV) régissent les relations contractuelles 
+              entre la société Flocon, SAS au capital de 10 000€, immatriculée au RCS de Paris 
+              sous le numéro 123 456 789, dont le siège social est situé au 123 Rue de la Mode, 
+              75001 Paris, France, et toute personne physique ou morale achetant des produits 
+              sur le site internet www.flocon.fr.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-display font-semibold text-textDark mb-4">
+              2. Produits
+            </h2>
+            <p>
+              Les produits proposés à la vente sont ceux figurant sur le site internet 
+              www.flocon.fr dans la limite des stocks disponibles. Flocon s'efforce de fournir 
+              des informations aussi précises que possible sur les caractéristiques des produits. 
+              Cependant, les photos des produits ne sont pas contractuelles.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-display font-semibold text-textDark mb-4">
+              3. Prix
+            </h2>
+            <p>
+              Les prix sont indiqués en euros, toutes taxes comprises (TVA). Les prix de livraison 
+              sont calculés en fonction du montant total de la commande et du mode de livraison choisi. 
+              Flocon se réserve le droit de modifier ses prix à tout moment, les produits étant facturés 
+              sur la base des tarifs en vigueur au moment de la validation de la commande.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-display font-semibold text-textDark mb-4">
+              4. Commande
+            </h2>
+            <p>
+              Toute commande passée sur le site www.flocon.fr constitue la formation d'un contrat 
+              de vente entre le client et Flocon. La validation de la commande intervient après 
+              confirmation du paiement par le client. Flocon se réserve le droit de refuser 
+              toute commande pour des motifs légitimes.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-display font-semibold text-textDark mb-4">
+              5. Paiement
+            </h2>
+            <p>
+              Le paiement s'effectue par carte bancaire via notre partenaire Stripe, sécurisé 
+              selon le protocole SSL. Le débit de la carte est effectué au moment de la validation 
+              de la commande. En cas de refus de paiement par le centre d'autorisation bancaire, 
+              la commande sera annulée.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-display font-semibold text-textDark mb-4">
+              6. Livraison
+            </h2>
+            <p>
+              Les produits sont livrés à l'adresse de livraison indiquée par le client. 
+              Les délais de livraison sont de 3 à 5 jours ouvrables pour la France métropolitaine. 
+              Les frais de livraison sont offerts à partir de 50€ d'achat. En cas de retard de livraison 
+              supérieur à 30 jours, le client peut résilier la vente.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-display font-semibold text-textDark mb-4">
+              7. Droit de rétractation
+            </h2>
+            <p>
+              Conformément aux dispositions de l'article L121-21 du Code de la consommation, 
+              le client dispose d'un délai de 14 jours à compter de la réception de sa commande 
+              pour exercer son droit de rétractation sans avoir à justifier de motifs ni à payer 
+              de pénalités. Les frais de retour sont à la charge du client.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-display font-semibold text-textDark mb-4">
+              8. Garantie
+            </h2>
+            <p>
+              Tous les produits bénéficient de la garantie légale de conformité de 2 ans. 
+              En cas de non-conformité, le client peut exchanger le produit ou obtenir un remboursement. 
+              La garantie ne couvre pas les dommages résultant d'une mauvaise utilisation ou d'un 
+              usage non conforme des produits.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-display font-semibold text-textDark mb-4">
+              9. Données personnelles
+            </h2>
+            <p>
+              Les informations personnelles collectées lors de la commande sont traitées 
+              conformément au Règlement Général sur la Protection des Données (RGPD). 
+              Le client dispose d'un droit d'accès, de modification et de suppression de ses données.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-display font-semibold text-textDark mb-4">
+              10. Litiges
+            </h2>
+            <p>
+              Pour tout litige, le client peut contacter le service client à l'adresse 
+              contact@flocon.fr. En l'absence d'accord amiable, le litige sera soumis 
+              au tribunal de commerce de Paris.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-display font-semibold text-textDark mb-4">
+              11. Propriété intellectuelle
+            </h2>
+            <p>
+              Tous les éléments du site www.flocon.fr, y compris les textes, images, 
+              graphismes, logos et icônes, sont la propriété exclusive de Flocon et sont protégés 
+              par le droit d'auteur. Toute reproduction, distribution ou modification de ces éléments 
+              est strictement interdite sans autorisation préalable.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-display font-semibold text-textDark mb-4">
+              12. Force majeure
+            </h2>
+            <p>
+              Flocon ne pourra être tenue pour responsable en cas d'inexécution ou de retard 
+              dans l'exécution de ses obligations dû à un cas de force majeure, notamment 
+              grève, panne, guerre, émeute, ou tout événement hors de son contrôle.
+            </p>
+          </section>
+
+          <div className="mt-8 p-4 bg-gray-100 rounded-lg">
+            <p className="text-sm text-gray-600">
+              Date de dernière mise à jour : 20 janvier 2026
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

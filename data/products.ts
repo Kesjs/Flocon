@@ -1,0 +1,497 @@
+export interface Product {
+  id: string;
+  slug: string;
+  name: string;
+  price: number;
+  oldPrice?: number;
+  description: string;
+  category: 'Hiver' | 'Saint-Valentin';
+  subCategory: string;
+  rating: number;
+  reviewsCount: number;
+  images: string[];
+  stock: number;
+  badge?: string;
+  ambiance: 'Cocooning' | 'Romantique';
+}
+
+export const products: Product[] = [
+  // Produits Hiver (12 produits)
+  {
+    id: '1',
+    slug: 'plaid-nuage',
+    name: 'Plaid Nuage',
+    price: 89.99,
+    oldPrice: 129.99,
+    description: 'Un plaid incroyablement doux qui vous enveloppe de chaleur. Tissé en fibres premium avec une texture nuageuse qui invite à la détente absolue.',
+    category: 'Hiver',
+    subCategory: 'Plaids & Textures',
+    rating: 4.8,
+    reviewsCount: 234,
+    images: [
+      '/images/products/plaid-nuage-1.jpg',
+      '/images/products/plaid-nuage-2.jpg',
+      '/images/products/plaid-nuage-3.jpg',
+      '/images/products/plaid-nuage-4.jpg'
+    ],
+    stock: 15,
+    badge: 'Best-seller',
+    ambiance: 'Cocooning'
+  },
+  {
+    id: '2',
+    slug: 'bougie-crepitement',
+    name: 'Bougie Crépitement',
+    price: 34.99,
+    oldPrice: 44.99,
+    description: 'Une bougie artisanale qui reproduit le son apaisant d\'un feu de cheminée. Parfum bois de cèdre et vanille.',
+    category: 'Hiver',
+    subCategory: 'Ambiance & Bougies',
+    rating: 4.6,
+    reviewsCount: 189,
+    images: [
+      '/images/products/bougie-crepitement-1.jpg',
+      '/images/products/bougie-crepitement-2.jpg',
+      '/images/products/bougie-crepitement-3.jpg'
+    ],
+    stock: 28,
+    badge: 'Nouveauté',
+    ambiance: 'Cocooning'
+  },
+  {
+    id: '6',
+    slug: 'chaussons-laine',
+    name: 'Chaussons Laine Merinos',
+    price: 59.99,
+    description: 'Chaussons doublés en laine mérinos ultra-douce. Semelle antidérapante et design élégant pour un confort maximal.',
+    category: 'Hiver',
+    subCategory: 'Confort & Chaleur',
+    rating: 4.7,
+    reviewsCount: 145,
+    images: [
+      '/images/products/chaussons-laine-1.jpg',
+      '/images/products/chaussons-laine-2.jpg'
+    ],
+    stock: 35,
+    badge: 'Confort garanti',
+    ambiance: 'Cocooning'
+  },
+  {
+    id: '7',
+    slug: 'thermos-luxe',
+    name: 'Thermos Luxe Chrome',
+    price: 79.99,
+    description: 'Thermos haute capacité 1L en acier brossé. Garde votre boisson chaude 12 heures. Design élégant et écologique.',
+    category: 'Hiver',
+    subCategory: 'Accessoires',
+    rating: 4.5,
+    reviewsCount: 98,
+    images: [
+      '/images/products/thermos-luxe-1.jpg',
+      '/images/products/thermos-luxe-2.jpg'
+    ],
+    stock: 22,
+    badge: 'Qualité premium',
+    ambiance: 'Cocooning'
+  },
+  {
+    id: '8',
+    slug: 'couverture-électrique',
+    name: 'Couverture Électrique Intelligente',
+    price: 129.99,
+    oldPrice: 169.99,
+    description: 'Couverture chauffante avec 9 niveaux de température. Timer automatique et tissu hypoallergénique.',
+    category: 'Hiver',
+    subCategory: 'Technologie & Confort',
+    rating: 4.9,
+    reviewsCount: 267,
+    images: [
+      '/images/products/couverture-electrique-1.jpg',
+      '/images/products/couverture-electrique-2.jpg',
+      '/images/products/couverture-electrique-3.jpg'
+    ],
+    stock: 18,
+    badge: 'Innovation',
+    ambiance: 'Cocooning'
+  },
+  {
+    id: '9',
+    slug: 'tasse-ceramique',
+    name: 'Tasse Céramique Artisanale',
+    price: 24.99,
+    description: 'Tasse unique façonnée à la main. Céramique de haute qualité avec glaçure mate. Parfaite pour vos boissons chaudes.',
+    category: 'Hiver',
+    subCategory: 'Accessoires',
+    rating: 4.4,
+    reviewsCount: 89,
+    images: [
+      '/images/products/tasse-ceramique-1.jpg',
+      '/images/products/tasse-ceramique-2.jpg'
+    ],
+    stock: 45,
+    badge: 'Artisanal',
+    ambiance: 'Cocooning'
+  },
+  {
+    id: '10',
+    slug: 'lampe-cheminee',
+    name: 'Lampe Cheminée LED',
+    price: 89.99,
+    description: 'Lampe reproduisant l\'effet visuel d\'une cheminée. LED économiques et télécommande incluse. Ambiance chaleureuse garantie.',
+    category: 'Hiver',
+    subCategory: 'Ambiance & Lumière',
+    rating: 4.6,
+    reviewsCount: 156,
+    images: [
+      '/images/products/lampe-cheminee-1.jpg',
+      '/images/products/lampe-cheminee-2.jpg'
+    ],
+    stock: 12,
+    badge: 'Ambiance magique',
+    ambiance: 'Cocooning'
+  },
+  {
+    id: '11',
+    slug: 'bonnet-cachemire',
+    name: 'Bonnet Cachemire Pur',
+    price: 149.99,
+    oldPrice: 199.99,
+    description: 'Bonnet en cachemire 100% de Mongolie. Douceur inégalée et thermorégulation naturelle. Élégance intemporelle.',
+    category: 'Hiver',
+    subCategory: 'Mode & Accessoires',
+    rating: 4.8,
+    reviewsCount: 78,
+    images: [
+      '/images/products/bonnet-cachemire-1.jpg',
+      '/images/products/bonnet-cachemire-2.jpg',
+      '/images/products/bonnet-cachemire-3.jpg'
+    ],
+    stock: 8,
+    badge: 'Luxe',
+    ambiance: 'Cocooning'
+  },
+  {
+    id: '12',
+    slug: 'infusion-hivernale',
+    name: 'Coffret Infusions Hivernales',
+    price: 39.99,
+    description: '30 sachets de thés et infusions réconfortantes. Mélanges exclusifs : cannelle-orange, gingembre-citron, camomille-miel.',
+    category: 'Hiver',
+    subCategory: 'Gourmandises',
+    rating: 4.7,
+    reviewsCount: 234,
+    images: [
+      '/images/products/infusion-hivernale-1.jpg',
+      '/images/products/infusion-hivernale-2.jpg'
+    ],
+    stock: 55,
+    badge: 'Bio',
+    ambiance: 'Cocooning'
+  },
+  {
+    id: '13',
+    slug: 'coussin-chaleur',
+    name: 'Coussin Chaleur Noix de Coco',
+    price: 45.99,
+    description: 'Coussin chauffant aux noix de coco bio. Soulage les tensions et procure une chaleur diffuse et durable. Lavable.',
+    category: 'Hiver',
+    subCategory: 'Bien-être',
+    rating: 4.5,
+    reviewsCount: 167,
+    images: [
+      '/images/products/coussin-chaleur-1.jpg',
+      '/images/products/coussin-chaleur-2.jpg'
+    ],
+    stock: 30,
+    badge: 'Thérapie',
+    ambiance: 'Cocooning'
+  },
+  {
+    id: '14',
+    slug: 'gants-tactiles',
+    name: 'Gants Laine Tactiles',
+    price: 34.99,
+    description: 'Gants en laine mérinos avec bouts des doigts tactiles. Chaleur extrême et compatibilité smartphone. Design unisexe.',
+    category: 'Hiver',
+    subCategory: 'Mode & Accessoires',
+    rating: 4.3,
+    reviewsCount: 123,
+    images: [
+      '/images/products/gants-tactiles-1.jpg',
+      '/images/products/gants-tactiles-2.jpg'
+    ],
+    stock: 40,
+    badge: 'Pratique',
+    ambiance: 'Cocooning'
+  },
+  {
+    id: '15',
+    slug: 'diffuseur-humidite',
+    name: 'Diffuseur Humidité Bois',
+    price: 69.99,
+    description: 'Diffuseur d\'huiles essentielles avec humidificateur. Design en bois naturel. LED colorées et programmation horaire.',
+    category: 'Hiver',
+    subCategory: 'Ambiance & Bien-être',
+    rating: 4.6,
+    reviewsCount: 198,
+    images: [
+      '/images/products/diffuseur-humidite-1.jpg',
+      '/images/products/diffuseur-humidite-2.jpg'
+    ],
+    stock: 25,
+    badge: 'Aromathérapie',
+    ambiance: 'Cocooning'
+  },
+  
+  // Produits Saint-Valentin (12 produits)
+  {
+    id: '3',
+    slug: 'duo-de-tasses',
+    name: 'Duo de Tasses Cœur',
+    price: 49.99,
+    description: 'Un ensemble de deux tasses en porcelaine fine avec motif cœur subtil. Parfait pour partager un moment chaud avec votre moitié.',
+    category: 'Saint-Valentin',
+    subCategory: 'Coffrets Duo',
+    rating: 4.9,
+    reviewsCount: 156,
+    images: [
+      '/images/products/duo-tasses-1.jpg',
+      '/images/products/duo-tasses-2.jpg',
+      '/images/products/duo-tasses-3.jpg'
+    ],
+    stock: 22,
+    badge: 'Cadeau parfait',
+    ambiance: 'Romantique'
+  },
+  {
+    id: '4',
+    slug: 'bijou-flocon',
+    name: 'Bijou Flocon',
+    price: 149.99,
+    oldPrice: 199.99,
+    description: 'Un pendentif délicat en argent 925 forme de flocon de neige. Chaque pièce est unique et symbolise la pureté et l\'élégance.',
+    category: 'Saint-Valentin',
+    subCategory: 'Bijoux d\'Exception',
+    rating: 4.7,
+    reviewsCount: 98,
+    images: [
+      '/images/products/bijou-flocon-1.jpg',
+      '/images/products/bijou-flocon-2.jpg',
+      '/images/products/bijou-flocon-3.jpg',
+      '/images/products/bijou-flocon-4.jpg'
+    ],
+    stock: 8,
+    badge: 'Édition limitée',
+    ambiance: 'Romantique'
+  },
+  {
+    id: '5',
+    slug: 'pack-amoureux',
+    name: 'Pack Soirée Amoureux',
+    price: 129.99,
+    description: 'Le pack complet pour une soirée romantique inoubliable : bougies parfumées, plaid doux, deux verres à vin et chocolats.',
+    category: 'Saint-Valentin',
+    subCategory: 'Expériences Romantiques',
+    rating: 4.8,
+    reviewsCount: 267,
+    images: [
+      '/images/products/pack-amoureux-1.jpg',
+      '/images/products/pack-amoureux-2.jpg',
+      '/images/products/pack-amoureux-3.jpg',
+      '/images/products/pack-amoureux-4.jpg',
+      '/images/products/pack-amoureux-5.jpg'
+    ],
+    stock: 12,
+    badge: 'Coup de cœur',
+    ambiance: 'Romantique'
+  },
+  {
+    id: '16',
+    slug: 'bracelet-couple',
+    name: 'Bracelets Couple Magnétiques',
+    price: 79.99,
+    description: 'Paire de bracelets en acier inoxydable avec aimants qui s\'attirent. Gravure personnalisable incluse. Symbole d\'union.',
+    category: 'Saint-Valentin',
+    subCategory: 'Bijoux Couple',
+    rating: 4.6,
+    reviewsCount: 189,
+    images: [
+      '/images/products/bracelet-couple-1.jpg',
+      '/images/products/bracelet-couple-2.jpg',
+      '/images/products/bracelet-couple-3.jpg'
+    ],
+    stock: 15,
+    badge: 'Personnalisable',
+    ambiance: 'Romantique'
+  },
+  {
+    id: '17',
+    slug: 'rose-éternelle',
+    name: 'Rose Éternelle Dôme Verre',
+    price: 89.99,
+    oldPrice: 119.99,
+    description: 'Rose naturelle stabilisée dans dôme en verre. Durée de vie 3-5 ans. Lumière LED intégrée. Message personnalisé possible.',
+    category: 'Saint-Valentin',
+    subCategory: 'Fleurs Symboliques',
+    rating: 4.8,
+    reviewsCount: 234,
+    images: [
+      '/images/products/rose-eternelle-1.jpg',
+      '/images/products/rose-eternelle-2.jpg',
+      '/images/products/rose-eternelle-3.jpg'
+    ],
+    stock: 18,
+    badge: 'Amour éternel',
+    ambiance: 'Romantique'
+  },
+  {
+    id: '18',
+    slug: 'parfum-couple',
+    name: 'Coffret Parfums Couple',
+    price: 159.99,
+    description: 'Deux parfums créés pour s\'harmoniser. Notes femme : fleur blanche et vanille. Notes homme : bois de cèdre et musc.',
+    category: 'Saint-Valentin',
+    subCategory: 'Parfums & Senteurs',
+    rating: 4.7,
+    reviewsCount: 145,
+    images: [
+      '/images/products/parfum-couple-1.jpg',
+      '/images/products/parfum-couple-2.jpg'
+    ],
+    stock: 10,
+    badge: 'Harmonie',
+    ambiance: 'Romantique'
+  },
+  {
+    id: '19',
+    slug: 'dîner-lumière',
+    name: 'Kit Dîner aux Chandelles',
+    price: 99.99,
+    description: 'Set complet pour dîner romantique : 2 bougies premium, serviettes en lin, couverts design et jeu de questions pour couples.',
+    category: 'Saint-Valentin',
+    subCategory: 'Expériences Romantiques',
+    rating: 4.9,
+    reviewsCount: 312,
+    images: [
+      '/images/products/diner-chandelles-1.jpg',
+      '/images/products/diner-chandelles-2.jpg',
+      '/images/products/diner-chandelles-3.jpg'
+    ],
+    stock: 20,
+    badge: 'Moment magique',
+    ambiance: 'Romantique'
+  },
+  {
+    id: '20',
+    slug: 'collier-message',
+    name: 'Collier Message Cacheté',
+    price: 119.99,
+    description: 'Collier en argent avec médaillon ouvrant contenant un mini message personnalisé. Gravure extérieure incluse.',
+    category: 'Saint-Valentin',
+    subCategory: 'Bijoux d\'Exception',
+    rating: 4.8,
+    reviewsCount: 167,
+    images: [
+      '/images/products/collier-message-1.jpg',
+      '/images/products/collier-message-2.jpg',
+      '/images/products/collier-message-3.jpg'
+    ],
+    stock: 6,
+    badge: 'Secret d\'amour',
+    ambiance: 'Romantique'
+  },
+  {
+    id: '21',
+    slug: 'massage-couple',
+    name: 'Kit Massage Couple Luxe',
+    price: 69.99,
+    description: 'Set complet avec 3 huiles de massage bio, bougies parfumées et guide des techniques. Packaging élégant et recyclable.',
+    category: 'Saint-Valentin',
+    subCategory: 'Bien-être Couple',
+    rating: 4.6,
+    reviewsCount: 198,
+    images: [
+      '/images/products/massage-couple-1.jpg',
+      '/images/products/massage-couple-2.jpg'
+    ],
+    stock: 25,
+    badge: 'Détente',
+    ambiance: 'Romantique'
+  },
+  {
+    id: '22',
+    slug: 'coffre-romantique',
+    name: 'Coffre à Souvenirs Couple',
+    price: 149.99,
+    description: 'Coffre en bois précieux avec compartiments secrets. Inclus stylo plume et carnet pour écrire vos souvenirs.',
+    category: 'Saint-Valentin',
+    subCategory: 'Souvenirs & Mémoires',
+    rating: 4.9,
+    reviewsCount: 89,
+    images: [
+      '/images/products/coffre-romantique-1.jpg',
+      '/images/products/coffre-romantique-2.jpg',
+      '/images/products/coffre-romantique-3.jpg'
+    ],
+    stock: 12,
+    badge: 'Héritage',
+    ambiance: 'Romantique'
+  },
+  {
+    id: '23',
+    slug: 'champagne-amour',
+    name: 'Champagne Rosé Amour',
+    price: 89.99,
+    description: 'Champagne rosé prestige avec étiquette personnalisée. Accompagné de deux flûtes en cristal gravées. Millésime limité.',
+    category: 'Saint-Valentin',
+    subCategory: 'Gourmandises',
+    rating: 4.7,
+    reviewsCount: 234,
+    images: [
+      '/images/products/champagne-amour-1.jpg',
+      '/images/products/champagne-amour-2.jpg'
+    ],
+    stock: 30,
+    badge: 'Célébration',
+    ambiance: 'Romantique'
+  },
+  {
+    id: '24',
+    slug: 'puzzle-cœur',
+    name: 'Puzzle Photo Cœur 1000pcs',
+    price: 54.99,
+    description: 'Puzzle personnalisé avec votre photo en forme de cœur. 1000 pièces de qualité premium. Boîte cadeau design.',
+    category: 'Saint-Valentin',
+    subCategory: 'Jeux & Divertissement',
+    rating: 4.5,
+    reviewsCount: 156,
+    images: [
+      '/images/products/puzzle-coeur-1.jpg',
+      '/images/products/puzzle-coeur-2.jpg'
+    ],
+    stock: 35,
+    badge: 'Personnalisé',
+    ambiance: 'Romantique'
+  }
+];
+
+// Helper functions
+export const getProductBySlug = (slug: string): Product | undefined => {
+  return products.find(product => product.slug === slug);
+};
+
+export const getProductsByCategory = (category: 'Hiver' | 'Saint-Valentin'): Product[] => {
+  return products.filter(product => product.category === category);
+};
+
+export const getProductsBySubCategory = (subCategory: string): Product[] => {
+  return products.filter(product => product.subCategory === subCategory);
+};
+
+export const getSubCategories = (): string[] => {
+  return [...new Set(products.map(product => product.subCategory))];
+};
+
+export const getProductsByAmbiance = (ambiance: 'Cocooning' | 'Romantique'): Product[] => {
+  return products.filter(product => product.ambiance === ambiance);
+};
