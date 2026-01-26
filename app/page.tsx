@@ -5,103 +5,11 @@ import Image from "next/image";
 import { Star, ShoppingCart } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { products, getProductsByCategory } from "../data/products";
+import ProductCard from "@/components/ProductCard";
 
 // Filtrer les produits par catégorie
 const hiverProducts = getProductsByCategory('Hiver');
 const valentinProducts = getProductsByCategory('Saint-Valentin');
-
-function ProductCard({ product }: { product: any }) {
-  const { addToCart } = useCart();
-
-  const handleAddToCart = () => {
-    addToCart({
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      image: product.images[0],
-    });
-  };
-
-  // Déterminer la couleur du bouton selon la catégorie
-  const buttonColor = product.category === 'Saint-Valentin' ? 'bg-rose' : 'bg-textDark';
-  
-  // Calculer la promo si oldPrice existe
-  const discount = product.oldPrice 
-    ? Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100)
-    : 0;
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5 }}
-      className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 group flex flex-col h-full"
-    >
-      <div className="relative aspect-square overflow-hidden">
-        {discount > 0 && (
-          <div className="absolute top-2 left-2 z-10 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">
-            Promo -{discount}%
-          </div>
-        )}
-        {product.badge && (
-          <div className="absolute top-2 right-2 z-10 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-3 py-1 rounded-full text-xs font-bold">
-            {product.badge}
-          </div>
-        )}
-        <Image
-          src={product.images[0]}
-          alt={product.name}
-          fill
-          className="object-cover group-hover:scale-105 transition-transform duration-300"
-        />
-      </div>
-      <div className="p-4 flex flex-col flex-1">
-        <h3 className="font-display font-semibold text-lg mb-2 text-textDark">
-          {product.name}
-        </h3>
-        <p className="text-sm text-gray-600 mb-3 line-clamp-2 flex-1">{product.description}</p>
-        
-        <div className="flex items-center gap-2 mb-3">
-          <div className="flex items-center gap-1">
-            {[...Array(5)].map((_, i) => (
-              <Star
-                key={i}
-                className={`w-4 h-4 ${
-                  i < Math.floor(product.rating) ? "fill-yellow-400 text-yellow-400" : "text-gray-300"
-                }`}
-              />
-            ))}
-          </div>
-          <span className="text-sm text-gray-500">({product.reviewsCount})</span>
-        </div>
-        
-        <div className="flex items-center justify-between mb-4">
-          <div>
-            <span className="text-xl font-bold text-textDark">
-              {product.price.toFixed(2)} €
-            </span>
-            {product.oldPrice && (
-              <span className="text-sm text-gray-500 line-through ml-2">
-                {product.oldPrice.toFixed(2)} €
-              </span>
-            )}
-          </div>
-        </div>
-        
-        <button
-          onClick={handleAddToCart}
-          className={`${buttonColor} text-white px-4 py-2 rounded-lg hover:opacity-90 transition-opacity flex items-center gap-2 w-full justify-center mt-auto`}
-        >
-          <ShoppingCart className="w-4 h-4" />
-          <span>
-            {product.category === 'Saint-Valentin' ? 'Offrir avec amour' : 'Prendre soin de moi'}
-          </span>
-        </button>
-      </div>
-    </motion.div>
-  );
-}
 
 export default function HomePage() {
   const hiverProducts = getProductsByCategory('Hiver');

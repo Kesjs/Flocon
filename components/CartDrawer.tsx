@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "@/context/CartContext";
-import { X, Minus, Plus, Trash2, ShoppingCart } from "lucide-react";
+import { X, Minus, Plus, Trash2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -11,43 +11,13 @@ interface CartDrawerProps {
   onClose: () => void;
 }
 
-const suggestedProducts = [
-  {
-    id: "sug-1",
-    name: "Serviette Complémentaire",
-    price: 29.99,
-    image: "https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f?w=150&h=150&fit=crop",
-  },
-  {
-    id: "sug-2",
-    name: "Plaid Accessoire",
-    price: 39.99,
-    image: "https://images.unsplash.com/photo-1586105251261-72a756497a11?w=150&h=150&fit=crop",
-  },
-  {
-    id: "sug-3",
-    name: "Set Complémentaire",
-    price: 49.99,
-    image: "https://images.unsplash.com/photo-1610557892470-55d9e80c0bce?w=150&h=150&fit=crop",
-  },
-];
-
 export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
-  const { cartItems, removeFromCart, updateQuantity, addToCart } = useCart();
+  const { cartItems, removeFromCart, updateQuantity } = useCart();
 
   const total = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
   );
-
-  const handleAddSuggestion = (product: typeof suggestedProducts[0]) => {
-    addToCart({
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      image: product.image,
-    });
-  };
 
   return (
     <AnimatePresence>
@@ -104,13 +74,21 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                         key={item.id}
                         className="flex gap-4 p-4 border rounded-lg"
                       >
-                        <Image
-                          src={item.image}
-                          alt={item.name}
-                          width={80}
-                          height={80}
-                          className="rounded object-cover"
-                        />
+                        <div className="relative w-20 h-20 flex-shrink-0">
+                          <Image
+                            src={item.image}
+                            alt={item.name}
+                            fill
+                            className="rounded object-cover"
+                            onError={(e) => {
+                              // Cacher l'image si elle ne se charge pas
+                              e.currentTarget.style.display = 'none';
+                            }}
+                          />
+                          <div className="absolute inset-0 bg-gray-200 rounded flex items-center justify-center">
+                            <span className="text-xs text-gray-500 text-center px-1">Img</span>
+                          </div>
+                        </div>
                         <div className="flex-1">
                           <h3 className="font-medium text-textDark mb-1">
                             {item.name}
@@ -146,44 +124,6 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                         </div>
                       </div>
                     ))}
-                  </div>
-
-                  {/* Suggestions de produits complémentaires */}
-                  <div className="border-t pt-6">
-                    <h3 className="text-lg font-display font-semibold text-textDark mb-4">
-                      Produits complémentaires
-                    </h3>
-                    <div className="space-y-3">
-                      {suggestedProducts.map((product) => (
-                        <div
-                          key={product.id}
-                          className="flex items-center gap-3 p-3 border rounded-lg hover:bg-gray-50 transition-colors"
-                        >
-                          <Image
-                            src={product.image}
-                            alt={product.name}
-                            width={60}
-                            height={60}
-                            className="rounded object-cover"
-                          />
-                          <div className="flex-1 min-w-0">
-                            <h4 className="font-medium text-sm text-textDark truncate">
-                              {product.name}
-                            </h4>
-                            <p className="text-sm font-semibold text-rose">
-                              {product.price.toFixed(2)} €
-                            </p>
-                          </div>
-                          <button
-                            onClick={() => handleAddSuggestion(product)}
-                            className="p-2 bg-textDark text-white rounded-lg hover:bg-opacity-90 transition-colors"
-                            title="Ajouter au panier"
-                          >
-                            <ShoppingCart className="w-4 h-4" />
-                          </button>
-                        </div>
-                      ))}
-                    </div>
                   </div>
                 </>
               )}
