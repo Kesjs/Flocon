@@ -113,6 +113,16 @@ export default function ProductCard({ product, className = "" }: ProductCardProp
             <p className="text-sm text-gray-500 mt-1">{product.subCategory}</p>
           </div>
 
+          {/* Description */}
+          <div className="mb-3">
+            <p className="text-sm text-gray-600 line-clamp-2 leading-relaxed">
+              {product.description}
+            </p>
+            <button className="text-xs text-rose hover:text-rose/80 font-medium mt-1 transition-colors">
+              Voir plus →
+            </button>
+          </div>
+
           {/* Rating */}
           <div className="flex items-center space-x-2 mb-3">
             <div className="flex items-center">

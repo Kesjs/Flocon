@@ -19,20 +19,18 @@ export const products: Product[] = [
   // Produits Hiver (12 produits)
   {
     id: '1',
-    slug: 'plaid-nuage',
-    name: 'Plaid Nuage',
-    price: 89.99,
-    oldPrice: 129.99,
+    slug: 'plaid-manche',
+    name: 'Plaid à manche',
+    price: 27.99,
+    oldPrice: 38.99,
     description: 'Un plaid incroyablement doux qui vous enveloppe de chaleur. Tissé en fibres premium avec une texture nuageuse qui invite à la détente absolue.',
     category: 'Hiver',
     subCategory: 'Plaids & Textures',
     rating: 4.8,
     reviewsCount: 234,
     images: [
-      '/images/products/plaid-nuage-1.jpg',
-      '/images/products/plaid-nuage-2.jpg',
-      '/images/products/plaid-nuage-3.jpg',
-      '/images/products/plaid-nuage-4.jpg'
+      'https://www.leclapstore.com/wp-content/uploads/2020/06/0-b08eb4.jpeg',
+
     ],
     stock: 15,
     badge: 'Best-seller',
@@ -41,18 +39,16 @@ export const products: Product[] = [
   {
     id: '2',
     slug: 'bougie-crepitement',
-    name: 'Bougie Crépitement',
+    name: 'WoodWick Ellipse bougie',
     price: 34.99,
-    oldPrice: 44.99,
+    oldPrice: 44,
     description: 'Une bougie artisanale qui reproduit le son apaisant d\'un feu de cheminée. Parfum bois de cèdre et vanille.',
     category: 'Hiver',
     subCategory: 'Ambiance & Bougies',
     rating: 4.6,
     reviewsCount: 189,
     images: [
-      '/images/products/bougie-crepitement-1.jpg',
-      '/images/products/bougie-crepitement-2.jpg',
-      '/images/products/bougie-crepitement-3.jpg'
+      'https://m.media-amazon.com/images/I/81WCvlPi2TL.jpg'
     ],
     stock: 28,
     badge: 'Nouveauté',
@@ -62,15 +58,15 @@ export const products: Product[] = [
     id: '6',
     slug: 'chaussons-laine',
     name: 'Chaussons Laine Merinos',
-    price: 59.99,
+    price: 39.99,
     description: 'Chaussons doublés en laine mérinos ultra-douce. Semelle antidérapante et design élégant pour un confort maximal.',
     category: 'Hiver',
     subCategory: 'Confort & Chaleur',
     rating: 4.7,
     reviewsCount: 145,
     images: [
-      '/images/products/chaussons-laine-1.jpg',
-      '/images/products/chaussons-laine-2.jpg'
+      'https://alpesdusud.ch/wp-content/uploads/2021/10/4-9.webp',
+      'https://alpesdusud.ch/wp-content/uploads/2021/10/2-11.webp'
     ],
     stock: 35,
     badge: 'Confort garanti',
@@ -79,16 +75,16 @@ export const products: Product[] = [
   {
     id: '7',
     slug: 'thermos-luxe',
-    name: 'Thermos Luxe Chrome',
-    price: 79.99,
-    description: 'Thermos haute capacité 1L en acier brossé. Garde votre boisson chaude 12 heures. Design élégant et écologique.',
+    name: 'Miniland Bouteille thermos 500ml',
+    price: 21.99,
+    description: 'La bouteille thermos deluxe rose maintient la température des liquides, qu’ils soient froids ou chauds, jusqu’à 12 heures.',
     category: 'Hiver',
     subCategory: 'Accessoires',
     rating: 4.5,
     reviewsCount: 98,
     images: [
-      '/images/products/thermos-luxe-1.jpg',
-      '/images/products/thermos-luxe-2.jpg'
+      'https://babyfive.ma/wp-content/uploads/2023/10/Bouteille-thermos-deluxe-rose-avec-effet-chrome-500ml-Miniland-1.jpg',
+      'https://www.goldengames.ma/wp-content/uploads/2023/05/5005089260_1_4-800x800.webp'
     ],
     stock: 22,
     badge: 'Qualité premium',
@@ -98,17 +94,16 @@ export const products: Product[] = [
     id: '8',
     slug: 'couverture-électrique',
     name: 'Couverture Électrique Intelligente',
-    price: 129.99,
-    oldPrice: 169.99,
+    price: 89,
+    oldPrice: 109.99,
     description: 'Couverture chauffante avec 9 niveaux de température. Timer automatique et tissu hypoallergénique.',
     category: 'Hiver',
     subCategory: 'Technologie & Confort',
     rating: 4.9,
     reviewsCount: 267,
     images: [
-      '/images/products/couverture-electrique-1.jpg',
-      '/images/products/couverture-electrique-2.jpg',
-      '/images/products/couverture-electrique-3.jpg'
+      'https://m.media-amazon.com/images/I/71f7uHAiL+L._AC_UF1000,1000_QL80_.jpg',
+      'https://m.media-amazon.com/images/I/71zb9kVJUOL._AC_SL1500_.jpg'
     ],
     stock: 18,
     badge: 'Innovation',
@@ -125,8 +120,7 @@ export const products: Product[] = [
     rating: 4.4,
     reviewsCount: 89,
     images: [
-      '/images/products/tasse-ceramique-1.jpg',
-      '/images/products/tasse-ceramique-2.jpg'
+      'https://cdn.shopify.com/s/files/1/0516/3171/8560/products/tassestricoloresn_b_4.jpg?v=1659114955'
     ],
     stock: 45,
     badge: 'Artisanal',
@@ -136,15 +130,14 @@ export const products: Product[] = [
     id: '10',
     slug: 'lampe-cheminee',
     name: 'Lampe Cheminée LED',
-    price: 89.99,
+    price: 89,
     description: 'Lampe reproduisant l\'effet visuel d\'une cheminée. LED économiques et télécommande incluse. Ambiance chaleureuse garantie.',
     category: 'Hiver',
     subCategory: 'Ambiance & Lumière',
     rating: 4.6,
     reviewsCount: 156,
     images: [
-      '/images/products/lampe-cheminee-1.jpg',
-      '/images/products/lampe-cheminee-2.jpg'
+      'https://m.media-amazon.com/images/I/717qElrKoeL._AC_UF1000,1000_QL80_.jpg'
     ],
     stock: 12,
     badge: 'Ambiance magique',
@@ -153,17 +146,17 @@ export const products: Product[] = [
   {
     id: '11',
     slug: 'bonnet-cachemire',
-    name: 'Bonnet Cachemire Pur',
-    price: 149.99,
-    oldPrice: 199.99,
+    name: 'Bonnet Aspen Homme-Cachemire',
+    price: 102.99,
+    oldPrice: 130,
     description: 'Bonnet en cachemire 100% de Mongolie. Douceur inégalée et thermorégulation naturelle. Élégance intemporelle.',
     category: 'Hiver',
     subCategory: 'Mode & Accessoires',
     rating: 4.8,
     reviewsCount: 78,
     images: [
-      '/images/products/bonnet-cachemire-1.jpg',
-      '/images/products/bonnet-cachemire-2.jpg',
+      'https://media.maisoncashmere.com/a48304ef-7d4e-4a4c-9823-719ec3f82e09/maisoncashmere.com/cdn/shop/files/mens-aspen-cashmere-hat-U463-20-0008-U.webp?v=1754401839&width=1024',
+      'https://media.maisoncashmere.com/a48304ef-7d4e-4a4c-9823-719ec3f82e09/maisoncashmere.com/cdn/shop/files/mens-aspen-cashmere-hat-U463-20-0008-5823.webp?v=1754401840&width=1024',
       '/images/products/bonnet-cachemire-3.jpg'
     ],
     stock: 8,
@@ -181,8 +174,7 @@ export const products: Product[] = [
     rating: 4.7,
     reviewsCount: 234,
     images: [
-      '/images/products/infusion-hivernale-1.jpg',
-      '/images/products/infusion-hivernale-2.jpg'
+      'https://cdn.shopify.com/s/files/1/0830/2346/2742/files/kit-the-arrange-549166.jpg?v=1728050535'
     ],
     stock: 55,
     badge: 'Bio',
@@ -199,8 +191,7 @@ export const products: Product[] = [
     rating: 4.5,
     reviewsCount: 167,
     images: [
-      '/images/products/coussin-chaleur-1.jpg',
-      '/images/products/coussin-chaleur-2.jpg'
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqaEsJW4WOnRp3HBHkh5EjkfBJtGENySgzbA&s'
     ],
     stock: 30,
     badge: 'Thérapie',
@@ -217,8 +208,7 @@ export const products: Product[] = [
     rating: 4.3,
     reviewsCount: 123,
     images: [
-      '/images/products/gants-tactiles-1.jpg',
-      '/images/products/gants-tactiles-2.jpg'
+      'https://lespetitsimprimes.com/cdn/shop/products/gant-tactile-femme-gant-tactile-homme-gants-femme-tactile-4.jpg?v=1672427974'
     ],
     stock: 40,
     badge: 'Pratique',
@@ -235,8 +225,7 @@ export const products: Product[] = [
     rating: 4.6,
     reviewsCount: 198,
     images: [
-      '/images/products/diffuseur-humidite-1.jpg',
-      '/images/products/diffuseur-humidite-2.jpg'
+      'https://www.cdiscount.com/pdt2/1/2/0/1/700x700/auc9399422434120/rw/humidificateur-d-arome-purificateur-d-air-humidi.jpg'
     ],
     stock: 25,
     badge: 'Aromathérapie',
