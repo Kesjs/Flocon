@@ -1,10 +1,10 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { Mail, Lock, ArrowRight, AlertCircle, Eye, EyeOff } from "lucide-react";
+import { Mail, Lock, ArrowRight, AlertCircle, Eye, EyeOff, CheckCircle } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 
 export default function Login() {
@@ -13,8 +13,19 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { signIn } = useAuth();
+
+  useEffect(() => {
+    const status = searchParams.get('status');
+    if (status === 'signup_success') {
+      setSuccessMessage("Inscription réussie ! Un email de confirmation vous a été envoyé. Veuillez vérifier votre boîte de réception.");
+      // Nettoyer l'URL pour ne pas afficher le message à nouveau en cas de rafraîchissement
+      router.replace('/login', { scroll: false });
+    }
+  }, [searchParams, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,6 +61,17 @@ export default function Login() {
           </h1>
           <p className="text-gray-600">Accédez à votre espace personnel</p>
         </div>
+
+        {successMessage && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-center gap-3"
+          >
+            <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
+            <p className="text-green-700 text-sm">{successMessage}</p>
+          </motion.div>
+        )}
 
         {error && (
           <motion.div

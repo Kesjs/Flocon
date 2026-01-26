@@ -43,58 +43,11 @@ export default function Register() {
 
     if (error) {
       setError(error.message);
+      setLoading(false);
     } else {
-      setSuccess(true);
+      router.push('/login?status=signup_success');
     }
-    
-    setLoading(false);
   };
-
-  if (success) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-cream to-iceBlue/20 px-4 pt-20">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 text-center"
-        >
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-            className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6"
-          >
-            <CheckCircle className="w-8 h-8 text-green-600" />
-          </motion.div>
-          
-          <h1 className="text-3xl font-display font-bold text-textDark mb-4">
-            Inscription réussie !
-          </h1>
-          
-          <p className="text-gray-600 mb-8">
-            Un email de confirmation vous a été envoyé. Veuillez vérifier votre boîte de réception et cliquer sur le lien pour activer votre compte.
-          </p>
-
-          <div className="space-y-4">
-            <Link
-              href="/login"
-              className="block w-full bg-textDark text-white py-3 rounded-lg font-semibold hover:bg-opacity-90 transition-colors"
-            >
-              Se connecter
-            </Link>
-            
-            <Link
-              href="/"
-              className="block text-gray-600 hover:text-textDark transition-colors"
-            >
-              ← Retour à l'accueil
-            </Link>
-          </div>
-        </motion.div>
-      </div>
-    );
-  }
 
   return (
     <div className="pt-20 min-h-screen flex items-center justify-center bg-gradient-to-br from-cream to-iceBlue/20 px-4">
