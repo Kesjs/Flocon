@@ -8,6 +8,7 @@ export interface CartItem {
   price: number;
   quantity: number;
   image: string;
+  description?: string;
 }
 
 interface CartContextType {
@@ -16,6 +17,7 @@ interface CartContextType {
   removeFromCart: (id: string) => void;
   updateQuantity: (id: string, quantity: number) => void;
   clearCart: () => void;
+  clearCartAfterPayment: () => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -88,9 +90,21 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const clearCartAfterPayment = () => {
+    // Vider le panier et sauvegarder dans localStorage
+    setCartItems([]);
+    try {
+      localStorage.removeItem(CART_STORAGE_KEY);
+      // Optionnel: sauvegarder un indicateur de paiement réussi
+      localStorage.setItem('last-payment', new Date().toISOString());
+    } catch (error) {
+      console.error("Erreur lors de la suppression du panier après paiement:", error);
+    }
+  };
+
   return (
     <CartContext.Provider
-      value={{ cartItems, addToCart, removeFromCart, updateQuantity, clearCart }}
+      value={{ cartItems, addToCart, removeFromCart, updateQuantity, clearCart, clearCartAfterPayment }}
     >
       {children}
     </CartContext.Provider>

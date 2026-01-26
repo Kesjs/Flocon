@@ -3,18 +3,15 @@ import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import AnnounceBar from "@/components/AnnounceBar";
 import CartProviderWrapper from "@/components/CartProviderWrapper";
-import ErrorBoundaryWrapper from "@/components/ErrorBoundaryWrapper";
-import NextTopLoader from "nextjs-toploader";
 import { AuthProvider } from "@/context/AuthContext";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfair" });
 
 export const metadata: Metadata = {
-  title: "Flocon - E-commerce de qualité",
-  description: "Découvrez nos collections hiver et Saint-Valentin",
+  title: "Flocon - E-commerce di qualità",
+  description: "Scopri le nostre collezioni invernali e di San Valentino",
   icons: {
     icon: [
       { url: '/favicon.svg', type: 'image/svg+xml' },
@@ -33,25 +30,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr">
-      <body className={`${inter.variable} ${playfair.variable} antialiased`}>
-        <ErrorBoundaryWrapper>
-          <AuthProvider>
-            <CartProviderWrapper>
-              <NextTopLoader 
-                color="#f87171" 
-                height={3}
-                showSpinner={false}
-                shadow={false}
-                zIndex={160}
-              />
-              <AnnounceBar />
-              <Header />
-              <main className="min-h-screen pt-20">{children}</main>
-              <Footer />
-            </CartProviderWrapper>
-          </AuthProvider>
-        </ErrorBoundaryWrapper>
+    <html lang="it" suppressHydrationWarning>
+      <body className={`${inter.variable} ${playfair.variable} antialiased`} suppressHydrationWarning>
+        <AuthProvider>
+          <CartProviderWrapper>
+            <Header />
+            <main className="min-h-screen pt-20">{children}</main>
+            <Footer />
+          </CartProviderWrapper>
+        </AuthProvider>
       </body>
     </html>
   );

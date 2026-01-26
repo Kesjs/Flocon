@@ -43,7 +43,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
             {/* Header */}
             <div className="flex items-center justify-between p-6 border-b">
               <h2 className="text-2xl font-display font-bold text-textDark">
-                Mon Panier
+                Il mio carrello
               </h2>
               <button
                 onClick={onClose}
@@ -57,13 +57,13 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
             <div className="flex-1 overflow-y-auto p-6">
               {cartItems.length === 0 ? (
                 <div className="text-center py-12">
-                  <p className="text-gray-500 mb-4">Votre panier est vide</p>
+                  <p className="text-gray-500 mb-4">Il tuo carrello è vuoto</p>
                   <Link
                     href="/"
                     onClick={onClose}
                     className="text-rose hover:underline"
                   >
-                    Continuer vos achats
+                    Continua i tuoi acquisti
                   </Link>
                 </div>
               ) : (
@@ -74,20 +74,28 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                         key={item.id}
                         className="flex gap-4 p-4 border rounded-lg"
                       >
-                        <div className="relative w-20 h-20 flex-shrink-0">
-                          <Image
-                            src={item.image}
-                            alt={item.name}
-                            fill
-                            className="rounded object-cover"
-                            onError={(e) => {
-                              // Cacher l'image si elle ne se charge pas
-                              e.currentTarget.style.display = 'none';
-                            }}
-                          />
-                          <div className="absolute inset-0 bg-gray-200 rounded flex items-center justify-center">
-                            <span className="text-xs text-gray-500 text-center px-1">Img</span>
-                          </div>
+                        <div className="relative w-20 h-20 flex-shrink-0 bg-gray-100 rounded overflow-hidden">
+                          {item.image ? (
+                            <Image
+                              src={item.image}
+                              alt={item.name}
+                              fill
+                              className="object-cover"
+                              onError={(e) => {
+                                // Si l'image ne se charge pas, la cacher et montrer le fallback
+                                const target = e.currentTarget;
+                                target.style.display = 'none';
+                                const parent = target.parentElement;
+                                if (parent) {
+                                  parent.innerHTML = '<div class="w-full h-full bg-gray-200 rounded flex items-center justify-center"><span class="text-xs text-gray-500 text-center px-1">Img</span></div>';
+                                }
+                              }}
+                            />
+                          ) : (
+                            <div className="w-full h-full bg-gray-200 rounded flex items-center justify-center">
+                              <span className="text-xs text-gray-500 text-center px-1">Img</span>
+                            </div>
+                          )}
                         </div>
                         <div className="flex-1">
                           <h3 className="font-medium text-textDark mb-1">
@@ -133,7 +141,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
             {cartItems.length > 0 && (
               <div className="border-t p-6 space-y-4">
                 <div className="flex justify-between text-lg font-bold">
-                  <span>Total:</span>
+                  <span>Totale:</span>
                   <span>{total.toFixed(2)} €</span>
                 </div>
                 <Link
@@ -141,7 +149,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                   onClick={onClose}
                   className="block w-full bg-textDark text-white text-center py-3 rounded-lg hover:bg-opacity-90 transition-colors font-medium"
                 >
-                  Commander
+                  Ordina
                 </Link>
               </div>
             )}

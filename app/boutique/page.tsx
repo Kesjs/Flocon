@@ -24,9 +24,9 @@ export default function BoutiquePage() {
 
   // Categories for sidebar
   const categories = [
-    { id: 'tous', name: 'Tous les produits', count: products.length },
-    { id: 'Hiver', name: 'L\'Art du Cocooning', count: getProductsByCategory('Hiver').length },
-    { id: 'Saint-Valentin', name: 'Flocons de Tendresse', count: getProductsByCategory('Saint-Valentin').length }
+    { id: 'tous', name: 'Tutti i prodotti', count: products.length },
+    { id: 'Hiver', name: 'L\'Arte del Cocooning', count: getProductsByCategory('Hiver').length },
+    { id: 'Saint-Valentin', name: 'Fiocchi di Tenerezza', count: getProductsByCategory('Saint-Valentin').length }
   ];
 
   // Get initial filters from URL params
@@ -131,11 +131,11 @@ export default function BoutiquePage() {
             className="text-center"
           >
             <h1 className="text-4xl md:text-5xl font-display font-bold mb-4">
-              Boutique Flocon
+              Negozio Flocon
             </h1>
             <p className="text-xl md:text-2xl text-gray-200 max-w-3xl mx-auto">
-              Découvrez notre sélection unique de produits pour l'hiver et la Saint-Valentin. 
-              Des créations artisanales qui réchauffent le cœur et l'âme.
+              Scopri la nostra selezione unica di prodotti per l'inverno e San Valentino. 
+              Creazioni artigianali che scaldano il cuore e l'anima.
             </p>
           </motion.div>
         </div>
@@ -147,7 +147,7 @@ export default function BoutiquePage() {
           <div className="flex items-center justify-between py-4">
             <div className="flex items-center space-x-8">
               <span className="text-sm text-gray-600">
-                {filteredProducts.length} produit{filteredProducts.length > 1 ? 's' : ''} trouvé{filteredProducts.length > 1 ? 's' : ''}
+                {filteredProducts.length} prodotto{filteredProducts.length > 1 ? 's' : ''} trovato{filteredProducts.length > 1 ? 's' : ''}
               </span>
               
               {/* View Mode Toggle */}
@@ -173,7 +173,7 @@ export default function BoutiquePage() {
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
                 <input
                   type="text"
-                  placeholder="Rechercher un produit..."
+                  placeholder="Cerca un prodotto..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose w-64"
@@ -186,10 +186,10 @@ export default function BoutiquePage() {
                 onChange={(e) => setSortBy(e.target.value as any)}
                 className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose"
               >
-                <option value="name">Trier par nom</option>
-                <option value="price-asc">Prix croissant</option>
-                <option value="price-desc">Prix décroissant</option>
-                <option value="rating">Meilleures notes</option>
+                <option value="name">Ordina per nome</option>
+                <option value="price-asc">Prezzo crescente</option>
+                <option value="price-desc">Prezzo decrescente</option>
+                <option value="rating">Migliori valutazioni</option>
               </select>
 
               {/* Mobile Filter Button */}
@@ -198,7 +198,7 @@ export default function BoutiquePage() {
                 className="lg:hidden flex items-center space-x-2 px-4 py-2 bg-rose text-white rounded-lg"
               >
                 <Filter className="w-4 h-4" />
-                <span>Filtres</span>
+                <span>Filtri</span>
               </button>
             </div>
           </div>
@@ -211,7 +211,7 @@ export default function BoutiquePage() {
           {/* Sidebar - Categories */}
           <aside className="hidden lg:block w-64 flex-shrink-0">
             <div className="bg-white rounded-lg shadow-sm p-6">
-              <h3 className="font-semibold text-textDark mb-4">Catégories</h3>
+              <h3 className="font-semibold text-textDark mb-4">Categorie</h3>
               <div className="space-y-2">
                 {categories.map((category) => (
                   <button
@@ -251,8 +251,8 @@ export default function BoutiquePage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.47-.881-6.08-2.33" />
                   </svg>
                 </div>
-                <h3 className="text-lg font-medium text-textDark mb-2">Aucun produit trouvé</h3>
-                <p className="text-gray-600">Essayez de modifier vos filtres pour voir plus de résultats.</p>
+                <h3 className="text-lg font-medium text-textDark mb-2">Nessun prodotto trovato</h3>
+                <p className="text-gray-600">Prova a modificare i tuoi filtri per vedere più risultati.</p>
               </div>
             ) : (
               <div className={`grid gap-6 ${
@@ -285,7 +285,7 @@ export default function BoutiquePage() {
           <div className="bg-white h-full w-80 overflow-y-auto">
             <div className="p-6 border-b border-gray-200">
               <div className="flex items-center justify-between">
-                <h3 className="font-semibold text-textDark">Filtres</h3>
+                <h3 className="font-semibold text-textDark">Filtri</h3>
                 <button
                   onClick={() => setIsMobileFilterOpen(false)}
                   className="p-2 hover:bg-gray-100 rounded-lg"
@@ -297,7 +297,7 @@ export default function BoutiquePage() {
             
             <div className="p-6">
               <div className="mb-6">
-                <h4 className="font-medium text-textDark mb-4">Catégories</h4>
+                <h4 className="font-medium text-textDark mb-4">Categorie</h4>
                 <div className="space-y-2">
                   {categories.map((category) => (
                     <button

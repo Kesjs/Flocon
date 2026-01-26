@@ -2,15 +2,50 @@
 
 import { useCart } from "@/context/CartContext";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowLeft, Check } from "lucide-react";
+import { ArrowLeft, Check, CreditCard, Shield, Truck, Clock, X, Eye } from "lucide-react";
+import { loadStripe } from "@stripe/stripe-js";
+import { motion } from "framer-motion";
+
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
 export default function Checkout() {
   const { cartItems, clearCart } = useCart();
   const router = useRouter();
   const [isProcessing, setIsProcessing] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
+  const [customerEmail, setCustomerEmail] = useState('');
+  const [showSummary, setShowSummary] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<any>(null);
+  const [showProductModal, setShowProductModal] = useState(false);
+
+  // Restaurer l'état depuis localStorage au montage
+  useEffect(() => {
+    try {
+      const savedEmail = localStorage.getItem('checkout-email');
+      const savedShowSummary = localStorage.getItem('checkout-show-summary');
+      
+      if (savedEmail) {
+        setCustomerEmail(savedEmail);
+      }
+      if (savedShowSummary === 'true') {
+        setShowSummary(true);
+      }
+    } catch (error) {
+      console.error('Erreur lors de la restauration de l\'état checkout:', error);
+    }
+  }, []);
+
+  // Sauvegarder l'état dans localStorage à chaque changement
+  useEffect(() => {
+    try {
+      localStorage.setItem('checkout-email', customerEmail);
+      localStorage.setItem('checkout-show-summary', showSummary.toString());
+    } catch (error) {
+      console.error('Erreur lors de la sauvegarde de l\'état checkout:', error);
+    }
+  }, [customerEmail, showSummary]);
 
   const total = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
@@ -18,12 +53,84 @@ export default function Checkout() {
   );
 
   const handleCheckout = async () => {
+    if (cartItems.length === 0) return;
+    
+    if (!customerEmail || !customerEmail.includes('@')) {
+      alert('Veuillez entrer une adresse email valide');
+      return;
+    }
+
     setIsProcessing(true);
-    // Simulation de traitement
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    setIsProcessing(false);
-    setIsComplete(true);
-    clearCart();
+    console.log('🚀 Début du paiement:', { cartItems: cartItems.length, customerEmail });
+
+    try {
+      // Créer la session Stripe
+      const response = await fetch('/api/create-checkout-session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          cartItems,
+          customerEmail,
+        }),
+      });
+
+      console.log('📡 Réponse API:', response.status);
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('❌ Erreur API:', errorText);
+        throw new Error(`Erreur API: ${response.status} - ${errorText}`);
+      }
+
+      const data = await response.json();
+      console.log('✅ Données reçues:', data);
+
+      const { sessionId, url } = data;
+
+      if (url) {
+        console.log('🔄 Redirection vers:', url);
+        // Rediriger vers Stripe Checkout
+        window.location.href = url;
+      } else {
+        console.error('❌ URL manquante dans la réponse:', data);
+        throw new Error('URL de paiement non reçue');
+      }
+    } catch (error) {
+      console.error('💥 Erreur lors du paiement:', error);
+      alert('Une erreur est survenue lors du traitement du paiement. Veuillez réessayer.');
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  const handleProceedToPayment = () => {
+    if (customerEmail && customerEmail.includes('@')) {
+      setShowSummary(true);
+    } else {
+      alert('Veuillez entrer une adresse email valide');
+    }
+  };
+
+  const handleQuickView = (product: any) => {
+    setSelectedProduct(product);
+    setShowProductModal(true);
+  };
+
+  const closeProductModal = () => {
+    setShowProductModal(false);
+    setSelectedProduct(null);
+  };
+
+  // Nettoyer l'état checkout après paiement réussi
+  const clearCheckoutState = () => {
+    try {
+      localStorage.removeItem('checkout-email');
+      localStorage.removeItem('checkout-show-summary');
+    } catch (error) {
+      console.error('Erreur lors du nettoyage de l\'état checkout:', error);
+    }
   };
 
   if (isComplete) {
@@ -77,99 +184,343 @@ export default function Checkout() {
           className="inline-flex items-center gap-2 text-rose hover:underline mb-8"
         >
           <ArrowLeft className="w-4 h-4" />
-          Retour
+          Retour à la boutique
         </Link>
 
-        <div className="grid md:grid-cols-3 gap-8">
-          <div className="md:col-span-2 bg-white rounded-lg shadow-md p-6">
+        {!showSummary ? (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-white rounded-lg shadow-md p-6"
+          >
             <h1 className="text-3xl font-display font-bold text-textDark mb-6">
-              Informations de livraison
+              Finaliser ma commande
             </h1>
-            <form className="space-y-4">
-              <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-textDark mb-2">
-                    Prénom
-                  </label>
-                  <input
-                    type="text"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-rose focus:border-transparent outline-none"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-textDark mb-2">
-                    Nom
-                  </label>
-                  <input
-                    type="text"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-rose focus:border-transparent outline-none"
-                  />
-                </div>
-              </div>
+            
+            {/* Informations essentielles */}
+            <div className="space-y-6">
               <div>
                 <label className="block text-sm font-medium text-textDark mb-2">
-                  Adresse
+                  Email pour la confirmation
                 </label>
                 <input
-                  type="text"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-rose focus:border-transparent outline-none"
+                  type="email"
+                  value={customerEmail}
+                  onChange={(e) => setCustomerEmail(e.target.value)}
+                  placeholder="votre@email.com"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-rose focus:border-transparent outline-none"
+                  required
                 />
+                <p className="text-xs text-gray-500 mt-1">
+                  Vous recevrez la confirmation de commande et les détails de suivi à cette adresse
+                </p>
               </div>
-              <div className="grid md:grid-cols-3 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-textDark mb-2">
-                    Code postal
-                  </label>
-                  <input
-                    type="text"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-rose focus:border-transparent outline-none"
-                  />
-                </div>
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-textDark mb-2">
-                    Ville
-                  </label>
-                  <input
-                    type="text"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-rose focus:border-transparent outline-none"
-                  />
-                </div>
-              </div>
-            </form>
-          </div>
 
-          <div className="bg-white rounded-lg shadow-md p-6 h-fit">
-            <h2 className="text-xl font-display font-bold text-textDark mb-4">
-              Résumé
-            </h2>
-            <div className="space-y-2 mb-4">
-              {cartItems.map((item) => (
-                <div key={item.id} className="flex justify-between text-sm">
-                  <span className="text-gray-600">
-                    {item.name} x{item.quantity}
-                  </span>
-                  <span className="font-medium">
-                    {(item.price * item.quantity).toFixed(2)} €
-                  </span>
+              {/* Informations sur le paiement */}
+              <div className="bg-gradient-to-r from-rose-50 to-iceBlue-50 rounded-lg p-4">
+                <h3 className="font-semibold text-textDark mb-3">Informations de livraison et paiement</h3>
+                <p className="text-sm text-gray-600 mb-4">
+                  Vos informations de livraison et de paiement seront collectées de manière sécurisée via Stripe Checkout.
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="flex items-center gap-2">
+                    <Shield className="w-5 h-5 text-green-600" />
+                    <span className="text-sm font-medium">Paiement sécurisé</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Truck className="w-5 h-5 text-blue-600" />
+                    <span className="text-sm font-medium">Livraison offerte</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Clock className="w-5 h-5 text-purple-600" />
+                    <span className="text-sm font-medium">Expédition rapide</span>
+                  </div>
                 </div>
-              ))}
+              </div>
+
+              {/* Résumé simplifié */}
+              <div className="border-t pt-4">
+                <div className="flex justify-between items-center mb-4">
+                  <span className="text-lg font-semibold">Total ({cartItems.length} article{cartItems.length > 1 ? 's' : ''})</span>
+                  <span className="text-2xl font-bold text-rose">{total.toFixed(2)} €</span>
+                </div>
+              </div>
+
+              <button
+                onClick={handleProceedToPayment}
+                className="w-full bg-rose text-white py-3 rounded-lg font-semibold hover:bg-rose/90 transition-colors flex items-center justify-center gap-2"
+              >
+                <CreditCard className="w-5 h-5" />
+                Voir le résumé et payer
+              </button>
+              
+              {customerEmail && (
+                <button
+                  onClick={() => {
+                    setCustomerEmail('');
+                    setShowSummary(false);
+                    clearCheckoutState();
+                  }}
+                  className="w-full text-center text-gray-500 hover:text-gray-700 text-sm underline"
+                >
+                  Réinitialiser le formulaire
+                </button>
+              )}
             </div>
-            <div className="border-t pt-4 mb-4">
-              <div className="flex justify-between font-bold text-lg">
-                <span>Total</span>
-                <span>{total.toFixed(2)} €</span>
+          </motion.div>
+        ) : (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="grid md:grid-cols-3 gap-8"
+          >
+            {/* Résumé détaillé */}
+            <div className="md:col-span-2 space-y-6">
+              <div className="bg-white rounded-lg shadow-md p-6">
+                <h2 className="text-xl font-display font-bold text-textDark mb-4">
+                  Résumé de votre commande
+                </h2>
+                
+                <div className="space-y-4 mb-6">
+                  {cartItems.map((item, index) => (
+                    <motion.div
+                      key={item.id}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                    >
+                      <div className="relative group">
+                        <div className="w-20 h-20 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
+                          {item.image ? (
+                            <img 
+                              src={item.image} 
+                              alt={item.name}
+                              className="w-full h-full object-cover"
+                              onError={(e) => {
+                                // Si l'image ne se charge pas, la cacher et montrer le fallback
+                                const target = e.currentTarget;
+                                target.style.display = 'none';
+                                const parent = target.parentElement;
+                                if (parent) {
+                                  parent.innerHTML = '<div class="w-full h-full bg-gray-200 rounded-lg flex items-center justify-center"><span class="text-xs text-gray-500">Photo</span></div>';
+                                }
+                              }}
+                            />
+                          ) : (
+                            <div className="w-full h-full bg-gray-200 rounded-lg flex items-center justify-center">
+                              <span className="text-xs text-gray-500">Photo</span>
+                            </div>
+                          )}
+                        </div>
+                        <button
+                          onClick={() => handleQuickView(item)}
+                          className="absolute inset-0 bg-black/50 rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                        >
+                          <Eye className="w-6 h-6 text-white" />
+                        </button>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-semibold text-textDark truncate">{item.name}</h3>
+                        <p className="text-sm text-gray-600">
+                          {item.description || 'Produit de qualité'}
+                        </p>
+                        <div className="flex items-center gap-4 mt-2">
+                          <span className="text-sm text-gray-600">Quantité: {item.quantity}</span>
+                          <span className="text-sm font-medium text-rose">{item.price.toFixed(2)} €/pièce</span>
+                        </div>
+                      </div>
+                      <div className="text-right flex-shrink-0">
+                        <div className="font-bold text-lg text-textDark">
+                          {(item.price * item.quantity).toFixed(2)} €
+                        </div>
+                        <button
+                          onClick={() => handleQuickView(item)}
+                          className="text-xs text-rose hover:underline flex items-center gap-1 mt-1"
+                        >
+                          <Eye className="w-3 h-3" />
+                          Voir
+                        </button>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+
+                <div className="border-t pt-4">
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <div className="text-lg font-bold text-textDark">Total</div>
+                      <div className="text-sm text-gray-600">TVA incluse</div>
+                    </div>
+                    <div className="text-2xl font-bold text-rose">{total.toFixed(2)} €</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white rounded-lg shadow-md p-6">
+                <h3 className="font-semibold text-textDark mb-3">Email de confirmation</h3>
+                <div className="bg-gray-50 rounded-lg p-3">
+                  <p className="font-medium">{customerEmail}</p>
+                  <p className="text-sm text-gray-600">Vous recevrez la confirmation à cette adresse</p>
+                </div>
               </div>
             </div>
-            <button
-              onClick={handleCheckout}
-              disabled={isProcessing}
-              className="w-full bg-textDark text-white py-3 rounded-lg font-semibold hover:bg-opacity-90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {isProcessing ? "Traitement..." : "Confirmer la commande"}
-            </button>
-          </div>
-        </div>
+
+            {/* Paiement */}
+            <div className="space-y-6">
+              <div className="bg-white rounded-lg shadow-md p-6">
+                <h3 className="font-semibold text-textDark mb-4">Paiement sécurisé</h3>
+                
+                <div className="space-y-3 mb-6">
+                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <Shield className="w-4 h-4 text-green-600" />
+                    <span>Paiement 100% sécurisé</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <CreditCard className="w-4 h-4 text-blue-600" />
+                    <span>Carte bancaire, PayPal...</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <Truck className="w-4 h-4 text-purple-600" />
+                    <span>Livraison en France métropolitaine</span>
+                  </div>
+                </div>
+
+                <button
+                  onClick={handleCheckout}
+                  disabled={isProcessing}
+                  className="w-full bg-rose text-white py-3 rounded-lg font-semibold hover:bg-rose/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                >
+                  {isProcessing ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                      Paiement en cours...
+                    </>
+                  ) : (
+                    <>
+                      <CreditCard className="w-4 h-4" />
+                      Payer
+                    </>
+                  )}
+                </button>
+                
+                <p className="text-xs text-gray-500 text-center mt-3">
+                  Vous serez redirigé vers Stripe Checkout pour finaliser le paiement
+                </p>
+              </div>
+
+              <button
+                onClick={() => setShowSummary(false)}
+                className="w-full text-center text-rose hover:underline text-sm font-medium"
+              >
+                Modifier mes informations
+              </button>
+            </div>
+          </motion.div>
+        )}
       </div>
+
+      {/* Modal aperçu rapide du produit */}
+      {showProductModal && selectedProduct && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+          onClick={closeProductModal}
+        >
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
+            className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="p-6">
+              <div className="flex justify-between items-start mb-4">
+                <h2 className="text-2xl font-bold text-textDark">{selectedProduct.name}</h2>
+                <button
+                  onClick={closeProductModal}
+                  className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+              
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
+                  {selectedProduct.image ? (
+                    <img 
+                      src={selectedProduct.image} 
+                      alt={selectedProduct.name}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        // Si l'image ne se charge pas, la cacher et montrer le fallback
+                        const target = e.currentTarget;
+                        target.style.display = 'none';
+                        const parent = target.parentElement;
+                        if (parent) {
+                          parent.innerHTML = '<div class="w-full h-full bg-gray-200 rounded-lg flex items-center justify-center"><span class="text-gray-500">Image non disponible</span></div>';
+                        }
+                      }}
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gray-200 rounded-lg flex items-center justify-center">
+                      <span className="text-gray-500">Image non disponible</span>
+                    </div>
+                  )}
+                </div>
+                
+                <div className="space-y-4">
+                  <div>
+                    <p className="text-3xl font-bold text-rose">{selectedProduct.price.toFixed(2)} €</p>
+                    <p className="text-sm text-gray-600">Prix unitaire</p>
+                  </div>
+                  
+                  <div>
+                    <h3 className="font-semibold text-textDark mb-2">Description</h3>
+                    <p className="text-gray-600">
+                      {selectedProduct.description || 'Produit de qualité supérieure, parfait pour vos besoins. Fabriqué avec des matériaux premium pour une durabilité exceptionnelle.'}
+                    </p>
+                  </div>
+                  
+                  <div>
+                    <h3 className="font-semibold text-textDark mb-2">Dans votre panier</h3>
+                    <div className="bg-gray-50 rounded-lg p-3">
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-600">Quantité:</span>
+                        <span className="font-semibold">{selectedProduct.quantity}</span>
+                      </div>
+                      <div className="flex justify-between items-center mt-2">
+                        <span className="text-gray-600">Total:</span>
+                        <span className="font-bold text-lg text-rose">
+                          {(selectedProduct.price * selectedProduct.quantity).toFixed(2)} €
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="flex gap-3">
+                    <button
+                      onClick={closeProductModal}
+                      className="flex-1 bg-gray-100 text-gray-700 py-2 rounded-lg font-medium hover:bg-gray-200 transition-colors"
+                    >
+                      Fermer
+                    </button>
+                    <Link
+                      href={`/boutique`}
+                      onClick={closeProductModal}
+                      className="flex-1 bg-rose text-white py-2 rounded-lg font-medium hover:bg-rose/90 transition-colors text-center"
+                    >
+                      Voir la boutique
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
     </div>
   );
 }

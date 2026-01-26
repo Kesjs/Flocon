@@ -13,12 +13,13 @@ export default function Register() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [loading, setLoading] = useState(false);
+  const [checkingEmail, setCheckingEmail] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const router = useRouter();
-  const { signUp } = useAuth();
+  const { signUp, checkEmailExists } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,17 +27,35 @@ export default function Register() {
     setError("");
 
     if (password !== confirmPassword) {
-      setError("Les mots de passe ne correspondent pas");
+      setError("Le password non corrispondono");
       setLoading(false);
       return;
     }
 
     if (password.length < 6) {
-      setError("Le mot de passe doit contenir au moins 6 caractères");
+      setError("La password deve contenere almeno 6 caratteri");
       setLoading(false);
       return;
     }
 
+    // Vérifier si l'email existe déjà
+    setCheckingEmail(true);
+    const { exists, error: checkError } = await checkEmailExists(email);
+    setCheckingEmail(false);
+
+    if (checkError) {
+      setError("Erreur lors de la vérification de l'email. Veuillez réessayer.");
+      setLoading(false);
+      return;
+    }
+
+    if (exists) {
+      setError("Cet email est déjà utilisé. Veuillez vous connecter ou utiliser un autre email.");
+      setLoading(false);
+      return;
+    }
+
+    // Si l'email n'existe pas, procéder à l'inscription
     const { error } = await signUp(email, password, {
       full_name: fullName,
     });
@@ -59,9 +78,9 @@ export default function Register() {
       >
         <div className="text-center mb-8">
           <h1 className="text-4xl font-display font-bold text-textDark mb-2">
-            Inscription
+            Registrazione
           </h1>
-          <p className="text-gray-600">Créez votre espace personnel</p>
+          <p className="text-gray-600">Crea il tuo spazio personale</p>
         </div>
 
         {error && (
@@ -78,7 +97,7 @@ export default function Register() {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label htmlFor="fullName" className="block text-sm font-medium text-textDark mb-2">
-              Nom complet
+              Nome completo
             </label>
             <div className="relative">
               <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -107,14 +126,14 @@ export default function Register() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-rose focus:border-transparent outline-none transition-all"
-                placeholder="votre@email.com"
+                placeholder="tua@email.com"
               />
             </div>
           </div>
 
           <div>
             <label htmlFor="password" className="block text-sm font-medium text-textDark mb-2">
-              Mot de passe
+              Password
             </label>
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -139,7 +158,7 @@ export default function Register() {
 
           <div>
             <label htmlFor="confirmPassword" className="block text-sm font-medium text-textDark mb-2">
-              Confirmer le mot de passe
+              Conferma password
             </label>
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -170,30 +189,35 @@ export default function Register() {
               className="rounded border-gray-300 text-rose focus:ring-rose"
             />
             <label htmlFor="terms" className="ml-2 text-sm text-gray-600">
-              J'accepte les{" "}
+              Accetto le{" "}
               <Link href="/cgv" className="text-rose hover:underline">
-                conditions générales de vente
+                condizioni generali di vendita
               </Link>{" "}
-              et la{" "}
+              e la{" "}
               <Link href="/politique-confidentialite" className="text-rose hover:underline">
-                politique de confidentialité
+                politica sulla privacy
               </Link>
             </label>
           </div>
 
           <button
             type="submit"
-            disabled={loading}
+            disabled={loading || checkingEmail}
             className="w-full bg-rose text-white py-3 rounded-lg font-semibold hover:bg-rose/90 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? (
+            {checkingEmail ? (
               <>
                 <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                Inscription...
+                Vérification de l'email...
+              </>
+            ) : loading ? (
+              <>
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                Registrazione...
               </>
             ) : (
               <>
-                S'inscrire
+                Registrati
                 <ArrowRight className="w-5 h-5" />
               </>
             )}
@@ -202,12 +226,23 @@ export default function Register() {
 
         <div className="mt-6 text-center">
           <p className="text-gray-600">
-            Déjà un compte ?{" "}
+            Hai già un account? {" "}
             <Link href="/login" className="text-rose hover:underline font-medium">
-              Se connecter
+              Accedi
             </Link>
           </p>
         </div>
+
+        {checkingEmail && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg flex items-center gap-3"
+          >
+            <div className="w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+            <p className="text-blue-700 text-sm">Vérification de la disponibilité de l'email...</p>
+          </motion.div>
+        )}
 
       </motion.div>
     </div>

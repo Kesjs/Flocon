@@ -93,13 +93,13 @@ export default function Filters({ onFiltersChange, className = "" }: FiltersProp
     <div className={`bg-white rounded-xl shadow-sm p-6 ${className}`}>
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-lg font-semibold text-textDark">Filtres</h3>
+        <h3 className="text-lg font-semibold text-textDark">Filtri</h3>
         {hasActiveFilters && (
           <button
             onClick={clearAllFilters}
             className="text-sm text-rose hover:text-rose-600 transition-colors"
           >
-            Tout effacer
+            Cancella tutto
           </button>
         )}
       </div>
@@ -111,7 +111,7 @@ export default function Filters({ onFiltersChange, className = "" }: FiltersProp
           className="flex items-center justify-between w-full text-left mb-3 group"
         >
           <h4 className="font-medium text-textDark group-hover:text-rose transition-colors">
-            Catégorie
+            Categoria
           </h4>
           {expandedSections.category ? (
             <ChevronUp className="w-4 h-4 text-gray-500" />
@@ -146,7 +146,7 @@ export default function Filters({ onFiltersChange, className = "" }: FiltersProp
           className="flex items-center justify-between w-full text-left mb-3 group"
         >
           <h4 className="font-medium text-textDark group-hover:text-rose transition-colors">
-            Prix
+            Prezzo
           </h4>
           {expandedSections.price ? (
             <ChevronUp className="w-4 h-4 text-gray-500" />
@@ -189,7 +189,7 @@ export default function Filters({ onFiltersChange, className = "" }: FiltersProp
           className="flex items-center justify-between w-full text-left mb-3 group"
         >
           <h4 className="font-medium text-textDark group-hover:text-rose transition-colors">
-            Ambiance
+            Ambienza
           </h4>
           {expandedSections.ambiance ? (
             <ChevronUp className="w-4 h-4 text-gray-500" />
@@ -220,7 +220,7 @@ export default function Filters({ onFiltersChange, className = "" }: FiltersProp
       {/* Active Filters Summary */}
       {hasActiveFilters && (
         <div className="pt-4 border-t border-gray-200">
-          <div className="text-sm text-gray-600 mb-2">Filtres actifs:</div>
+          <div className="text-sm text-gray-600 mb-2">Filtri attivi:</div>
           <div className="flex flex-wrap gap-2">
             {selectedCategories.map((cat) => (
               <span

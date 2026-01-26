@@ -100,7 +100,7 @@ export default function ProductCard({ product, className = "" }: ProductCardProp
             className="bg-white text-gray-900 px-4 py-2 rounded-lg font-medium hover:bg-gray-100 transition-colors flex items-center space-x-2"
           >
             <ShoppingCart className="w-4 h-4" />
-            <span>Ajouter au panier</span>
+            <span>Aggiungi al carrello</span>
           </button>
         </div>
       </div>
@@ -122,7 +122,7 @@ export default function ProductCard({ product, className = "" }: ProductCardProp
             {product.description}
           </p>
           <Link href={`/boutique/${product.slug}`} className="text-xs text-rose hover:text-rose/80 font-medium mt-1 transition-colors inline-block">
-            Voir plus →
+            Vedi di più →
           </Link>
         </div>
 

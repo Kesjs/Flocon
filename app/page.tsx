@@ -44,7 +44,7 @@ export default function HomePage() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-xl md:text-2xl mb-8 max-w-2xl mx-auto"
           >
-            L'élégance rencontre la douceur pour créer des moments inoubliables
+            L'eleganza incontra la dolcezza per creare momenti indimenticabili
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -56,13 +56,13 @@ export default function HomePage() {
               href="#collection-hiver"
               className="bg-textDark text-white px-8 py-3 rounded-lg font-semibold hover:bg-opacity-90 transition-colors uppercase tracking-wide"
             >
-              Explorer l'hiver
+              Esplora l'inverno
             </a>
             <a
               href="#collection-valentin"
               className="bg-rose text-white px-8 py-3 rounded-lg font-semibold hover:bg-opacity-90 transition-colors uppercase tracking-wide"
             >
-              Saint-Valentin
+              San Valentino
             </a>
           </motion.div>
         </div>
@@ -80,7 +80,7 @@ export default function HomePage() {
               className="text-center mb-12"
             >
               <h2 className="text-4xl font-display font-bold text-textDark mb-4 relative pb-3 inline-block">
-                L'Art du Cocooning
+                L'Arte del Cocooning
                 <motion.div 
                   className="absolute bottom-0 left-20 w-1/2 h-1 bg-rose"
                   initial={{ width: 0 }}
@@ -90,7 +90,7 @@ export default function HomePage() {
                 />
               </h2>
               <p className="text-gray-600 max-w-2xl mx-auto">
-                Des textures qui vous enlacent quand le froid s'installe. Découvrez notre sélection de plaids et bougies pour un hiver douillet.
+                Texture che ti avvolgono quando arriva il freddo. Scopri la nostra selezione di plaid e candele per un inverno accogliente.
               </p>
             </motion.div>
 
@@ -110,7 +110,7 @@ export default function HomePage() {
               className="text-center mb-12"
             >
               <h2 className="text-4xl font-display font-bold text-textDark mb-4 relative pb-3 inline-block">
-                Flocons de Tendresse
+                Fiocchi di Tenerezza
                 <motion.div 
                   className="absolute bottom-0 left-20 w-1/2 h-1 bg-rose"
                   initial={{ width: 0 }}
@@ -120,7 +120,7 @@ export default function HomePage() {
                 />
               </h2>
               <p className="text-gray-600 max-w-2xl mx-auto">
-                Déclarez votre flamme avec nos pépites de Saint-Valentin. Bijoux d'exception et expériences romantiques pour célébrer votre amour.
+                Dichiara la tua fiamma con i nostri tesori di San Valentino. Gioielli eccezionali ed esperienze romantiche per celebrare il tuo amore.
               </p>
             </motion.div>
 
@@ -143,10 +143,10 @@ export default function HomePage() {
             className="text-center mb-12"
           >
             <h2 className="text-4xl font-display font-bold text-textDark mt-2 mb-4">
-              Ce que disent nos clients
+              Cosa dicono i nostri clienti
             </h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Découvrez les avis de nos clients satisfaits
+              Scopri le recensioni dei nostri clienti soddisfatti
             </p>
           </motion.div>
 
@@ -156,21 +156,21 @@ export default function HomePage() {
                 name: "Sophie Martin",
                 location: "Paris",
                 rating: 5,
-                text: "Le plaid 'Nuage' est incroyablement doux ! Je m'enveloppe dedans chaque soir. La qualité est exceptionnelle et le design est magnifique. Un vrai cocon de douceur !",
+                text: "Il plaid 'Nuage' è incredibilmente morbido! Mi avvolgo dentro ogni sera. La qualità è eccezionale e il design è magnifico. Un vero nido di dolcezza!",
                 image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop",
               },
               {
                 name: "Thomas Dubois",
                 location: "Lyon",
                 rating: 5,
-                text: "J'ai offert le bijou 'Flocon' à ma compagne pour la Saint-Valentin. Elle a adoré ! L'emballage était magnifique et le bijou est d'une beauté rare. Service impeccable !",
+                text: "Ho regalato il gioiello 'Fiocco' alla mia compagna per San Valentino. Le è piaciuto moltissimo! L'imballaggio era magnifico e il gioiello è di una bellezza rara. Servizio impeccabile!",
                 image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop",
               },
               {
                 name: "Marie Leclerc",
                 location: "Marseille",
                 rating: 5,
-                text: "La bougie 'Crépitement' crée une ambiance magique ! Le parfum bois de cèdre est subtil et apaisant. Parfait pour nos soirées cocooning. Je recommande vivement !",
+                text: "La candela 'Crepitio' crea un'atmosfera magica! Il profumo di legno di cedro è sottile e rilassante. Perfetto per le nostre serate cocooning. Consiglio vivamente!",
                 image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop",
               },
             ].map((testimonial, index) => (

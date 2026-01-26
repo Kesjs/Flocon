@@ -25,11 +25,11 @@ class ErrorBoundary extends Component<Props, State> {
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     console.error("ErrorBoundary caught an error:", error, errorInfo);
-    // Ici vous pourriez envoyer l'erreur à un service de logging (Sentry, etc.)
   }
 
   handleReset = () => {
-    this.setState({ hasError: false, error: null });
+    // Forcer un rechargement complet pour nettoyer l'état
+    window.location.reload();
   };
 
   render() {

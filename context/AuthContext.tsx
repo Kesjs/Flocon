@@ -13,6 +13,7 @@ interface AuthContextType {
   signIn: (email: string, password: string) => Promise<{ error: AuthError | null }>;
   signOut: () => Promise<void>;
   resetPassword: (email: string) => Promise<{ error: AuthError | null }>;
+  checkEmailExists: (email: string) => Promise<{ exists: boolean; error: AuthError | null }>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -83,6 +84,34 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return { error };
   };
 
+  const checkEmailExists = async (email: string) => {
+    const supabase = createClient();
+    try {
+      // Utiliser signIn pour vérifier si l'email existe
+      // Si l'email existe, on obtiendra une erreur de mot de passe incorrect
+      // Si l'email n'existe pas, on obtiendra une erreur "Invalid login credentials"
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password: 'dummy-password-for-check-only',
+      });
+      
+      // Si l'erreur contient "Invalid login credentials", l'email n'existe pas
+      if (error?.message?.includes('Invalid login credentials')) {
+        return { exists: false, error: null };
+      }
+      
+      // Si l'erreur contient "Invalid password", l'email existe mais le mot de passe est faux
+      if (error?.message?.includes('Invalid password')) {
+        return { exists: true, error: null };
+      }
+      
+      // Autre cas, on retourne l'erreur
+      return { exists: false, error };
+    } catch (err) {
+      return { exists: false, error: err as AuthError };
+    }
+  };
+
   const value = {
     user,
     session,
@@ -91,6 +120,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     signIn,
     signOut,
     resetPassword,
+    checkEmailExists,
   };
 
   return (

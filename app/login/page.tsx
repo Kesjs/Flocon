@@ -21,7 +21,7 @@ export default function Login() {
   useEffect(() => {
     const status = searchParams.get('status');
     if (status === 'signup_success') {
-      setSuccessMessage("Inscription réussie ! Un email de confirmation vous a été envoyé. Veuillez vérifier votre boîte de réception.");
+      setSuccessMessage("Registrazione completata! Un'email di conferma ti è stata inviata. Per favore controlla la tua casella di posta.");
       // Nettoyer l'URL pour ne pas afficher le message à nouveau en cas de rafraîchissement
       router.replace('/login', { scroll: false });
     }
@@ -36,7 +36,7 @@ export default function Login() {
 
     if (error) {
       if (error.message === "Invalid login credentials") {
-        setError("L'email ou le mot de passe est incorrect. Veuillez vérifier vos informations ou confirmer votre inscription.");
+        setError("L'email o la password sono errati. Per favore verifica le tue informazioni o conferma la tua registrazione.");
       } else {
         setError(error.message);
       }
@@ -57,9 +57,9 @@ export default function Login() {
       >
         <div className="text-center mb-8">
           <h1 className="text-4xl font-display font-bold text-textDark mb-2">
-            Connexion
+            Accedi
           </h1>
-          <p className="text-gray-600">Accédez à votre espace personnel</p>
+          <p className="text-gray-600">Accedi al tuo spazio personale</p>
         </div>
 
         {successMessage && (
@@ -98,14 +98,14 @@ export default function Login() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-rose focus:border-transparent outline-none transition-all"
-                placeholder="votre@email.com"
+                placeholder="tua@email.com"
               />
             </div>
           </div>
 
           <div>
             <label htmlFor="password" className="block text-sm font-medium text-textDark mb-2">
-              Mot de passe
+              Password
             </label>
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -131,10 +131,10 @@ export default function Login() {
           <div className="flex items-center justify-between">
             <label className="flex items-center">
               <input type="checkbox" className="rounded border-gray-300 text-rose focus:ring-rose" />
-              <span className="ml-2 text-sm text-gray-600">Se souvenir de moi</span>
+              <span className="ml-2 text-sm text-gray-600">Ricordami</span>
             </label>
             <Link href="/forgot-password" className="text-sm text-rose hover:underline">
-              Mot de passe oublié ?
+              Password dimenticata?
             </Link>
           </div>
 
@@ -146,11 +146,11 @@ export default function Login() {
             {loading ? (
               <>
                 <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                Connexion...
+                Login...
               </>
             ) : (
               <>
-                Se connecter
+                Accedi
                 <ArrowRight className="w-5 h-5" />
               </>
             )}
@@ -159,9 +159,9 @@ export default function Login() {
 
         <div className="mt-6 text-center">
           <p className="text-gray-600">
-            Pas encore de compte ?{" "}
+            Non hai ancora un account? {" "}
             <Link href="/register" className="text-rose hover:underline font-medium">
-              S'inscrire
+              Registrati
             </Link>
           </p>
         </div>
