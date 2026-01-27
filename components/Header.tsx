@@ -39,7 +39,7 @@ export default function Header() {
             ? "bg-white shadow-lg" 
             : "bg-white/80 backdrop-blur-md"
         }`}
-        animate={{ top: isScrolled ? 0 : 48 }}
+        animate={{ top: isScrolled ? 0 : 32 }}
         transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
