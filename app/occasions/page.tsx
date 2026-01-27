@@ -160,45 +160,17 @@ export default function OccasionsPage() {
               <div className="relative rounded-3xl shadow-2xl overflow-hidden transform rotate-2 hover:rotate-0 transition-transform duration-500">
                 <div className="aspect-square relative">
                   <Image
-                    src="https://img.freepik.com/photos-gratuite/heureuse-femme-tenant-cadeaux-coup-moyen_23-2149386902.jpg"
-                    alt="Cadeau parfait pour chaque occasion"
+                    src="https://img.freepik.com/photos-premium/heureuse-jeune-femme-noire-afro-tient-cadeau-vacances-dans-ses-mains-sourit-cadeaux-concept-magasinage-noel-vendredi-noir_121946-3747.jpg"
+                    alt="Jeune femme heureuse tenant un cadeau pour les occasions spéciales"
                     fill
                     className="object-cover"
                     sizes="(max-width: 768px) 100vw, 50vw"
+                    quality={95}
+                    priority
                   />
-                  {/* Overlay léger */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/35 to-transparent"></div>
-                  
-                  {/* Icônes d'occasions par-dessus l'image */}
-                  <div className="absolute top-6 left-6 right-6">
-                    <div className="flex justify-center gap-4">
-                      <div className="bg-white/20 backdrop-blur-sm rounded-full p-3">
-                        <Heart className="w-6 h-6 text-white" />
-                      </div>
-                      <div className="bg-white/20 backdrop-blur-sm rounded-full p-3">
-                        <Gift className="w-6 h-6 text-white" />
-                      </div>
-                      <div className="bg-white/20 backdrop-blur-sm rounded-full p-3">
-                        <Package className="w-6 h-6 text-white" />
-                      </div>
-                    </div>
-                  </div>
-                  
-                  {/* Texte par-dessus l'image */}
-                  <div className="absolute bottom-6 left-6 right-6 text-white">
-                    <div className="bg-black/20 backdrop-blur-sm rounded-lg p-4">
-                      <h3 className="text-xl font-bold mb-2">Le Cadeau Parfait</h3>
-                      <p className="text-sm opacity-90">Pour chaque moment spécial</p>
-                    </div>
-                  </div>
+                  {/* Overlay très léger */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent"></div>
                 </div>
-              </div>
-              {/* Éléments décoratifs */}
-              <div className="absolute -top-4 -right-4 w-20 h-20 bg-yellow-400 rounded-full flex items-center justify-center shadow-lg animate-pulse">
-                <Sparkles className="w-10 h-10 text-white" />
-              </div>
-              <div className="absolute -bottom-4 -left-4 w-16 h-16 bg-purple-400 rounded-full flex items-center justify-center shadow-lg">
-                <Gift className="w-8 h-8 text-white" />
               </div>
             </motion.div>
           </div>

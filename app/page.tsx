@@ -23,7 +23,7 @@ export default function HomePage() {
           {/* Desktop Image */}
           <div className="hidden md:block absolute inset-0">
             <Image
-              src="/Podarok-na-8-marta.webp"
+              src="/My-project-1-57.jpg"
               alt="Hero background desktop - Cadeau Saint-Valentin pour Flocon"
               fill
               className="object-cover"
@@ -37,7 +37,7 @@ export default function HomePage() {
           {/* Mobile Image */}
           <div className="md:hidden absolute inset-0">
             <Image
-              src="/Podarok-na-8-marta.webp"
+              src="/My-project-1-57.jpg"
               alt="Hero background mobile - Cadeau Saint-Valentin pour Flocon"
               fill
               className="object-cover"
@@ -49,7 +49,7 @@ export default function HomePage() {
           </div>
           
           {/* Overlay */}
-          <div className="absolute inset-0 z-10 bg-black/40"></div>
+          <div className="absolute inset-0 z-10 bg-black/20"></div>
         </div>
         
         {/* Grille de contenu Hero */}
@@ -329,13 +329,14 @@ export default function HomePage() {
     >
       <div className="grid lg:grid-cols-2 gap-8 items-center rounded-lg overflow-hidden">
         {/* Gauche - Image Lifestyle */}
-        <div className="relative h-96 lg:h-auto">
+        <div className="relative h-96 lg:h-[500px]">
           <Image
-            src="https://img.freepik.com/photos-gratuite/femme-tenant-cadeau-emballage-rose_23-2149396999.jpg"
-            alt="Deux personnes partageant un moment de joie"
+            src="https://img.freepik.com/photos-gratuite/femme-heureuse-souriante-tenant-boite-cadeau-roses-rouges-son-petit-ami-celebrant-saint-valentin_1258-64411.jpg"
+            alt="Femme tenant un cadeau emballage rose"
             fill
             className="object-cover"
             priority
+            unoptimized
           />
         </div>
         

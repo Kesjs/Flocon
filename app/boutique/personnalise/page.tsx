@@ -4,7 +4,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { Search, Camera, PenTool, Scissors, Heart, Gift, Star, Sparkles, Palette, Brush } from "lucide-react";
+import { Search, Camera, PenTool, Scissors, Heart, Gift, Star, Sparkles, Palette, Brush, Type, Filter } from "lucide-react";
 import ChatbotModal from "@/components/ChatbotModal";
 import { products } from "@/data/products";
 import ProductCard from "@/components/ProductCard";
@@ -97,24 +97,9 @@ export default function PersonnalisePage() {
                     className="object-cover"
                     sizes="(max-width: 768px) 100vw, 50vw"
                   />
-                  {/* Overlay léger */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
-                  
-                  {/* Texte par-dessus l'image */}
-                  <div className="absolute bottom-6 left-6 right-6 text-white">
-                    <div className="bg-black/20 backdrop-blur-sm rounded-lg p-4">
-                      <h3 className="text-xl font-bold mb-2">L'Art de la Personnalisation</h3>
-                      <p className="text-sm opacity-90">Créez des cadeaux qui touchent le cœur</p>
-                    </div>
-                  </div>
+                  {/* Overlay très léger */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent"></div>
                 </div>
-              </div>
-              {/* Éléments décoratifs */}
-              <div className="absolute -top-4 -right-4 w-20 h-20 bg-yellow-400 rounded-full flex items-center justify-center shadow-lg">
-                <Gift className="w-10 h-10 text-white" />
-              </div>
-              <div className="absolute -bottom-4 -left-4 w-16 h-16 bg-purple-400 rounded-full flex items-center justify-center shadow-lg">
-                <Heart className="w-8 h-8 text-white" />
               </div>
             </motion.div>
           </div>

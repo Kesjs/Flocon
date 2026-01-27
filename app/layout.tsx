@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import CartProviderWrapper from "@/components/CartProviderWrapper";
 import { AuthProvider } from "@/context/AuthContext";
 import AnnounceBar from "@/components/AnnounceBar";
+import ClientLayoutWrapper from "@/components/ClientLayoutWrapper";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfair" });
@@ -37,7 +38,9 @@ export default function RootLayout({
           <CartProviderWrapper>
             <AnnounceBar />
             <Header />
-            <main className="min-h-screen">{children}</main>
+            <ClientLayoutWrapper>
+              <main className="min-h-screen">{children}</main>
+            </ClientLayoutWrapper>
             <Footer />
           </CartProviderWrapper>
         </AuthProvider>

@@ -42,9 +42,9 @@ export default function PromotionsPage() {
       <section className="relative bg-gradient-to-r from-amber-50 via-orange-50 to-yellow-50 py-20 lg:py-32 overflow-hidden">
         {/* Éléments décoratifs d'arrière-plan */}
         <div className="absolute inset-0">
-          <div className="absolute top-10 left-10 w-32 h-32 bg-yellow-300 rounded-full opacity-20 animate-pulse"></div>
-          <div className="absolute bottom-10 right-10 w-40 h-40 bg-white rounded-full opacity-10 animate-pulse delay-1000"></div>
-          <div className="absolute top-1/2 left-1/4 w-24 h-24 bg-green-300 rounded-full opacity-15 animate-pulse delay-500"></div>
+          <div className="absolute top-10 left-10 w-32 h-32 bg-amber-200 rounded-full opacity-20 animate-pulse"></div>
+          <div className="absolute bottom-10 right-10 w-40 h-40 bg-orange-200 rounded-full opacity-10 animate-pulse delay-1000"></div>
+          <div className="absolute top-1/2 left-1/4 w-24 h-24 bg-yellow-200 rounded-full opacity-15 animate-pulse delay-500"></div>
         </div>
 
         <div className="max-w-7xl mx-auto px-4 relative z-10">
@@ -62,7 +62,7 @@ export default function PromotionsPage() {
               </div>
               <h1 className="text-4xl lg:text-6xl font-display font-black text-textDark mb-6 leading-tight">
                 Des
-                <span className="text-orange-600"> Incroyables</span>
+                <span className="text-rose-custom"> Incroyables</span>
                 <br />
                 Promotions
               </h1>
@@ -74,15 +74,15 @@ export default function PromotionsPage() {
               {/* Compteurs animés */}
               <div className="grid grid-cols-3 gap-4 mb-8">
                 <div className="bg-white rounded-lg p-4 text-center shadow-md">
-                  <div className="text-3xl font-black text-orange-600">{promoProducts.length}</div>
+                  <div className="text-3xl font-black text-rose-custom">{promoProducts.length}</div>
                   <div className="text-sm text-gray-600">Produits en promo</div>
                 </div>
                 <div className="bg-white rounded-lg p-4 text-center shadow-md">
-                  <div className="text-3xl font-black text-orange-600">{averageDiscount}%</div>
+                  <div className="text-3xl font-black text-rose-custom">{averageDiscount}%</div>
                   <div className="text-sm text-gray-600">Réduction moyenne</div>
                 </div>
                 <div className="bg-white rounded-lg p-4 text-center shadow-md">
-                  <div className="text-3xl font-black text-orange-600">{totalSavings.toFixed(0)}€</div>
+                  <div className="text-3xl font-black text-rose-custom">{totalSavings.toFixed(0)}€</div>
                   <div className="text-sm text-gray-600">Économies totales</div>
                 </div>
               </div>
@@ -90,11 +90,11 @@ export default function PromotionsPage() {
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link 
                   href="#produits-promo"
-                  className="bg-orange-500 text-white px-8 py-4 rounded-lg font-black hover:bg-orange-600 transition-all duration-300 hover:scale-105 shadow-lg"
+                  className="bg-rose-custom text-white px-8 py-4 rounded-lg font-black hover:bg-opacity-90 transition-all duration-300 hover:scale-105 shadow-lg"
                 >
                   Voir les Promos
                 </Link>
-                <button className="bg-white text-orange-500 border-2 border-orange-500 px-8 py-4 rounded-lg font-semibold hover:bg-orange-50 transition-all duration-300">
+                <button className="bg-white text-rose-custom border-2 border-rose-custom px-8 py-4 rounded-lg font-semibold hover:bg-rose-50 transition-all duration-300">
                   Compte à Rebours
                 </button>
               </div>
@@ -110,37 +110,19 @@ export default function PromotionsPage() {
               <div className="relative rounded-3xl shadow-2xl overflow-hidden transform -rotate-2 hover:rotate-0 transition-transform duration-500">
                 <div className="aspect-square relative">
                   <Image
-                    src="https://img.freepik.com/photos-gratuite/femme-insouciante-indifferente-hausse-epaules-se-sent-hesitante-ennuye-expression-indifferente-utilise-telephone-portable-pour-discuter-ligne-vetue-t-shirt-base-decontracte-isole-fond-rose_273609-62605.jpg?semt=ais_hybrid&w=740&q=80"
-                    alt="Femme surprise par une promotion incroyable"
+                    src="/man-holding-shopping-bag-medium-shot.jpg"
+                    alt="Homme tenant un sac de shopping pour les promotions"
                     fill
                     className="object-cover"
                     sizes="(max-width: 768px) 100vw, 50vw"
                   />
-                  {/* Overlay léger */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
-                  
                   {/* Badge promo par-dessus l'image */}
                   <div className="absolute top-6 right-6">
                     <div className="bg-red-500 text-white px-4 py-2 rounded-full font-bold shadow-lg animate-pulse">
                       -70% OFFRE FLASH
                     </div>
                   </div>
-                  
-                  {/* Texte par-dessus l'image */}
-                  <div className="absolute bottom-6 left-6 right-6 text-white">
-                    <div className="bg-black/20 backdrop-blur-sm rounded-lg p-4">
-                      <h3 className="text-xl font-bold mb-2">Surprises Incroyables</h3>
-                      <p className="text-sm opacity-90">Des promotions qui vous laisseront sans voix</p>
-                    </div>
-                  </div>
                 </div>
-              </div>
-              {/* Éléments décoratifs */}
-              <div className="absolute -top-4 -right-4 w-20 h-20 bg-yellow-400 rounded-full flex items-center justify-center shadow-lg animate-pulse">
-                <Clock className="w-10 h-10 text-white" />
-              </div>
-              <div className="absolute -bottom-4 -left-4 w-16 h-16 bg-green-400 rounded-full flex items-center justify-center shadow-lg">
-                <TrendingUp className="w-8 h-8 text-white" />
               </div>
             </motion.div>
           </div>
@@ -269,7 +251,7 @@ export default function PromotionsPage() {
         >
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-3xl font-bold text-textDark">
-              {filteredProducts.length} promotions explosives 🔥
+              {filteredProducts.length} promotions explosives 
             </h2>
             <div className="flex items-center gap-2 text-sm text-gray-600">
               <TrendingUp className="w-4 h-4" />
