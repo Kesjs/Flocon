@@ -127,15 +127,15 @@ export default function HomePage() {
               style={{ width: '388px', height: '505px' }}
             >
               <Image
-                src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=600&h=400&fit=crop"
+                src="/afro-man-holding-big-heart.jpg"
                 alt="Personne offrant un cadeau"
                 fill
                 className="object-cover transition-transform duration-500 group-hover:scale-110"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
               <div className="absolute bottom-6 left-6 right-6 text-white">
                 <h4 className="text-xl font-semibold mb-2">La joie de donner</h4>
-                <p className="text-white/80 text-sm">Rendre quelqu'un heureux est le plus beau des cadeaux</p>
+                {/* <p className="text-white/80 text-sm">Rendre quelqu'un heureux est le plus beau des cadeaux</p> */}
               </div>
             </motion.div>
 
@@ -149,15 +149,15 @@ export default function HomePage() {
               style={{ width: '388px', height: '505px' }}
             >
               <Image
-                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&h=400&fit=crop"
+                src="/ludique-femme-noire-souriante-tenant-rose-blanche-boite-cadeau-forme-coeur-isole-rouge_97712-3167.jpg"
                 alt="Personne recevant un cadeau"
                 fill
                 className="object-cover transition-transform duration-500 group-hover:scale-110"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
               <div className="absolute bottom-6 left-6 right-6 text-white">
                 <h4 className="text-xl font-semibold mb-2">Le bonheur de recevoir</h4>
-                <p className="text-white/80 text-sm">Chaque cadeau raconte une histoire unique</p>
+                {/* <p className="text-white/80 text-sm">Chaque cadeau raconte une histoire unique</p> */}
               </div>
             </motion.div>
           </div>
