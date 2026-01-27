@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -8,8 +7,20 @@ import { AuthProvider } from "@/context/AuthContext";
 import AnnounceBar from "@/components/AnnounceBar";
 import ClientLayoutWrapper from "@/components/ClientLayoutWrapper";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfair" });
+// Try to load Inter font with fallback
+let inter: { className: string };
+try {
+  const { Inter } = require('next/font/google');
+  inter = Inter({ 
+    subsets: ['latin'],
+    display: 'swap',
+    fallback: ['system-ui', 'arial', 'sans-serif']
+  });
+} catch (error) {
+  // Fallback if Google Fonts fails
+  inter = { className: '' };
+}
+
 
 export const metadata: Metadata = {
   title: "Flocon - E-commerce de qualité",
@@ -33,7 +44,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr" suppressHydrationWarning>
-      <body className={`${inter.variable} ${playfair.variable} antialiased`} suppressHydrationWarning>
+      <body className={`${inter.className} antialiased`} suppressHydrationWarning>
         <AuthProvider>
           <CartProviderWrapper>
             <AnnounceBar />

@@ -95,7 +95,13 @@ const nextConfig = {
         hostname: 'lemondedescadeaux.fr',
       },
     ],
+    formats: ['image/webp', 'image/avif'],
+    qualities: [75, 90, 95],
+    minimumCacheTTL: 60,
   },
+   compiler: {
+    removeConsole: process.env.NODE_ENV === 'production'
+  }
 }
 
 module.exports = nextConfig

@@ -2,12 +2,12 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import Image from "next/image";
 import Link from "next/link";
 import { Star, Heart, Cake, TreePine, Flower2, ChevronRight, ChevronLeft, ChevronRight as ArrowRight, Gift } from "lucide-react";
 import { products, getProductsByCategory } from "../data/products";
 import ProductCard from "@/components/ProductCard";
 import ChatbotModal from "@/components/ChatbotModal";
+import OptimizedImage from "@/components/OptimizedImage";
 
 export default function HomePage() {
   const hiverProducts = getProductsByCategory('Hiver');
@@ -18,12 +18,35 @@ export default function HomePage() {
 
   // Détecter si on est sur mobile
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    // Vérifier si on est côté client
+    if (typeof window !== 'undefined') {
+      const checkMobile = () => {
+        setIsMobile(window.innerWidth < 768);
+      };
+      checkMobile();
+      window.addEventListener('resize', checkMobile);
+      return () => window.removeEventListener('resize', checkMobile);
+    }
+  }, []);
+
+  // Gérer le scroll vers les ancres au chargement de la page
+  useEffect(() => {
+    // Vérifier si on est côté client
+    if (typeof window !== 'undefined') {
+      const hash = window.location.hash;
+      if (hash) {
+        // Attendre un peu que la page soit chargée
+        setTimeout(() => {
+          const element = document.querySelector(hash);
+          if (element) {
+            element.scrollIntoView({ 
+              behavior: 'smooth',
+              block: 'start'
+            });
+          }
+        }, 100);
+      }
+    }
   }, []);
 
   return (
@@ -33,7 +56,7 @@ export default function HomePage() {
         <div className="absolute inset-0">
           {/* Desktop Image */}
           <div className="hidden md:block absolute inset-0">
-            <Image
+            <OptimizedImage
               src="/My-project-1-57.jpg"
               alt="Hero background desktop - Cadeau Saint-Valentin pour Flocon"
               fill
@@ -47,7 +70,7 @@ export default function HomePage() {
           
           {/* Mobile Image */}
           <div className="md:hidden absolute inset-0">
-            <Image
+            <OptimizedImage
               src="/My-project-1-57.jpg"
               alt="Hero background mobile - Cadeau Saint-Valentin pour Flocon"
               fill
@@ -211,7 +234,7 @@ export default function HomePage() {
         className="relative rounded-2xl overflow-hidden group cursor-pointer w-full"
         style={{ height: 'auto', minHeight: '400px' }}
       >
-        <Image
+        <OptimizedImage
           src="/afro-man-holding-big-heart.jpg"
           alt="Personne offrant un cadeau"
           fill
@@ -230,7 +253,7 @@ export default function HomePage() {
         className="relative rounded-2xl overflow-hidden group cursor-pointer w-full"
         style={{ height: 'auto', minHeight: '400px' }}
       >
-        <Image
+        <OptimizedImage
           src="/ludique-femme-noire-souriante-tenant-rose-blanche-boite-cadeau-forme-coeur-isole-rouge_97712-3167.jpg"
           alt="Personne recevant un cadeau"
           fill
@@ -346,13 +369,12 @@ export default function HomePage() {
       <div className="grid lg:grid-cols-2 gap-8 items-center rounded-lg overflow-hidden">
         {/* Gauche - Image Lifestyle */}
         <div className="relative h-96 lg:h-[500px]">
-          <Image
+          <OptimizedImage
             src="https://img.freepik.com/photos-gratuite/femme-heureuse-souriante-tenant-boite-cadeau-roses-rouges-son-petit-ami-celebrant-saint-valentin_1258-64411.jpg"
             alt="Femme tenant un cadeau emballage rose"
             fill
             className="object-cover"
             priority
-            unoptimized
           />
         </div>
         

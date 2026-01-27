@@ -58,7 +58,7 @@ export default function Header() {
                 whileTap={{ scale: 0.95 }}
                 transition={{ duration: 0.2 }}
               >
-                <Link href="#collection-hiver" className="text-textDark hover:text-rose-custom-custom transition-all duration-300 font-medium relative group">
+                <Link href="/#collection-hiver" className="text-textDark hover:text-rose-custom-custom transition-all duration-300 font-medium relative group">
                   <span className="relative">
                     L'Art du Cocooning
                     <motion.div 
@@ -76,7 +76,7 @@ export default function Header() {
                 whileTap={{ scale: 0.95 }}
                 transition={{ duration: 0.2 }}
               >
-                <Link href="#collection-valentin" className="text-textDark hover:text-rose-custom-custom transition-all duration-300 font-medium relative group">
+                <Link href="/#collection-valentin" className="text-textDark hover:text-rose-custom-custom transition-all duration-300 font-medium relative group">
                   <span className="relative">
                     Flocons de Tendresse
                     <motion.div 
@@ -330,7 +330,7 @@ export default function Header() {
                       transition={{ duration: 0.2, delay: index * 0.1 }}
                     >
                       <Link
-                        href={item === "L'Art du Cocooning" ? "#collection-hiver" : item === "Flocons de Tendresse" ? "#collection-valentin" : "/boutique"}
+                        href={item === "L'Art du Cocooning" ? "/#collection-hiver" : item === "Flocons de Tendresse" ? "/#collection-valentin" : "/boutique"}
                         onClick={() => setIsMenuOpen(false)}
                         className="text-textDark hover:text-rose-custom-custom transition-all duration-300 font-medium relative group block py-2"
                       >

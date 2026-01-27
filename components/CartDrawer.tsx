@@ -3,8 +3,8 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "@/context/CartContext";
 import { X, Minus, Plus, Trash2 } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
+import OptimizedImage from "@/components/OptimizedImage";
 
 interface CartDrawerProps {
   isOpen: boolean;
@@ -76,12 +76,12 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                       >
                         <div className="relative w-20 h-20 flex-shrink-0 bg-gray-100 rounded overflow-hidden">
                           {item.image ? (
-                            <Image
+                            <OptimizedImage
                               src={item.image}
                               alt={item.name}
                               fill
                               className="object-cover"
-                              onError={(e) => {
+                              onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
                                 // Si l'image ne se charge pas, la cacher et montrer le fallback
                                 const target = e.currentTarget;
                                 target.style.display = 'none';

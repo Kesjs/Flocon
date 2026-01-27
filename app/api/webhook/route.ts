@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { createClient } from '@supabase/supabase-js';
+import { corsMiddleware, handleOptions } from '@/lib/cors';
+import { webhookRateLimit } from '@/lib/rate-limit';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2025-12-15.clover',
@@ -11,12 +13,32 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
+export async function OPTIONS(request: NextRequest) {
+  return handleOptions(request) || new NextResponse(null, { status: 405 });
+}
+
 export async function POST(request: NextRequest) {
+  // Rate limiting basé sur l'IP
+  const ip = request.headers.get('x-forwarded-for') || 
+             request.headers.get('x-real-ip') || 
+             'unknown';
+  
+  const rateLimitResult = webhookRateLimit(ip);
+  if (!rateLimitResult.allowed) {
+    const response = NextResponse.json(
+      { error: 'Too many requests' },
+      { status: 429 }
+    );
+    response.headers.set('Retry-After', Math.ceil((rateLimitResult.resetTime! - Date.now()) / 1000).toString());
+    return corsMiddleware(request, response);
+  }
+
   const body = await request.text();
   const signature = request.headers.get('stripe-signature');
 
   if (!signature) {
-    return NextResponse.json({ error: 'Missing stripe signature' }, { status: 400 });
+    const response = NextResponse.json({ error: 'Missing stripe signature' }, { status: 400 });
+    return corsMiddleware(request, response);
   }
 
   try {
@@ -49,7 +71,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ received: true });
   } catch (error) {
     console.error('Webhook error:', error);
-    return NextResponse.json({ error: 'Webhook handler failed' }, { status: 500 });
+    const response = NextResponse.json({ error: 'Webhook handler failed' }, { status: 500 });
+    return corsMiddleware(request, response);
   }
 }
 

@@ -3,12 +3,12 @@
 import { useState } from "react";
 import { useParams } from "next/navigation";
 import { notFound } from "next/navigation";
-import Image from "next/image";
 import Link from "next/link";
 import { getProductBySlug, getProductsByCategory, Product } from "../../../data/products";
 import { useCart } from "@/context/CartContext";
 import { Star, ShoppingCart, Heart, Truck, Shield, RefreshCw, ChevronLeft, ChevronRight, Minus, Plus } from "lucide-react";
 import ProductCard from "@/components/ProductCard";
+import OptimizedImage from "@/components/OptimizedImage";
 
 export default function ProductPage() {
   const params = useParams();
@@ -86,13 +86,13 @@ export default function ProductPage() {
           <div className="space-y-4">
             {/* Main Image */}
             <div className="relative aspect-square bg-white rounded-xl overflow-hidden">
-              <Image
+              <OptimizedImage
                 src={product.images[selectedImageIndex]}
                 alt={product.name}
                 fill
                 className="object-cover"
+                priority
               />
-              
               {/* Image Navigation */}
               {product.images.length > 1 && (
                 <>
@@ -142,7 +142,7 @@ export default function ProductPage() {
                       selectedImageIndex === index ? 'border-rose-custom' : 'border-gray-200'
                     }`}
                   >
-                    <Image
+                    <OptimizedImage
                       src={image}
                       alt={`${product.name} - Image ${index + 1}`}
                       fill

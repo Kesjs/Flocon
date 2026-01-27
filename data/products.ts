@@ -15,6 +15,27 @@ export interface Product {
   ambiance: 'Cocooning' | 'Romantique';
 }
 
+// Images locales disponibles
+const localImages = [
+  '/My-project-1-57.jpg',
+  '/Podarok-na-8-marta.webp',
+  '/cadeau-saint-valentin-couple.webp',
+  '/idees_cadeaux_saint_valentin_couverture.jpg',
+  '/lud.jpg',
+  '/white-rose-flower-red-tablecloth-blue.jpg',
+  '/afro-man-holding-big-heart.jpg',
+  '/cadeau-ouverture-femme-coup-moyen_23-2149212140.jpg',
+  '/curious-couple-looking-box.jpg',
+  '/handmade-heart-heap-presents.jpg',
+  '/hands-with-painted-nails-holding-gift.jpg',
+  '/ludique-femme-noire-souriante-tenant-rose-blanche-boite-cadeau-forme-coeur-isole-rouge_97712-3167.jpg'
+];
+
+// Fonction pour obtenir une image locale aléatoire
+const getRandomLocalImage = (index: number): string => {
+  return localImages[index % localImages.length];
+};
+
 export const products: Product[] = [
   // Produits Hiver (12 produits)
   {
@@ -28,10 +49,7 @@ export const products: Product[] = [
     subCategory: 'Coperte & Texture',
     rating: 4.8,
     reviewsCount: 234,
-    images: [
-      'https://www.leclapstore.com/wp-content/uploads/2020/06/0-b08eb4.jpeg',
-
-    ],
+    images: [getRandomLocalImage(0)],
     stock: 15,
     badge: 'Bestseller',
     ambiance: 'Cocooning'
@@ -47,418 +65,362 @@ export const products: Product[] = [
     subCategory: 'Atmosfera & Candele',
     rating: 4.6,
     reviewsCount: 189,
-    images: [
-      'https://m.media-amazon.com/images/I/81WCvlPi2TL.jpg'
-    ],
+    images: [getRandomLocalImage(1)],
     stock: 28,
     badge: 'Nouveauté',
     ambiance: 'Cocooning'
   },
   {
-    id: '6',
-    slug: 'chaussons-laine',
-    name: 'Chaussons Laine Merinos',
-    price: 39.99,
-    description: 'Chaussons doublés en laine merinos ultra-douce. Semelle antidérapante et design élégant pour un confort maximum.',
+    id: '3',
+    slug: 'tasse-thermo',
+    name: 'Tasse Thermo',
+    price: 22.99,
+    description: 'Tasse isotherme élégante qui garde votre boisson chaude pendant des heures. Design minimaliste avec finition mate.',
     category: 'Hiver',
-    subCategory: 'Comfort & Calore',
+    subCategory: 'Tazze & Accessori',
     rating: 4.7,
     reviewsCount: 145,
-    images: [
-      'https://alpesdusud.ch/wp-content/uploads/2021/10/4-9.webp',
-      'https://alpesdusud.ch/wp-content/uploads/2021/10/2-11.webp'
-    ],
+    images: [getRandomLocalImage(2)],
     stock: 35,
     badge: 'Confort garanti',
     ambiance: 'Cocooning'
   },
   {
-    id: '7',
-    slug: 'thermos-luxe',
-    name: 'Thermos Luxe',
-    price: 21.99,
-    description: 'Le thermos deluxe rose maintient la température des liquides, froids ou chauds, jusqu\'à 12 heures.',
+    id: '4',
+    slug: 'bouteille-thermos',
+    name: 'Bouteille Thermos Deluxe',
+    price: 45.99,
+    oldPrice: 59.99,
+    description: 'Thermos premium en acier inoxydable avec double paroi. Garde la température pendant 24 heures.',
     category: 'Hiver',
-    subCategory: 'Accessoires',
+    subCategory: 'Tazze & Accessori',
     rating: 4.5,
     reviewsCount: 98,
-    images: [
-      'https://babyfive.ma/wp-content/uploads/2023/10/Bouteille-thermos-deluxe-rose-avec-effet-chrome-500ml-Miniland-1.jpg',
-      'https://www.goldengames.ma/wp-content/uploads/2023/05/5005089260_1_4-800x800.webp'
-    ],
+    images: [getRandomLocalImage(3)],
     stock: 22,
     badge: 'Qualité premium',
     ambiance: 'Cocooning'
   },
   {
-    id: '8',
-    slug: 'couverture-électrique',
-    name: 'Couverture Électrique Intelligente',
-    price: 89,
-    oldPrice: 109.99,
-    description: 'Couverture chauffante avec 9 niveaux de température. Minuterie automatique et tissu hypoallergénique.',
+    id: '5',
+    slug: 'bonnet-laine',
+    name: 'Bonnet Laine Merinos',
+    price: 38.99,
+    description: 'Bonnet en laine mérinos ultra-douce et chaude. Design nordique avec pompon.',
     category: 'Hiver',
-    subCategory: 'Tecnologia & Comfort',
+    subCategory: 'Coperte & Texture',
     rating: 4.9,
     reviewsCount: 267,
-    images: [
-      'https://m.media-amazon.com/images/I/71f7uHAiL+L._AC_UF1000,1000_QL80_.jpg',
-      'https://m.media-amazon.com/images/I/71zb9kVJUOL._AC_SL1500_.jpg'
-    ],
+    images: [getRandomLocalImage(4)],
     stock: 18,
     badge: 'Innovation',
     ambiance: 'Cocooning'
   },
   {
-    id: '9',
-    slug: 'tasse-ceramique',
-    name: 'Tasse Céramique Artisanale',
-    price: 24.99,
-    description: 'Tasse unique modelée à la main. Céramique de haute qualité avec émail mat. Parfaite pour vos boissons chaudes.',
+    id: '6',
+    slug: 'couverture-électrique',
+    name: 'Couverture Électrique',
+    price: 89.99,
+    oldPrice: 119.99,
+    description: 'Couverture chauffante avec 6 niveaux de température. Sécurité garantie avec arrêt automatique.',
     category: 'Hiver',
-    subCategory: 'Accessoires',
+    subCategory: 'Coperte & Texture',
     rating: 4.4,
     reviewsCount: 89,
-    images: [
-      'https://cdn.shopify.com/s/files/1/0516/3171/8560/products/tassestricoloresn_b_4.jpg?v=1659114955'
-    ],
-    stock: 45,
-    badge: 'Artisanal',
-    ambiance: 'Cocooning'
-  },
-  {
-    id: '10',
-    slug: 'lampe-cheminee',
-    name: 'Lampe Cheminée LED',
-    price: 89,
-    description: 'Lampe qui reproduit l\'effet visuel d\'une cheminée. LED basse consommation et télécommande incluse. Atmosphère chaude garantie.',
-    category: 'Hiver',
-    subCategory: 'Atmosphère & Lumière',
-    rating: 4.6,
-    reviewsCount: 156,
-    images: [
-      'https://m.media-amazon.com/images/I/717qElrKoeL._AC_UF1000,1000_QL80_.jpg'
-    ],
+    images: [getRandomLocalImage(5)],
     stock: 12,
     badge: 'Atmosphère magique',
     ambiance: 'Cocooning'
   },
   {
-    id: '11',
-    slug: 'bonnet-cachemire',
-    name: 'Bonnet Aspen Homme-Cachemire',
-    price: 102.99,
-    oldPrice: 130,
-    description: 'Bonnet en cachemire 100% de Mongolie. Douceur inégalée et thermorégulation naturelle. Élégance intemporelle.',
-    category: 'Hiver',
-    subCategory: 'Mode & Accessoires',
-    rating: 4.8,
-    reviewsCount: 78,
-    images: [
-      'https://media.maisoncashmere.com/a48304ef-7d4e-4a4c-9823-719ec3f82e09/maisoncashmere.com/cdn/shop/files/mens-aspen-cashmere-hat-U463-20-0008-U.webp?v=1754401839&width=1024',
-      'https://media.maisoncashmere.com/a48304ef-7d4e-4a4c-9823-719ec3f82e09/maisoncashmere.com/cdn/shop/files/mens-aspen-cashmere-hat-U463-20-0008-5823.webp?v=1754401840&width=1024',
-      '/images/products/bonnet-cachemire-3.jpg'
-    ],
-    stock: 8,
-    badge: 'Luxe',
-    ambiance: 'Cocooning'
-  },
-  {
-    id: '12',
-    slug: 'infusion-hivernale',
-    name: 'Boîte Infusions Hivernales',
-    price: 39.99,
-    description: '30 sachets de thés et infusions réconfortants. Mélanges exclusifs : cannelle-orange, gingembre-citron, camomille-miel.',
-    category: 'Hiver',
-    subCategory: 'Gourmandises',
-    rating: 4.7,
-    reviewsCount: 234,
-    images: [
-      'https://cdn.shopify.com/s/files/1/0830/2346/2742/files/kit-the-arrange-549166.jpg?v=1728050535'
-    ],
-    stock: 55,
-    badge: 'Bio',
-    ambiance: 'Cocooning'
-  },
-  {
-    id: '13',
-    slug: 'coussin-chaleur',
-    name: 'Coussin Chaleur Coco',
-    price: 45.99,
-    description: 'Coussin chauffant avec noix de coco bio. Soulage les tensions et procure une chaleur diffuse et durable. Lavable.',
-    category: 'Hiver',
-    subCategory: 'Bien-être',
-    rating: 4.5,
-    reviewsCount: 167,
-    images: [
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqaEsJW4WOnRp3HBHkh5EjkfBJtGENySgzbA&s'
-    ],
-    stock: 30,
-    badge: 'Thérapie',
-    ambiance: 'Cocooning'
-  },
-  {
-    id: '14',
+    id: '7',
     slug: 'gants-tactiles',
-    name: 'Gants Laine Tactiles',
-    price: 34.99,
-    description: 'Gants en laine merinos avec bouts des doigts tactiles. Chaleur extrême et compatibilité smartphone. Unisexe.',
+    name: 'Gants Tactiles',
+    price: 24.99,
+    description: 'Gants chauffants avec compatibilité tactile. Idéaux pour utiliser votre smartphone dehors.',
     category: 'Hiver',
-    subCategory: 'Mode & Accessoires',
-    rating: 4.3,
-    reviewsCount: 123,
-    images: [
-      'https://lespetitsimprimes.com/cdn/shop/products/gant-tactile-femme-gant-tactile-homme-gants-femme-tactile-4.jpg?v=1672427974'
-    ],
+    subCategory: 'Coperte & Texture',
+    rating: 4.6,
+    reviewsCount: 156,
+    images: [getRandomLocalImage(6)],
     stock: 40,
     badge: 'Pratique',
     ambiance: 'Cocooning'
   },
   {
-    id: '15',
-    slug: 'diffuseur-humidite',
-    name: 'Diffuseur Humidité Bois',
-    price: 69.99,
-    description: 'Diffuseur d\'huiles essentielles avec humidificateur. Design en bois naturel. LED colorées et programmation horaire.',
+    id: '8',
+    slug: 'diffuseur-arome',
+    name: 'Diffuseur d\'Arômes',
+    price: 32.99,
+    description: 'Diffuseur ultrasonique avec lumière LED. Crée une ambiance relaxante avec vos huiles essentielles préférées.',
     category: 'Hiver',
-    subCategory: 'Atmosphère & Bien-être',
+    subCategory: 'Atmosfera & Candele',
     rating: 4.6,
     reviewsCount: 198,
-    images: [
-      'https://www.cdiscount.com/pdt2/6/4/1/1/700x700/aaarc22641/rw/diffuseur-darmes-.jpg'
-    ],
+    images: [getRandomLocalImage(7)],
     stock: 25,
     badge: 'Aromathérapie',
+    ambiance: 'Cocooning'
+  },
+  {
+    id: '9',
+    slug: 'kit-spa',
+    name: 'Kit Spa Maison',
+    price: 67.99,
+    oldPrice: 89.99,
+    description: 'Kit complet pour créer votre spa à la maison. Sels de bain, huiles et masques inclus.',
+    category: 'Hiver',
+    subCategory: 'Atmosfera & Candele',
+    rating: 4.9,
+    reviewsCount: 156,
+    images: [getRandomLocalImage(8)],
+    stock: 22,
+    badge: 'Cadeau parfait',
+    ambiance: 'Cocooning'
+  },
+  {
+    id: '10',
+    slug: 'lampe-sel',
+    name: 'Lampe en Sel de l\'Himalaya',
+    price: 42.99,
+    description: 'Lampe naturelle en sel rose de l\'Himalaya. Propriétés détoxifiantes et purifiantes.',
+    category: 'Hiver',
+    subCategory: 'Atmosfera & Candele',
+    rating: 4.7,
+    reviewsCount: 98,
+    images: [getRandomLocalImage(9)],
+    stock: 8,
+    badge: 'Naturel',
+    ambiance: 'Cocooning'
+  },
+  {
+    id: '11',
+    slug: 'coussin-chauffant',
+    name: 'Coussin Chauffant',
+    price: 28.99,
+    description: 'Coussin chauffant micro-ondable avec graines de lavande. Soulage les douleurs musculaires.',
+    category: 'Hiver',
+    subCategory: 'Coperte & Texture',
+    rating: 4.8,
+    reviewsCount: 267,
+    images: [getRandomLocalImage(10)],
+    stock: 12,
+    badge: 'Coup de cœur',
+    ambiance: 'Cocooning'
+  },
+  {
+    id: '12',
+    slug: 'chaussettes-laine',
+    name: 'Chaussettes Laine Cachemire',
+    price: 19.99,
+    description: 'Chaussettes en laine cachemire extrêmement douces. Semelle antidérapante.',
+    category: 'Hiver',
+    subCategory: 'Coperte & Texture',
+    rating: 4.6,
+    reviewsCount: 189,
+    images: [getRandomLocalImage(11)],
+    stock: 15,
+    badge: 'Confort absolu',
     ambiance: 'Cocooning'
   },
   
   // Produits Saint-Valentin (12 produits)
   {
-    id: '3',
-    slug: 'duo-de-tasses',
-    name: 'Duo de Tasses Cœur',
-    price: 49.99,
-    description: 'Un set de deux tasses en porcelaine fine avec motif cœur délicat. Parfait pour partager un moment chaud avec votre moitié.',
+    id: '13',
+    slug: 'coffret-bijoux',
+    name: 'Coffret Bijoux Personnalisé',
+    price: 78.99,
+    oldPrice: 99.99,
+    description: 'Coffret en bois avec bijoux gravés personnalisables. Message secret à l\'intérieur.',
     category: 'Saint-Valentin',
-    subCategory: 'Coffrets Duo',
-    rating: 4.9,
-    reviewsCount: 156,
-    images: [
-      'https://mycrazystuff.com/14544-width_1000/coffret-duo-mugs-toi-et-moi.jpg'
-    ],
-    stock: 22,
-    badge: 'Cadeau parfait',
-    ambiance: 'Romantique'
-  },
-  {
-    id: '4',
-    slug: 'bijou-flocon',
-    name: 'Bijou Flocon',
-    price: 149.99,
-    oldPrice: 199.99,
-    description: 'Un pendentif délicat en argent 925 en forme de flocon de neige. Chaque pièce est unique et symbolise pureté et élégance.',
-    category: 'Saint-Valentin',
-    subCategory: 'Bijoux Exceptionnels',
-    rating: 4.7,
-    reviewsCount: 98,
-    images: [
-      'https://www.emmafashionstyle.fr/img_s1/74984/boutique/img_5429.jpg',
-      
-    ],
-    stock: 8,
-    badge: 'Édition limitée',
-    ambiance: 'Romantique'
-  },
-  {
-    id: '5',
-    slug: 'pack-amoureux',
-    name: 'Pack Soirée Amour',
-    price: 129.99,
-    description: 'Le pack complet pour une soirée romantique inoubliable : bougies parfumées, couverture douce, deux flûtes à vin et chocolats.',
-    category: 'Saint-Valentin',
-    subCategory: 'Expériences Romantiques',
-    rating: 4.8,
-    reviewsCount: 267,
-    images: [
-      'https://m.media-amazon.com/images/I/81awtKl6JiL.jpg'
-    ],
-    stock: 12,
-    badge: 'Coup de cœur',
-    ambiance: 'Romantique'
-  },
-  {
-    id: '16',
-    slug: 'bracelet-couple',
-    name: 'Bracciali Coppia Magnetici',
-    price: 79.99,
-    description: 'Coppia di bracciali in acciaio inossidabile con magneti che si attraggono. Incisione personalizzabile inclusa. Simbolo di unione.',
-    category: 'Saint-Valentin',
-    subCategory: 'Gioielli Coppia',
-    rating: 4.6,
-    reviewsCount: 189,
-    images: [
-      'https://img.fruugo.com/product/9/66/451672669_max.jpg'
-    ],
-    stock: 15,
-    badge: 'Personalizzabile',
-    ambiance: 'Romantique'
-  },
-  {
-    id: '17',
-    slug: 'rose-éternelle',
-    name: 'Rosa Eterna Cupola Vetro',
-    price: 80,
-    oldPrice: 109.99,
-    description: 'Rosa naturale stabilizzata in cupola di vetro. Durata 3-5 anni. LED integrato. Messaggio personalizzato possibile.',
-    category: 'Saint-Valentin',
-    subCategory: 'Fiori Simbolici',
+    subCategory: 'Gioielli & Accessori',
     rating: 4.8,
     reviewsCount: 234,
-    images: [
-      'https://m.media-amazon.com/images/I/61vYxTN+w1L.jpg'
-    ],
+    images: [getRandomLocalImage(0)],
     stock: 18,
     badge: 'Amore eterno',
     ambiance: 'Romantique'
   },
   {
-    id: '18',
-    slug: 'parfum-couple',
-    name: 'Cofanetto Profumi Coppia',
-    price: 130,
-    description: 'Due profumi creati per armonizzarsi. Note donna: fiore bianco e vaniglia. Note uomo: legno di cedro e muschio.',
+    id: '14',
+    slug: 'parfum-luxe',
+    name: 'Parfum de Luxe Édition Limitée',
+    price: 125.99,
+    description: 'Parfum exclusif avec notes florales et boisées. Flacon collector gravé.',
     category: 'Saint-Valentin',
-    subCategory: 'Profumi & Fragranze',
+    subCategory: 'Fragranze & Bellezza',
     rating: 4.7,
     reviewsCount: 145,
-    images: [
-      'https://www.yslbeauty.fr/on/demandware.static/-/Sites-ysl-master-catalog/default/dw04909e50/pdp/HOLIDAY-2025/pdpsection-le-parfum-holiday-collector-desk.jpg'
-    ],
+    images: [getRandomLocalImage(1)],
     stock: 10,
     badge: 'Armonia',
     ambiance: 'Romantique'
   },
   {
-    id: '19',
-    slug: 'dîner-lumière',
-    name: 'Kit Cena a Candele',
-    price: 99.99,
-    description: 'Set completo per cena romantica: 2 candele premium, tovaglie in lino, posate design e gioco di domande per coppie.',
+    id: '15',
+    slug: 'diner-candlelight',
+    name: 'Kit Diner Candlelight',
+    price: 95.99,
+    description: 'Kit complet pour un dîner romantique : bougies, vaisselle et décorations.',
     category: 'Saint-Valentin',
-    subCategory: 'Esperienze Romantiche',
+    subCategory: 'Esperienze & Attività',
     rating: 4.9,
     reviewsCount: 312,
-    images: [
-      'https://mongraindesucre.com/wp-content/uploads/2025/02/1738374093-diner-aux-chandelles-top-des-meilleures-recettes-pour-une-soiree-romantique-1024x585.jpg'
-    ],
+    images: [getRandomLocalImage(2)],
     stock: 20,
     badge: 'Momento magico',
     ambiance: 'Romantique'
   },
   {
-    id: '20',
+    id: '16',
     slug: 'collier-message',
-    name: 'Collana Secretum',
-    price: 119.99,
-    description: 'Collana in argento con medaglione apribile contenente un mini messaggio personalizzato. Incisione esterna inclusa.',
+    name: 'Collier avec Message Caché',
+    price: 58.99,
+    description: 'Collier en argent avec médaillon ouvrant contenant un message personnalisé.',
     category: 'Saint-Valentin',
-    subCategory: 'Gioielli Eccezionali',
+    subCategory: 'Gioielli & Accessori',
     rating: 4.8,
     reviewsCount: 167,
-    images: [
-      'https://www.maisondpm.fr/cdn/shop/files/collier-personnalisable-avec-message-cache-Photoroom.jpg?v=1724542295'
-    ],
+    images: [getRandomLocalImage(3)],
     stock: 6,
     badge: 'Segreto d\'amore',
     ambiance: 'Romantique'
   },
   {
-    id: '21',
-    slug: 'massage-couple',
-    name: 'Kit Massaggio Coppia Lusso',
-    price: 49.99,
-    description: 'Set completo con 3 oli massaggio bio, candele profumate e guida delle tecniche. Packaging elegante e riciclabile.',
+    id: '17',
+    slug: 'boite-souvenirs',
+    name: 'Boîte à Souvenirs Couple',
+    price: 45.99,
+    description: 'Boîte en bois personnalisée pour garder vos précieux souvenirs.',
     category: 'Saint-Valentin',
-    subCategory: 'Benessere Coppia',
+    subCategory: 'Esperienze & Attività',
     rating: 4.6,
     reviewsCount: 198,
-    images: [
-      'https://i.etsystatic.com/40337439/r/il/270617/7599337322/il_fullxfull.7599337322_2stz.jpg'
-    ],
+    images: [getRandomLocalImage(4)],
     stock: 25,
     badge: 'Relax',
     ambiance: 'Romantique'
   },
   {
-    id: '22',
-    slug: 'coffre-romantique',
-    name: 'Baule Ricordi Coppia',
-    price: 149.99,
-    description: 'Baule in legno pregiato con scompartimenti segreti. Include penna stilografica e taccuino per scrivere i vostri ricordi.',
+    id: '18',
+    slug: 'champagne-rosé',
+    name: 'Champagne Rosé Millésimé',
+    price: 67.99,
+    description: 'Bouteille de champagne rosé prestige avec flûtes gravées.',
     category: 'Saint-Valentin',
-    subCategory: 'Ricordi & Memorie',
+    subCategory: 'Esperienze & Attività',
     rating: 4.9,
     reviewsCount: 89,
-    images: [
-      'https://cadeau-couple.fr/wp-content/uploads/2024/09/Boitesouvenircouple_2_1.jpg'
-    ],
+    images: [getRandomLocalImage(5)],
     stock: 12,
     badge: 'Eredità',
     ambiance: 'Romantique'
   },
   {
-    id: '23',
-    slug: 'champagne-amour',
-    name: 'Champagne Rosé Amore',
-    price: 89.99,
-    description: 'Champagne rosé prestige con etichetta personalizzata. Accompagnato da due flûte in cristallo incise. Edizione limitata.',
+    id: '19',
+    slug: 'massage-oil',
+    name: 'Huile de Massage Bio',
+    price: 34.99,
+    description: 'Huile de massage bio aux huiles essentielles. Relaxante et aphrodisiaque.',
     category: 'Saint-Valentin',
-    subCategory: 'Gourmandises',
+    subCategory: 'Fragranze & Bellezza',
     rating: 4.7,
     reviewsCount: 234,
-    images: [
-      'https://www.brut-de-champ.com/wp-content/uploads/william_deutz.10.jpg'
-    ],
+    images: [getRandomLocalImage(6)],
     stock: 30,
     badge: 'Celebrazione',
     ambiance: 'Romantique'
   },
   {
-    id: '24',
-    slug: 'puzzle-cœur',
-    name: 'Puzzle Foto Cuore 1000pz',
-    price: 34.99,
-    description: 'Puzzle personalizzato con la tua foto a forma di cuore. 1000 pezzi di qualità premium. Scatola regalo design.',
+    id: '20',
+    slug: 'album-photo',
+    name: 'Album Photo Personnalisé',
+    price: 52.99,
+    description: 'Album photo en cuir avec gravure personnalisée et pages de qualité.',
     category: 'Saint-Valentin',
-    subCategory: 'Giochi & Intrattenimento',
+    subCategory: 'Esperienze & Attività',
     rating: 4.5,
     reviewsCount: 156,
-    images: [
-      'https://m.media-amazon.com/images/I/71ZTg9+7AXL._AC_UF1000,1000_QL80_.jpg'
-    ],
+    images: [getRandomLocalImage(7)],
     stock: 35,
     badge: 'Personalizzato',
+    ambiance: 'Romantique'
+  },
+  {
+    id: '21',
+    slug: 'coeur-en-chocolat',
+    name: 'Cœur en Chocolat Artisanal',
+    price: 28.99,
+    description: 'Cœur en chocolat belge avec garniture surprise. Emballage luxe.',
+    category: 'Saint-Valentin',
+    subCategory: 'Gioielli & Accessori',
+    rating: 4.8,
+    reviewsCount: 267,
+    images: [getRandomLocalImage(8)],
+    stock: 40,
+    badge: 'Dolcezza',
+    ambiance: 'Romantique'
+  },
+  {
+    id: '22',
+    slug: 'rose-eternelle',
+    name: 'Rose Éternelle Stabilisée',
+    price: 89.99,
+    description: 'Rose naturelle stabilisée qui dure des années. En boîte luxe.',
+    category: 'Saint-Valentin',
+    subCategory: 'Fragranze & Bellezza',
+    rating: 4.9,
+    reviewsCount: 312,
+    images: [getRandomLocalImage(9)],
+    stock: 15,
+    badge: 'Eterno',
+    ambiance: 'Romantique'
+  },
+  {
+    id: '23',
+    slug: 'bracelet-couple',
+    name: 'Bracelet Couple Magnétique',
+    price: 42.99,
+    description: 'Paire de bracelets magnétiques qui s\'attirent. En acier inoxydable.',
+    category: 'Saint-Valentin',
+    subCategory: 'Gioielli & Accessori',
+    rating: 4.6,
+    reviewsCount: 189,
+    images: [getRandomLocalImage(10)],
+    stock: 25,
+    badge: 'Connessione',
+    ambiance: 'Romantique'
+  },
+  {
+    id: '24',
+    slug: 'lettre-damour',
+    name: 'Lettre d\'Amor Scentée',
+    price: 18.99,
+    description: 'Lettre parfumée avec encre invisible et message secret. Coffret élégant.',
+    category: 'Saint-Valentin',
+    subCategory: 'Esperienze & Attività',
+    rating: 4.7,
+    reviewsCount: 145,
+    images: [getRandomLocalImage(11)],
+    stock: 50,
+    badge: 'Romantico',
     ambiance: 'Romantique'
   }
 ];
 
-// Helper functions
-export const getProductBySlug = (slug: string): Product | undefined => {
-  return products.find(product => product.slug === slug);
-};
-
-export const getProductsByCategory = (category: 'Hiver' | 'Saint-Valentin'): Product[] => {
+// Fonctions utilitaires
+export const getProductsByCategory = (category: 'Hiver' | 'Saint-Valentin') => {
   return products.filter(product => product.category === category);
 };
 
-export const getProductsBySubCategory = (subCategory: string): Product[] => {
+export const getProductsBySubCategory = (subCategory: string) => {
   return products.filter(product => product.subCategory === subCategory);
 };
 
-export const getSubCategories = (): string[] => {
-  return [...new Set(products.map(product => product.subCategory))];
+export const getProductsByAmbiance = (ambiance: 'Cocooning' | 'Romantique') => {
+  return products.filter(product => product.ambiance === ambiance);
 };
 
-export const getProductsByAmbiance = (ambiance: 'Cocooning' | 'Romantique'): Product[] => {
-  return products.filter(product => product.ambiance === ambiance);
+export const getProductBySlug = (slug: string) => {
+  return products.find(product => product.slug === slug);
 };

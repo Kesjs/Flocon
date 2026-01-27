@@ -1,11 +1,11 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { Star, ShoppingCart, Heart } from "lucide-react";
 import { Product } from "../data/products";
 import { useCart } from "@/context/CartContext";
 import { useState } from "react";
+import OptimizedImage from "@/components/OptimizedImage";
 
 interface ProductCardProps {
   product: Product;
@@ -79,7 +79,7 @@ export default function ProductCard({ product, className = "" }: ProductCardProp
       {/* Product Image */}
       <div className="relative aspect-square overflow-hidden bg-gray-50 pt-8">
         <Link href={`/boutique/${product.slug}`} className="block w-full h-full">
-          <Image
+          <OptimizedImage
             src={product.images[0]}
             alt={product.name}
             fill

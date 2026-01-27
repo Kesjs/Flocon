@@ -1,29 +1,70 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
+import { corsMiddleware, handleOptions } from '@/lib/cors';
+import { validateCheckoutRequest, sanitizeString } from '@/lib/validation';
+import { apiRateLimit } from '@/lib/rate-limit';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2025-12-15.clover',
-});
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+
+export async function OPTIONS(request: NextRequest) {
+  return handleOptions(request) || new NextResponse(null, { status: 405 });
+}
 
 export async function POST(request: NextRequest) {
+  // Rate limiting
+  const ip = request.headers.get('x-forwarded-for') || 
+             request.headers.get('x-real-ip') || 
+             'unknown';
+  
+  const rateLimitResult = apiRateLimit(ip, 'checkout');
+  if (!rateLimitResult.allowed) {
+    const response = NextResponse.json(
+      { error: 'Too many requests' },
+      { status: 429 }
+    );
+    response.headers.set('Retry-After', Math.ceil((rateLimitResult.resetTime! - Date.now()) / 1000).toString());
+    return corsMiddleware(request, response);
+  }
+
   try {
     console.log('Début de la création de session Stripe...');
     
     // Vérifier les variables d'environnement
     if (!process.env.STRIPE_SECRET_KEY) {
       console.error('STRIPE_SECRET_KEY manquant');
-      return NextResponse.json(
+      const response = NextResponse.json(
         { error: 'Configuration Stripe manquante' },
         { status: 500 }
       );
+      return corsMiddleware(request, response);
     }
 
-    const { cartItems, customerEmail } = await request.json();
-    console.log('Données reçues:', { cartItems: cartItems?.length, customerEmail });
-
-    if (!cartItems || cartItems.length === 0) {
-      return NextResponse.json({ error: 'Panier vide' }, { status: 400 });
+    const body = await request.json();
+    
+    // Validation des inputs
+    const validation = validateCheckoutRequest(body);
+    if (!validation.isValid) {
+      const response = NextResponse.json(
+        { 
+          error: 'Données invalides', 
+          details: validation.errors 
+        },
+        { status: 400 }
+      );
+      return corsMiddleware(request, response);
     }
+
+    // Nettoyer les données
+    const { cartItems, customerEmail } = {
+      cartItems: body.cartItems.map((item: any) => ({
+        ...item,
+        name: sanitizeString(item.name),
+        description: item.description ? sanitizeString(item.description) : undefined
+      })),
+      customerEmail: sanitizeString(body.customerEmail)
+    };
+
+    console.log('Données validées:', { cartItems: cartItems.length, customerEmail });
 
     // Créer les line items pour Stripe
     const lineItems = cartItems.map((item: any) => ({
@@ -64,7 +105,8 @@ export async function POST(request: NextRequest) {
 
     console.log('Session Stripe créée:', session.id);
 
-    return NextResponse.json({ sessionId: session.id, url: session.url });
+    const response = NextResponse.json({ sessionId: session.id, url: session.url });
+    return corsMiddleware(request, response);
   } catch (error) {
     console.error('Error creating checkout session:', error);
     
@@ -74,12 +116,14 @@ export async function POST(request: NextRequest) {
       console.error('Error stack:', error.stack);
     }
     
-    return NextResponse.json(
+    const response = NextResponse.json(
       { 
         error: 'Erreur lors de la création de la session de paiement',
         details: error instanceof Error ? error.message : 'Unknown error'
       },
       { status: 500 }
     );
+    
+    return corsMiddleware(request, response);
   }
 }
