@@ -17,18 +17,22 @@ export interface Product {
 
 // Images locales disponibles
 const localImages = [
-  '/My-project-1-57.jpg',
+  '/My-project-1-57.webp',
   '/Podarok-na-8-marta.webp',
   '/cadeau-saint-valentin-couple.webp',
-  '/idees_cadeaux_saint_valentin_couverture.jpg',
-  '/lud.jpg',
-  '/white-rose-flower-red-tablecloth-blue.jpg',
-  '/afro-man-holding-big-heart.jpg',
-  '/cadeau-ouverture-femme-coup-moyen_23-2149212140.jpg',
-  '/curious-couple-looking-box.jpg',
-  '/handmade-heart-heap-presents.jpg',
-  '/hands-with-painted-nails-holding-gift.jpg',
-  '/ludique-femme-noire-souriante-tenant-rose-blanche-boite-cadeau-forme-coeur-isole-rouge_97712-3167.jpg'
+  '/idees_cadeaux_saint_valentin_couverture.webp',
+  '/lud.webp',
+  '/white-rose-flower-red-tablecloth-blue.webp',
+  '/afro-man-holding-big-heart.webp',
+  '/cadeau-ouverture-femme-coup-moyen_23-2149212140.webp',
+  '/curious-couple-looking-box.webp',
+  '/handmade-heart-heap-presents.webp',
+  '/hands-with-painted-nails-holding-gift.webp',
+  '/ludique-femme-noire-souriante-tenant-rose-blanche-boite-cadeau-forme-coeur-isole-rouge_97712-3167.webp',
+  '/handmade-heart-stack-gifts.webp',
+  '/man-holding-shopping-bag-medium-shot.webp',
+  '/portrait-young-man-party-with-balloon.webp',
+  '/Gemini_Generated_Image_dieo9mdieo9mdieo.webp'
 ];
 
 // Fonction pour obtenir une image locale aléatoire

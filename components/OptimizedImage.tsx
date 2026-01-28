@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import { useState } from 'react';
 
 interface OptimizedImageProps {
   src: string;
@@ -12,7 +11,6 @@ interface OptimizedImageProps {
   quality?: number;
   sizes?: string;
   style?: React.CSSProperties;
-  onError?: (e: React.SyntheticEvent<HTMLImageElement>) => void;
 }
 
 export default function OptimizedImage({
@@ -26,58 +24,15 @@ export default function OptimizedImage({
   quality = 75,
   sizes,
   style,
-  onError
 }: OptimizedImageProps) {
-  const [imgSrc, setImgSrc] = useState(src);
-  const [isLoading, setIsLoading] = useState(true);
-
-  // Générer les chemins pour les formats modernes
-  const getModernFormats = (originalSrc: string) => {
-    // Si c'est déjà une URL externe, retourner l'original
-    if (originalSrc.startsWith('http')) {
-      return { webp: originalSrc, avif: originalSrc, fallback: originalSrc };
-    }
-
-    // Pour les images locales, essayer les formats modernes
-    const baseSrc = originalSrc.replace(/\.(jpg|jpeg|png)$/i, '');
-    const webpSrc = `${baseSrc}.webp`;
-    const avifSrc = `${baseSrc}.avif`;
-
-    return {
-      webp: webpSrc,
-      avif: avifSrc,
-      fallback: originalSrc
-    };
-  };
-
-  const formats = getModernFormats(imgSrc);
-
-  const handleError = (e: React.SyntheticEvent<HTMLImageElement>) => {
-    // Si le format moderne échoue, retomber sur l'original
-    if (imgSrc !== formats.fallback) {
-      setImgSrc(formats.fallback);
-    }
-    
-    // Appeler le handler externe si fourni
-    if (onError) {
-      onError(e);
-    }
-  };
-
   const imageProps = {
-    src: imgSrc,
+    src,
     alt,
     className,
     priority,
     quality,
     sizes,
-    style: {
-      ...style,
-      opacity: isLoading ? 0.7 : 1,
-      transition: 'opacity 0.3s ease'
-    },
-    onLoad: () => setIsLoading(false),
-    onError: handleError
+    style,
   };
 
   if (fill) {

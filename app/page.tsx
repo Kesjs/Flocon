@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Star, Heart, Cake, TreePine, Flower2, ChevronRight, ChevronLeft, ChevronRight as ArrowRight, Gift } from "lucide-react";
@@ -56,34 +56,19 @@ export default function HomePage() {
         <div className="absolute inset-0">
           {/* Desktop Image */}
           <div className="hidden md:block absolute inset-0">
-            <OptimizedImage
-              src="/My-project-1-57.jpg"
+            <img
+              src="/My-project-1-57.webp"
               alt="Hero background desktop - Cadeau Saint-Valentin pour Flocon"
-              fill
-              className="object-cover"
-              style={{ objectFit: 'cover', objectPosition: 'center' }}
-              priority={true}
-              quality={90}
-              sizes="100vw"
+              className="w-full h-full object-cover"
             />
           </div>
           
           {/* Mobile Image */}
           <div className="md:hidden absolute inset-0">
-            <OptimizedImage
-              src="/My-project-1-57.jpg"
+            <img
+              src="/My-project-1-57.webp"
               alt="Hero background mobile - Cadeau Saint-Valentin pour Flocon"
-              fill
-              className="object-cover"
-              style={{ 
-                objectFit: 'cover', 
-                objectPosition: 'center top',
-                width: '100%',
-                height: '100%'
-              }}
-              priority={true}
-              quality={95}
-              sizes="100vw"
+              className="w-full h-full object-cover"
             />
           </div>
           
@@ -92,26 +77,26 @@ export default function HomePage() {
         </div>
         
         {/* Grille de contenu Hero */}
-        <div className="relative z-20 w-full max-w-7xl mx-auto px-6 md:px-12 flex flex-col md:flex-row items-center justify-center md:items-end md:justify-between h-full pb-8 md:pb-16 min-h-[500px] md:min-h-full">
+        <div className="relative z-20 w-full max-w-7xl mx-auto px-6 md:px-12 flex flex-col md:flex-row items-center justify-center md:items-end md:justify-between h-full pb-8 md:pb-16 min-h-[500px] md:min-h-full pt-20 md:pt-0">
           
           {/* Texte et Bouton - CENTRE sur mobile, GAUCHE sur desktop */}
-          <div className="text-center text-white max-w-2xl mb-8 md:mb-0 md:text-left md:mt-auto">
+          <div className="text-center text-white max-w-2xl mb-8 md:mb-0 md:text-left md:mt-auto px-4 md:px-0">
             <motion.h1
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
-              className="text-4xl md:text-5xl lg:text-7xl font-display font-bold mb-4 md:mb-6"
+              className="text-3xl md:text-5xl lg:text-7xl font-display font-bold mb-4 md:mb-6 leading-tight"
             >
-              L'Art d'aimer en douceur
+              L'amour mérite<br className="md:hidden" />un écrin à sa mesure.
             </motion.h1>
 
             <motion.p
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-lg md:text-xl lg:text-2xl mb-8 md:mb-16 font-light"
+              className="text-base md:text-xl lg:text-2xl mb-6 md:mb-16 font-light leading-relaxed"
             >
-              Plus qu'un cadeau, une promesse de tendresse pour célébrer vos instants précieux.
+              Ne lui offrez pas juste un objet,<br className="md:hidden" />offrez-lui le souvenir d'une attention inoubliable.
             </motion.p>
 
             {/* Bouton uniquement sur mobile */}
@@ -125,13 +110,13 @@ export default function HomePage() {
                 whileHover={{ scale: 1.05, boxShadow: "0 10px 25px -5px rgba(219, 39, 119, 0.4)" }}
                 whileTap={{ scale: 0.95 }}
                 href="#onboarding-valentin"
-                className="text-white px-8 py-3 rounded-full font-semibold transition-all uppercase tracking-[0.2em] text-sm"
+                className="text-white px-8 py-3 rounded-sm font-semibold transition-all uppercase tracking-[0.2em] text-sm"
                 style={{ 
                   backgroundColor: 'var(--rose)',
                   boxShadow: '0 4px 15px rgba(219, 39, 119, 0.2)' 
                 }}
               >
-                Découvrir l'Exclusivité Valentin
+                Découvrir
               </motion.a>
             </motion.div>
 
@@ -146,13 +131,13 @@ export default function HomePage() {
                 whileHover={{ scale: 1.05, boxShadow: "0 10px 25px -5px rgba(219, 39, 119, 0.4)" }}
                 whileTap={{ scale: 0.95 }}
                 href="#onboarding-valentin"
-                className="text-white px-10 py-4 rounded-full font-semibold transition-all uppercase tracking-[0.2em] text-sm"
+                className="text-white px-10 py-4 rounded-sm font-semibold transition-all uppercase tracking-[0.2em] text-sm"
                 style={{ 
                   backgroundColor: 'var(--rose)',
                   boxShadow: '0 4px 15px rgba(219, 39, 119, 0.2)' 
                 }}
               >
-                Découvrir l'Exclusivité Valentin
+                Découvrir
               </motion.a>
             </motion.div>
           </div>
@@ -234,12 +219,13 @@ export default function HomePage() {
         className="relative rounded-2xl overflow-hidden group cursor-pointer w-full"
         style={{ height: 'auto', minHeight: '400px' }}
       >
-        <OptimizedImage
-          src="/afro-man-holding-big-heart.jpg"
-          alt="Personne offrant un cadeau"
-          fill
-          className="object-cover transition-transform duration-500 group-hover:scale-110"
-        />
+        <div className="relative w-full h-full">
+          <img
+            src="/afro-man-holding-big-heart.webp"
+            alt="Personne offrant un cadeau"
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+          />
+        </div>
         <div className="absolute bottom-6 left-6 right-6 text-white text-center">
           <h4 className="text-lg md:text-xl font-semibold mb-2">La joie de donner</h4>
         </div>
@@ -253,12 +239,13 @@ export default function HomePage() {
         className="relative rounded-2xl overflow-hidden group cursor-pointer w-full"
         style={{ height: 'auto', minHeight: '400px' }}
       >
-        <OptimizedImage
-          src="/ludique-femme-noire-souriante-tenant-rose-blanche-boite-cadeau-forme-coeur-isole-rouge_97712-3167.jpg"
-          alt="Personne recevant un cadeau"
-          fill
-          className="object-cover transition-transform duration-500 group-hover:scale-110"
-        />
+        <div className="relative w-full h-full">
+          <img
+            src="/ludique-femme-noire-souriante-tenant-rose-blanche-boite-cadeau-forme-coeur-isole-rouge_97712-3167.webp"
+            alt="Personne recevant un cadeau"
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+          />
+        </div>
         <div className="absolute bottom-6 left-6 right-6 text-white text-center">
           <h4 className="text-lg md:text-xl font-semibold mb-2">Le bonheur de recevoir</h4>
         </div>
@@ -369,12 +356,11 @@ export default function HomePage() {
       <div className="grid lg:grid-cols-2 gap-8 items-center rounded-lg overflow-hidden">
         {/* Gauche - Image Lifestyle */}
         <div className="relative h-96 lg:h-[500px]">
-          <OptimizedImage
-            src="https://img.freepik.com/photos-gratuite/femme-heureuse-souriante-tenant-boite-cadeau-roses-rouges-son-petit-ami-celebrant-saint-valentin_1258-64411.jpg"
-            alt="Femme tenant un cadeau emballage rose"
-            fill
-            className="object-cover"
-            priority
+          <img
+            src="/modern-young-woman-with-wavy-hair-dark-trendy-outfit-winking-showing-peace-sign-smiling-holding-red-gift-box-pink-wall.jpg"
+            alt="Jeune femme moderne tenant un cadeau rouge - Section témoignages Flocon"
+            className="w-full h-full object-cover"
+            loading="eager"
           />
         </div>
         
@@ -553,6 +539,32 @@ export default function HomePage() {
       {/* Section FAQ */}
       <section className="py-16 bg-[#F5F2ED]">
         <div className="max-w-4xl mx-auto px-4">
+          {/* Image FAQ */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mb-12"
+          >
+            <div className="relative h-64 md:h-80 rounded-2xl overflow-hidden ">
+              <div className="relative h-64 md:h-80 rounded-2xl overflow-hidden ">
+              <img
+                src="/saint_val.jpg"
+                alt="Jeune femme moderne tenant un cadeau rouge - Section FAQ Flocon"
+                className="w-full h-full object-cover"
+                loading="eager"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t "></div>
+            </div><img
+                src="/modern-young-woman-with-wavy-hair-dark-trendy-outfit-winking-showing-peace-sign-smiling-holding-red-gift-box-pink-wall.jpg"
+                alt="Jeune femme moderne tenant un cadeau rouge - Section FAQ Flocon"
+                className="w-full h-full object-cover"
+                loading="eager"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+            </div>
+          </motion.div>
+
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}

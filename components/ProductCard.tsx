@@ -79,14 +79,15 @@ export default function ProductCard({ product, className = "" }: ProductCardProp
       {/* Product Image */}
       <div className="relative aspect-square overflow-hidden bg-gray-50 pt-8">
         <Link href={`/boutique/${product.slug}`} className="block w-full h-full">
-          <OptimizedImage
-            src={product.images[0]}
-            alt={product.name}
-            fill
-            className={`object-cover transition-transform duration-500 ${
-              isHovered ? 'scale-110' : 'scale-100'
-            }`}
-          />
+          <div className="relative w-full h-full">
+            <img
+              src={product.images[0]}
+              alt={product.name}
+              className={`w-full h-full object-cover transition-transform duration-500 ${
+                isHovered ? 'scale-110' : 'scale-100'
+              }`}
+            />
+          </div>
         </Link>
         
         {/* Discount badge */}

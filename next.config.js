@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
+    domains: ['localhost'],
     remotePatterns: [
       {
         protocol: 'https',
@@ -95,7 +96,6 @@ const nextConfig = {
         hostname: 'lemondedescadeaux.fr',
       },
     ],
-    formats: ['image/webp', 'image/avif'],
     qualities: [75, 90, 95],
     minimumCacheTTL: 60,
   },

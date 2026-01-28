@@ -17,14 +17,10 @@ export default function HeroImage() {
   }, []);
 
   return (
-    <Image
-      src={isMobile ? "/white-rose-flower-red-tablecloth-blue-mobile.jpg" : "/white-rose-flower-red-tablecloth-blue.jpg"}
+    <img
+      src="/white-rose-flower-red-tablecloth-blue.webp"
       alt="Hero background - Fleurs élégantes pour Flocon"
-      fill
-      className="object-cover"
-      priority={true}
-      quality={90}
-      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
+      className="w-full h-full object-cover"
     />
   );
 }
