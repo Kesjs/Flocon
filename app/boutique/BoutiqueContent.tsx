@@ -7,7 +7,7 @@ import { Product } from "../../data/products";
 import { products, getProductsByCategory, getProductsBySubCategory, getProductsByAmbiance } from "../../data/products";
 import ProductCard from "@/components/ProductCard";
 import Filters from "@/components/Filters";
-import { Grid, List, SlidersHorizontal, Search, Filter, X } from "lucide-react";
+import { Grid, List, SlidersHorizontal, Search, Filter, X, Heart, Snowflake, Gift, Star } from "lucide-react";
 
 export default function BoutiqueContent() {
   const searchParams = useSearchParams();
@@ -121,46 +121,82 @@ export default function BoutiqueContent() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-r from-textDark to-gray-800 text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Hero Section - Amélioré et Responsive */}
+      <section className="relative h-[50vh] md:h-[70vh] flex items-center overflow-hidden min-h-[400px] will-change-transform" style={{ transform: 'translateZ(0)' }}>
+        <div className="absolute inset-0">
+          <img
+            src="/cadeau-saint-valentin-couple.webp"
+            alt="Boutique Flocon - Cadeaux d'exception pour Saint-Valentin"
+            className="w-full h-full object-cover"
+            loading="eager"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-textDark/90 via-textDark/70 to-transparent"></div>
+        </div>
+        
+        <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 md:px-12">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center"
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="max-w-2xl md:max-w-3xl"
           >
-            <h1 className="text-4xl md:text-5xl font-display font-bold mb-4">
+            <h1 className="text-3xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-4 md:mb-6 leading-tight">
               Boutique Flocon
             </h1>
-            <p className="text-xl md:text-2xl text-gray-200 max-w-3xl mx-auto">
-              Découvrez notre sélection unique de produits pour l'hiver et la Saint-Valentin.
-              Créations artisanales qui réchauffent le cœur et l'âme.
+            <p className="text-base md:text-lg text-white/90 mb-6 md:mb-8 leading-relaxed">
+              Découvrez nos collections uniques pour l'hiver et la Saint-Valentin.
+              Des cadeaux qui marquent les esprits.
             </p>
+            <div className="flex flex-col sm:flex-row gap-3 md:gap-4">
+              <a
+                href="#produits"
+                className="inline-flex items-center px-6 md:px-8 py-3 md:py-4 bg-rose-custom text-white font-semibold rounded-lg hover:bg-opacity-90 transition-all duration-300 shadow-xl text-sm md:text-base"
+              >
+                Explorer la Collection
+                <svg className="w-4 h-4 md:w-5 md:h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                </svg>
+              </a>
+              <a
+                href="#occasions"
+                className="inline-flex items-center px-6 md:px-8 py-3 md:py-4 bg-white/20 backdrop-blur-sm text-white font-semibold rounded-lg hover:bg-white/30 transition-all duration-300 border border-white/30 text-sm md:text-base"
+              >
+                Idées Cadeaux
+              </a>
+            </div>
           </motion.div>
         </div>
       </section>
 
-      {/* Navigation Bar */}
-      <nav className="bg-white border-b border-gray-200 sticky top-0 z-40">
+      {/* Navigation Bar - Améliorée */}
+      <nav id="produits" className="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between py-4">
             <div className="flex items-center space-x-8">
-              <span className="text-sm text-gray-600">
-                {filteredProducts.length} produit{filteredProducts.length > 1 ? 's' : ''} trouvé{filteredProducts.length > 1 ? 's' : ''}
-              </span>
+              <div className="flex items-center space-x-2">
+                <div className="w-2 h-2 bg-rose-custom rounded-full animate-pulse"></div>
+                <span className="text-sm font-medium text-textDark">
+                  {filteredProducts.length} produit{filteredProducts.length > 1 ? 's' : ''} trouvé{filteredProducts.length > 1 ? 's' : ''}
+                </span>
+              </div>
               
               {/* View Mode Toggle */}
               <div className="flex items-center bg-gray-100 rounded-lg p-1">
                 <button
                   onClick={() => setViewMode('grid')}
-                  className={`p-2 rounded ${viewMode === 'grid' ? 'bg-white shadow-sm' : ''}`}
+                  className={`p-2 rounded transition-colors ${
+                    viewMode === 'grid' ? 'bg-white shadow-sm text-rose-custom' : 'text-gray-600 hover:text-textDark'
+                  }`}
+                  title="Vue grille"
                 >
                   <Grid className="w-4 h-4" />
                 </button>
                 <button
                   onClick={() => setViewMode('list')}
-                  className={`p-2 rounded ${viewMode === 'list' ? 'bg-white shadow-sm' : ''}`}
+                  className={`p-2 rounded transition-colors ${
+                    viewMode === 'list' ? 'bg-white shadow-sm text-rose-custom' : 'text-gray-600 hover:text-textDark'
+                  }`}
+                  title="Vue liste"
                 >
                   <List className="w-4 h-4" />
                 </button>
@@ -206,7 +242,7 @@ export default function BoutiqueContent() {
       </nav>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 md:pt-24">
         <div className="flex gap-8">
           {/* Sidebar - Categories */}
           <aside className="hidden lg:block w-64 flex-shrink-0">
@@ -331,6 +367,43 @@ export default function BoutiqueContent() {
           </div>
         </div>
       )}
+      
+      {/* Section Occasions Rapides */}
+      <section id="occasions" className="py-16 bg-gradient-to-br from-rose-custom-50 to-pink-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-display font-bold text-textDark mb-4">
+              Idées Cadeaux par Occasion
+            </h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Trouvez le cadeau parfait pour chaque moment spécial
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+            {[
+              { icon: Heart, title: 'Saint-Valentin', link: '/boutique?category=Saint-Valentin', color: 'from-pink-400 to-rose-500' },
+              { icon: Snowflake, title: 'Hiver', link: '/boutique?category=Hiver', color: 'from-blue-400 to-indigo-500' },
+              { icon: Gift, title: 'Anniversaire', link: '/occasions', color: 'from-purple-400 to-pink-500' },
+              { icon: Star, title: 'Remerciements', link: '/occasions', color: 'from-amber-400 to-orange-500' }
+            ].map((occasion, index) => (
+              <a
+                key={index}
+                href={occasion.link}
+                className={`relative overflow-hidden rounded-xl md:rounded-2xl p-4 md:p-6 text-white bg-gradient-to-br ${occasion.color} hover:shadow-xl transition-all duration-300 hover:scale-105 group`}
+              >
+                <occasion.icon className="w-6 h-6 md:w-8 md:h-8 mb-2 md:mb-3" />
+                <h3 className="font-semibold text-sm md:text-lg mb-2">{occasion.title}</h3>
+                <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

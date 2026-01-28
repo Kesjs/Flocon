@@ -5,7 +5,6 @@ import { Star, ShoppingCart, Heart } from "lucide-react";
 import { Product } from "../data/products";
 import { useCart } from "@/context/CartContext";
 import { useState } from "react";
-import OptimizedImage from "@/components/OptimizedImage";
 
 interface ProductCardProps {
   product: Product;
@@ -16,6 +15,7 @@ export default function ProductCard({ product, className = "" }: ProductCardProp
   const { addToCart } = useCart();
   const [isHovered, setIsHovered] = useState(false);
   const [isWishlisted, setIsWishlisted] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -40,9 +40,10 @@ export default function ProductCard({ product, className = "" }: ProductCardProp
 
   return (
     <div
-      className={`group relative bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden ${className}`}
+      className={`group relative bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden will-change-transform ${className}`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      style={{ transform: 'translateZ(0)' }}
     >
       {/* Badge */}
       <div className="absolute top-3 left-3 z-10">
@@ -76,18 +77,24 @@ export default function ProductCard({ product, className = "" }: ProductCardProp
         />
       </button>
 
-      {/* Product Image */}
-      <div className="relative aspect-square overflow-hidden bg-gray-50 pt-8">
+      {/* Product Image - Version corrigée */}
+      <div className="relative aspect-square overflow-hidden bg-gray-50">
         <Link href={`/boutique/${product.slug}`} className="block w-full h-full">
-          <div className="relative w-full h-full">
+          {imageError ? (
+            <div className="w-full h-full flex items-center justify-center bg-gray-100">
+              <span className="text-gray-500 text-sm">Image non disponible</span>
+            </div>
+          ) : (
             <img
-              src={product.images[0]}
+              src={product.images[0].startsWith('/') ? product.images[0] : `/${product.images[0]}`}
               alt={product.name}
-              className={`w-full h-full object-cover transition-transform duration-500 ${
+              className={`w-full h-full object-cover transition-transform duration-700 ${
                 isHovered ? 'scale-110' : 'scale-100'
               }`}
+              onError={() => setImageError(true)}
+              loading="lazy"
             />
-          </div>
+          )}
         </Link>
         
         {/* Discount badge */}
@@ -122,13 +129,16 @@ export default function ProductCard({ product, className = "" }: ProductCardProp
           <p className="text-sm text-gray-500 mt-1">{product.subCategory}</p>
         </div>
 
-        {/* Description */}
+        {/* Description simplifiée */}
         <div className="mb-3">
-          <p className="text-sm text-gray-600 line-clamp-2 leading-relaxed">
-            {product.description}
+          <p className="text-sm text-gray-600 line-clamp-1">
+            {product.description.length > 80 ? product.description.substring(0, 80) + '...' : product.description}
           </p>
-          <Link href={`/boutique/${product.slug}`} className="text-xs text-rose-custom hover:text-rose-custom/80 font-medium mt-1 transition-colors inline-block">
-            Voir plus →
+          <Link href={`/boutique/${product.slug}`} className="text-xs text-rose-custom hover:text-rose-custom/80 font-medium mt-1 transition-colors flex items-center gap-1">
+            Voir plus 
+            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
           </Link>
         </div>
 

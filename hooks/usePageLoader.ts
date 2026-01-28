@@ -10,8 +10,8 @@ export function usePageLoader() {
   useEffect(() => {
     const handleStart = () => setIsLoading(true);
     const handleComplete = () => {
-      // Délai minimum pour voir l'animation
-      setTimeout(() => setIsLoading(false), 300);
+      // Délai minimum réduit pour voir l'animation mais plus rapide
+      setTimeout(() => setIsLoading(false), 200);
     };
 
     // Écouter les événements de route

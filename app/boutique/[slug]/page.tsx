@@ -8,7 +8,6 @@ import { getProductBySlug, getProductsByCategory, Product } from "../../../data/
 import { useCart } from "@/context/CartContext";
 import { Star, ShoppingCart, Heart, Truck, Shield, RefreshCw, ChevronLeft, ChevronRight, Minus, Plus } from "lucide-react";
 import ProductCard from "@/components/ProductCard";
-import OptimizedImage from "@/components/OptimizedImage";
 
 export default function ProductPage() {
   const params = useParams();
@@ -86,12 +85,11 @@ export default function ProductPage() {
           <div className="space-y-4">
             {/* Main Image */}
             <div className="relative aspect-square bg-white rounded-xl overflow-hidden">
-              <OptimizedImage
-                src={product.images[selectedImageIndex]}
+              <img
+                src={product.images[selectedImageIndex].startsWith('/') ? product.images[selectedImageIndex] : `/${product.images[selectedImageIndex]}`}
                 alt={product.name}
-                fill
-                className="object-cover"
-                priority
+                className="w-full h-full object-cover"
+                loading="eager"
               />
               {/* Image Navigation */}
               {product.images.length > 1 && (
@@ -142,11 +140,11 @@ export default function ProductPage() {
                       selectedImageIndex === index ? 'border-rose-custom' : 'border-gray-200'
                     }`}
                   >
-                    <OptimizedImage
-                      src={image}
+                    <img
+                      src={image.startsWith('/') ? image : `/${image}`}
                       alt={`${product.name} - Image ${index + 1}`}
-                      fill
-                      className="object-cover"
+                      className="w-full h-full object-cover"
+                      loading="lazy"
                     />
                   </button>
                 ))}

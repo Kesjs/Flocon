@@ -1,5 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  transpilePackages: ['framer-motion'],
+  experimental: {
+    optimizePackageImports: ['framer-motion', 'lucide-react']
+  },
   images: {
     domains: ['localhost'],
     remotePatterns: [
@@ -96,6 +100,8 @@ const nextConfig = {
         hostname: 'lemondedescadeaux.fr',
       },
     ],
+    loader: 'custom',
+    loaderFile: './image-loader.js',
     qualities: [75, 90, 95],
     minimumCacheTTL: 60,
   },

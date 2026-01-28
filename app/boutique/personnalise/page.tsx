@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import Image from "next/image";
 import Link from "next/link";
 import { Search, Camera, PenTool, Scissors, Heart, Gift, Star, Sparkles, Palette, Brush, Type, Filter } from "lucide-react";
 import ChatbotModal from "@/components/ChatbotModal";
@@ -90,12 +89,11 @@ export default function PersonnalisePage() {
             >
               <div className="relative rounded-3xl shadow-2xl overflow-hidden transform rotate-3 hover:rotate-0 transition-transform duration-500">
                 <div className="aspect-square relative">
-                  <Image
+                  <img
                     src="https://placeducouple.com/images/Images%20Blog/CHZ_STVAL25_LIFESTYLE_MAINS_vlb-1.jpg?1737469425778"
                     alt="Personnalisation de cadeaux avec les mains"
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="w-full h-full object-cover"
+                    loading="eager"
                   />
                   {/* Overlay très léger */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent"></div>

@@ -3,22 +3,25 @@
 import { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Star, Heart, Cake, TreePine, Flower2, ChevronRight, ChevronLeft, ChevronRight as ArrowRight, Gift } from "lucide-react";
+import { Star, Heart, Cake, TreePine, Flower2, ChevronRight, ChevronLeft, ChevronRight as ArrowRight, Gift, Truck } from "lucide-react";
 import { products, getProductsByCategory } from "../data/products";
 import ProductCard from "@/components/ProductCard";
 import ChatbotModal from "@/components/ChatbotModal";
-import OptimizedImage from "@/components/OptimizedImage";
+import { useScrollOptimization } from "@/hooks/useScrollOptimization";
+import FAQSection from "@/components/FAQSection";
+import PromoSection from "@/components/PromoSection";
 
 export default function HomePage() {
-  const hiverProducts = getProductsByCategory('Hiver');
-  const valentinProducts = getProductsByCategory('Saint-Valentin');
+  const hiverProducts = useMemo(() => getProductsByCategory('Hiver'), []);
+  const valentinProducts = useMemo(() => getProductsByCategory('Saint-Valentin'), []);
   const [isChatbotOpen, setIsChatbotOpen] = useState(false);
   const [currentMomentIndex, setCurrentMomentIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const [shouldReduceMotion] = useState(false); // Simplifié pour éviter les erreurs SSR
+  const { scrollY } = useScrollOptimization();
 
-  // Détecter si on est sur mobile
+  // Détecter si on est côté client et mobile
   useEffect(() => {
-    // Vérifier si on est côté client
     if (typeof window !== 'undefined') {
       const checkMobile = () => {
         setIsMobile(window.innerWidth < 768);
@@ -29,30 +32,25 @@ export default function HomePage() {
     }
   }, []);
 
-  // Gérer le scroll vers les ancres au chargement de la page
+  // Gérer le scroll vers les ancres
   useEffect(() => {
-    // Vérifier si on est côté client
     if (typeof window !== 'undefined') {
       const hash = window.location.hash;
       if (hash) {
-        // Attendre un peu que la page soit chargée
-        setTimeout(() => {
+        requestAnimationFrame(() => {
           const element = document.querySelector(hash);
           if (element) {
-            element.scrollIntoView({ 
-              behavior: 'smooth',
-              block: 'start'
-            });
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
           }
-        }, 100);
+        });
       }
     }
   }, []);
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen scroll-smooth">
       {/* Hero Section */}
-      <section className="relative h-[70vh] md:h-screen flex items-center overflow-hidden min-h-[500px] md:min-h-screen">
+      <section className="relative h-[70vh] md:h-screen flex items-center overflow-hidden min-h-[500px] md:min-h-screen will-change-transform" style={{ transform: 'translateZ(0)' }}>
         <div className="absolute inset-0">
           {/* Desktop Image */}
           <div className="hidden md:block absolute inset-0">
@@ -60,6 +58,7 @@ export default function HomePage() {
               src="/My-project-1-57.webp"
               alt="Hero background desktop - Cadeau Saint-Valentin pour Flocon"
               className="w-full h-full object-cover"
+              loading="eager"
             />
           </div>
           
@@ -69,11 +68,12 @@ export default function HomePage() {
               src="/My-project-1-57.webp"
               alt="Hero background mobile - Cadeau Saint-Valentin pour Flocon"
               className="w-full h-full object-cover"
+              loading="eager"
             />
           </div>
           
           {/* Overlay */}
-          <div className="absolute inset-0 z-10 bg-black/20"></div>
+          <div className="absolute inset-0 z-10 bg-gradient-to-r from-black/40 via-black/50 to-black/30"></div>
         </div>
         
         {/* Grille de contenu Hero */}
@@ -84,17 +84,19 @@ export default function HomePage() {
             <motion.h1
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              className="text-3xl md:text-5xl lg:text-7xl font-display font-bold mb-4 md:mb-6 leading-tight"
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              className="text-3xl md:text-5xl lg:text-7xl font-display font-bold mb-4 md:mb-6 leading-tight will-change-transform"
+              style={{ transform: 'translateZ(0)' }}
             >
-              L'amour mérite<br className="md:hidden" />un écrin à sa mesure.
+              L'amour mérite <br className="md:hidden" />un écrin à sa mesure.
             </motion.h1>
 
             <motion.p
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-base md:text-xl lg:text-2xl mb-6 md:mb-16 font-light leading-relaxed"
+              transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
+              className="text-base md:text-xl lg:text-2xl mb-6 md:mb-16 font-light leading-relaxed will-change-transform"
+              style={{ transform: 'translateZ(0)' }}
             >
               Ne lui offrez pas juste un objet,<br className="md:hidden" />offrez-lui le souvenir d'une attention inoubliable.
             </motion.p>
@@ -217,13 +219,14 @@ export default function HomePage() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         className="relative rounded-2xl overflow-hidden group cursor-pointer w-full"
-        style={{ height: 'auto', minHeight: '400px' }}
+        style={{ height: '400px' }}
       >
         <div className="relative w-full h-full">
           <img
             src="/afro-man-holding-big-heart.webp"
             alt="Personne offrant un cadeau"
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+            loading="lazy"
           />
         </div>
         <div className="absolute bottom-6 left-6 right-6 text-white text-center">
@@ -237,13 +240,14 @@ export default function HomePage() {
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true }}
         className="relative rounded-2xl overflow-hidden group cursor-pointer w-full"
-        style={{ height: 'auto', minHeight: '400px' }}
+        style={{ height: '400px' }}
       >
         <div className="relative w-full h-full">
           <img
             src="/ludique-femme-noire-souriante-tenant-rose-blanche-boite-cadeau-forme-coeur-isole-rouge_97712-3167.webp"
             alt="Personne recevant un cadeau"
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+            loading="lazy"
           />
         </div>
         <div className="absolute bottom-6 left-6 right-6 text-white text-center">
@@ -267,14 +271,14 @@ export default function HomePage() {
           >
             {/* 8 cartes au total dans une seule ligne */}
             {[
-              { icon: Heart, title: "Saint-Valentin pour Lui", description: "L'amour mérite d'être célébré", color: "text-rose-500" },
-              { icon: Heart, title: "Saint-Valentin pour Elle", description: "La romance en délicatesse", color: "text-pink-500" },
-              { icon: Cake, title: "Anniversaire", description: "Une année de plus à fêter", color: "text-purple-500" },
-              { icon: Flower2, title: "Nouveau Né", description: "Bienvenue dans la vie", color: "text-blue-500" },
-              { icon: TreePine, title: "Noël", description: "La magie du partage", color: "text-green-600" },
-              { icon: Flower2, title: "Fête des Mères", description: "Pour elle, avec amour", color: "text-pink-500" },
-              { icon: Heart, title: "Remerciement", description: "Dire merci avec le cœur", color: "text-amber-500" },
-              { icon: Gift, title: "Cadeau Surprise", description: "L'émotion de l'inattendu", color: "text-indigo-500" }
+              { icon: Heart, title: "Saint-Valentin pour Lui", color: "text-rose-500" },
+              { icon: Heart, title: "Saint-Valentin pour Elle", color: "text-pink-500" },
+              { icon: Cake, title: "Anniversaire", color: "text-purple-500" },
+              { icon: Flower2, title: "Nouveau Né", color: "text-blue-500" },
+              { icon: TreePine, title: "Noël", color: "text-green-600" },
+              { icon: Flower2, title: "Fête des Mères", color: "text-pink-500" },
+              { icon: Heart, title: "Remerciement", color: "text-amber-500" },
+              { icon: Gift, title: "Cadeau Surprise", color: "text-indigo-500" }
             ].map((moment, index) => (
               <div key={index} className="w-full md:w-1/4 flex-shrink-0 p-6 rounded-3xl bg-white border border-gray-200 hover:shadow-lg transition-all duration-300 hover:scale-105">
                 <div className="flex flex-col items-center text-center">
@@ -282,32 +286,27 @@ export default function HomePage() {
                     <moment.icon className={`w-8 h-8 ${moment.color}`} />
                   </div>
                   <h3 className="font-semibold text-textDark mb-2 text-lg">{moment.title}</h3>
-                  <p className="text-gray-600 text-sm">{moment.description}</p>
                 </div>
               </div>
             ))}
           </div>
         </div>
         
-        {/* Flèches animées */}
-        <motion.button
+        {/* Flèches simplifiées */}
+        <button
           onClick={() => setCurrentMomentIndex(prev => Math.max(0, prev - 1))}
-          className={`absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 p-3 rounded-full bg-white shadow-lg hover:shadow-xl transition-all duration-300 ${currentMomentIndex === 0 ? 'opacity-50 cursor-not-allowed' : 'hover:scale-110 active:scale-95'}`}
+          className={`absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 p-3 rounded-full bg-white shadow-lg transition-all duration-300 ${currentMomentIndex === 0 ? 'opacity-50 cursor-not-allowed' : 'hover:scale-110'}`}
           disabled={currentMomentIndex === 0}
-          whileHover={{ scale: currentMomentIndex === 0 ? 1 : 1.1 }}
-          whileTap={{ scale: currentMomentIndex === 0 ? 1 : 0.95 }}
         >
           <ChevronLeft className="w-6 h-6 text-gray-800" />
-        </motion.button>
-        <motion.button
+        </button>
+        <button
           onClick={() => setCurrentMomentIndex(prev => Math.min(isMobile ? 7 : 4, prev + 1))}
-          className={`absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 p-3 rounded-full bg-white shadow-lg hover:shadow-xl transition-all duration-300 ${currentMomentIndex === (isMobile ? 7 : 4) ? 'opacity-50 cursor-not-allowed' : 'hover:scale-110 active:scale-95'}`}
+          className={`absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 p-3 rounded-full bg-white shadow-lg transition-all duration-300 ${currentMomentIndex === (isMobile ? 7 : 4) ? 'opacity-50 cursor-not-allowed' : 'hover:scale-110'}`}
           disabled={currentMomentIndex === (isMobile ? 7 : 4)}
-          whileHover={{ scale: currentMomentIndex === (isMobile ? 7 : 4) ? 1 : 1.1 }}
-          whileTap={{ scale: currentMomentIndex === (isMobile ? 7 : 4) ? 1 : 0.95 }}
         >
           <ArrowRight className="w-6 h-6 text-gray-800" />
-        </motion.button>
+        </button>
       </div>
 
       {/* Bouton Explorer centré en dehors des cartes */}
@@ -342,40 +341,74 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Section Onboarding - Feuille bicolore */}
+<section className="py-24 bg-white">
+  <div className="max-w-7xl mx-auto px-4 flex flex-col items-center">
+    
+    {/* La Feuille Unique - Invisiblement séparée par la couleur */}
+    <div className="w-full flex flex-col md:flex-row items-stretch rounded-sm overflow-hidden shadow-sm border border-gray-100">
+      
+      {/* Partie Gauche - Image (Fond neutre/blanc) */}
+      <div className="w-full md:w-1/2 bg-white">
+        <img
+          src="/modern-young-woman-with-wavy-hair-dark-trendy-outfit-winking-showing-peace-sign-smiling-holding-red-gift-box-pink-wall.jpg"
+          alt="L'expérience Flocon"
+          className="w-full h-full object-cover"
+          loading="lazy"
+        />
+      </div>
+
+      {/* Partie Droite - Texte avec Fond Rose */}
+      <div className="w-full md:w-1/2  p-12 md:p-20 flex flex-col justify-center">
+        <h2 className="text-3xl md:text-4xl font-bold text-rose-900 mb-8 leading-tight">
+          Transformez vos Souvenirs en Cadeaux Uniques
+        </h2>
+        
+        <p className="text-rose-950 text-lg md:text-xl leading-relaxed mb-6">
+          Ajoutez vos photos, vos messages et créez des présents qui marquent les esprits. 
+          Chaque détail compte pour rendre votre cadeau inoubliable.
+        </p>
+        
+        <p className="text-rose-900/80 text-base md:text-lg leading-relaxed">
+          L'art de la personnalisation Flocon : simple, élégant et profondément personnel.
+        </p>
+      </div>
+    </div>
+
+    {/* Bouton - Externe et visible */}
+    <div className="mt-12">
+      <a
+        href="/boutique/personnalise"
+        className="inline-flex items-center px-8 py-3 bg-rose-custom text-white text-lg font-bold rounded-sm hover:bg-rose-700 transition-all duration-300 shadow-xl"
+      >
+        Commencer à Personnaliser
+        <svg className="w-6 h-6 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+        </svg>
+      </a>
+    </div>
+
+  </div>
+</section>
+
 {/* Témoignages */}
 <section className="py-16 bg-[#F9F7F2]">
   <div className="max-w-7xl mx-auto px-4">
     
-    {/* Header Émotionnel - Layout Split */}
+    {/* Section Preuve Sociale Simplifiée */}
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       className="mb-16"
     >
-      <div className="grid lg:grid-cols-2 gap-8 items-center rounded-lg overflow-hidden">
-        {/* Gauche - Image Lifestyle */}
-        <div className="relative h-96 lg:h-[500px]">
-          <img
-            src="/modern-young-woman-with-wavy-hair-dark-trendy-outfit-winking-showing-peace-sign-smiling-holding-red-gift-box-pink-wall.jpg"
-            alt="Jeune femme moderne tenant un cadeau rouge - Section témoignages Flocon"
-            className="w-full h-full object-cover"
-            loading="eager"
-          />
-        </div>
-        
-        {/* Droite - Contenu sur fond Rose */}
-        <div className="bg-gradient-to-br from-rose-custom-100 to-pink-200 p-8 lg:p-12">
-          <h2 className="text-3xl lg:text-4xl font-display font-black text-textDark mb-6">
-            Faites que les gens se sentent spéciaux
-          </h2>
-          <p className="text-gray-700 text-lg mb-6 leading-relaxed">
-            Chaque cadeau raconte une histoire unique. Découvrez comment nos créations transforment les moments ordinaires en souvenirs extraordinaires.
-          </p>
-          <Link href="#" className="inline-flex items-center text-rose-custom hover:text-rose-custom/80 font-medium transition-colors">
-            En savoir plus →
-          </Link>
-        </div>
+      <div className="text-center mb-12">
+        <h2 className="text-3xl lg:text-4xl font-display font-black text-textDark mb-4">
+          Faites que les gens se sentent spéciaux
+        </h2>
+        <p className="text-gray-700 text-lg max-w-2xl mx-auto">
+          Découvrez comment nos créations transforment les moments ordinaires en souvenirs extraordinaires.
+        </p>
       </div>
     </motion.div>
 
@@ -486,204 +519,11 @@ export default function HomePage() {
   </div>
 </section>
 
-      {/* Section Promotionnelle */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-4xl font-display font-bold text-textDark mb-4">
-              Toujours exceptionnels, toujours personnels
-            </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto text-lg">
-              Promo
-            </p>
-          </motion.div>
+      {/* Promo Section */}
+      <PromoSection />
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-12">
-            {/* Utilisation des vrais produits en promotion */}
-            {products
-              .filter(product => product.oldPrice && product.oldPrice > product.price)
-              .slice(0, 4)
-              .map((product, index) => (
-                <motion.div
-                  key={product.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                >
-                  <ProductCard product={product} />
-                </motion.div>
-              ))}
-          </div>
-
-          {/* Bouton Explorer */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.5 }}
-            className="text-center"
-          >
-            <Link href="/boutique/promotions" className="bg-rose-custom text-white px-8 py-3 font-medium hover:bg-opacity-90 transition-colors duration-200">
-            Trouvez votre préféré
-          </Link>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Section FAQ */}
-      <section className="py-16 bg-[#F5F2ED]">
-        <div className="max-w-4xl mx-auto px-4">
-          {/* Image FAQ */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mb-12"
-          >
-            <div className="relative h-64 md:h-80 rounded-2xl overflow-hidden ">
-              <div className="relative h-64 md:h-80 rounded-2xl overflow-hidden ">
-              <img
-                src="/saint_val.jpg"
-                alt="Jeune femme moderne tenant un cadeau rouge - Section FAQ Flocon"
-                className="w-full h-full object-cover"
-                loading="eager"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t "></div>
-            </div><img
-                src="/modern-young-woman-with-wavy-hair-dark-trendy-outfit-winking-showing-peace-sign-smiling-holding-red-gift-box-pink-wall.jpg"
-                alt="Jeune femme moderne tenant un cadeau rouge - Section FAQ Flocon"
-                className="w-full h-full object-cover"
-                loading="eager"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-4xl font-display font-bold text-textDark mb-4">
-              Les meilleurs cadeaux personnalisés
-            </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto text-lg">
-              Make people feel special !
-            </p>
-          </motion.div>
-
-          <div className="space-y-6">
-            {/* Question 1 */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="bg-white rounded-lg p-6 shadow-sm"
-            >
-              <h3 className="text-xl font-semibold text-textDark mb-4">
-                Vous cherchez un cadeau personnalisé ?
-              </h3>
-              <p className="text-gray-700 leading-relaxed">
-                Un cadeau unique avec une belle photo ou un joli texte fera toujours plaisir. C'est un beau cadeau pour surprendre quelqu'un le jour de son anniversaire, pour un cadeau de naissance ou pour souhaiter à quelqu'un un bon rétablissement. Pe-être voulez-vous remercier quelqu'un qui vous a rendu service ou juste faire comprendre à un proche à quel point il est important pour vous en lui offrant un joli cadeau.
-              </p>
-              <p className="text-gray-700 leading-relaxed mt-3">
-                Nous devrions tous réfléchir plus souvent à ce que quelqu'un représente pour nous et à quel point nous l'apprécions, mais surtout le lui faire savoir ! En offrant un cadeau, vous pouvez diffuser un peu de bonheur autour de vous.
-              </p>
-            </motion.div>
-
-            {/* Question 2 */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="bg-white rounded-lg p-6 shadow-sm"
-            >
-              <h3 className="text-xl font-semibold text-textDark mb-4">
-                L'Art de Donner chez Flocon
-              </h3>
-              <p className="text-gray-700 leading-relaxed">
-                Chez Flocon, nous appelons cela "The Art of Giving" ou l'Art de Donner. Sur Flocon, vous trouverez des centaines de cadeaux que vous pouvez personnaliser vous-même. Vous pouvez télécharger votre propre photo, ajouter un ou plusieurs prénoms ou encore votre texte sur le cadeau.
-              </p>
-              <p className="text-gray-700 leading-relaxed mt-3">
-                Et avec autant de cadeaux, il doit y avoir un cadeau spécialement pour vous ! Vous cherchez des cadeaux qui peuvent passer par la boîte aux lettres ? Nous avons de superbes cadeaux qui peuvent être livrés directement dans la boîte aux lettres.
-              </p>
-            </motion.div>
-
-            {/* Question 3 */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="bg-white rounded-lg p-6 shadow-sm"
-            >
-              <h3 className="text-xl font-semibold text-textDark mb-4">
-                Comment transformer un cadeau en un cadeau personnel ?
-              </h3>
-              <p className="text-gray-700 leading-relaxed">
-                Notre objectif chez Flocon est que chaque cadeau soit une source de joie pour votre proche. Nous voyons le cadeau comme un symbole de gratitude, créant un lien privilégié entre celui qui offre et celui qui reçoit.
-              </p>
-              <p className="text-gray-700 leading-relaxed mt-3">
-                Pour nous, un présent doit aller au-delà de la simple célébration : il doit être conçu et créé spécialement pour son destinataire. La personnalisation n'est pas seulement notre métier, c'est notre passion.
-              </p>
-            </motion.div>
-
-            {/* Question 4 */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-              className="bg-white rounded-lg p-6 shadow-sm"
-            >
-              <h3 className="text-xl font-semibold text-textDark mb-4">
-                Pourquoi choisir l'unique ?
-              </h3>
-              <p className="text-gray-700 leading-relaxed">
-                Parce qu'un cadeau personnalisé ne ressemble à aucun autre. C'est parce que vous créez vous-même le cadeau, vous le rendez spécial avec vos photos et votre texte. Des souvenirs de vacances, des photos de votre famille ou un message spécial qui vous tient à cœur.
-              </p>
-            </motion.div>
-
-            {/* Question 5 */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.5 }}
-              className="bg-white rounded-lg p-6 shadow-sm"
-            >
-              <h3 className="text-xl font-semibold text-textDark mb-4">
-                Comment faire un objet personnalisé ?
-              </h3>
-              <p className="text-gray-700 leading-relaxed">
-                Personnaliser est très simple ! Différents types de cadeaux ont différentes méthodes de personnalisation, des cadeaux avec gravure, à l'impression avec photo ou logo, à la broderie ; nous utilisons les méthodes qui conviennent le mieux au cadeau pour une qualité toujours au top.
-              </p>
-            </motion.div>
-          </div>
-
-          {/* Bouton d'appel à l'action */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.6 }}
-            className="text-center mt-12"
-          >
-            <Link href="/boutique/personnalise" className="bg-rose-custom text-white px-8 py-3 font-medium hover:bg-opacity-90 transition-colors duration-200">
-              Découvrir nos cadeaux personnalisés
-            </Link>
-          </motion.div>
-        </div>
-      </section>
+      {/* FAQ Section */}
+      <FAQSection />
 
       <ChatbotModal isOpen={isChatbotOpen} onClose={() => setIsChatbotOpen(false)} />
     </div>

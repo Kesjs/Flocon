@@ -27,13 +27,12 @@ export const metadata: Metadata = {
   description: "Découvrez nos collections hivernales et de la Saint-Valentin",
   icons: {
     icon: [
-      { url: '/favicon.svg', type: 'image/svg+xml' },
-      { url: '/icon.svg', sizes: '16x16', type: 'image/svg+xml' }
+      { url: '/logof.jpg', type: 'image/jpeg' }
     ],
     apple: [
-      { url: '/favicon.svg' }
+      { url: '/logof.jpg' }
     ],
-    shortcut: '/favicon.svg'
+    shortcut: '/logof.jpg'
   }
 };
 
@@ -44,6 +43,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr" suppressHydrationWarning>
+      <head>
+        <link rel="icon" href="/logof.jpg" type="image/jpeg" />
+        <link rel="shortcut icon" href="/logof.jpg" />
+      </head>
       <body className={`${inter.className} antialiased`} suppressHydrationWarning>
         <AuthProvider>
           <CartProviderWrapper>

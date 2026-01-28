@@ -45,8 +45,13 @@ export default function Header() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
-            <Link href="/" className="flex items-center space-x-2">
-              <div className="text-2xl font-display font-bold text-rose-custom">
+            <Link href="/" className="flex items-center space-x-3">
+              <img
+                src="/logof.jpg?v=1"
+                alt="Flocon Logo"
+                className="w-12 h-12 rounded-full object-cover"
+              />
+              <div className="text-2xl font-display font-bold" style={{ color: '#e72281' }}>
                 Flocon
               </div>
             </Link>
@@ -322,6 +327,26 @@ export default function Header() {
                 className="md:hidden pb-4 border-t border-gray-200/50 mt-4 pt-4 overflow-hidden"
               >
                 <nav className="flex flex-col space-y-4">
+                  {/* Logo dans le menu mobile */}
+                  <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.2, delay: 0 }}
+                  >
+                    <Link
+                      href="/"
+                      onClick={() => setIsMenuOpen(false)}
+                      className="flex items-center space-x-3 text-textDark hover:text-rose-custom-custom transition-all duration-300 font-medium relative group py-2"
+                    >
+                      <img
+                        src="/logof.jpg?v=1"
+                        alt="Flocon Logo"
+                        className="w-8 h-8 rounded-full object-cover"
+                      />
+                      <span>Flocon</span>
+                    </Link>
+                  </motion.div>
+                  
                   {["L'Art du Cocooning", "Flocons de Tendresse", "Boutique"].map((item, index) => (
                     <motion.div
                       key={item}

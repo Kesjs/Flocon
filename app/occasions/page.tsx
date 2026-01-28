@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import Image from "next/image";
 import Link from "next/link";
 import { Search, Calendar, Heart, Gift, Package, Sparkles, Star, Clock, MapPin, Users } from "lucide-react";
 import ChatbotModal from "@/components/ChatbotModal";
@@ -159,14 +158,11 @@ export default function OccasionsPage() {
             >
               <div className="relative rounded-3xl shadow-2xl overflow-hidden transform rotate-2 hover:rotate-0 transition-transform duration-500">
                 <div className="aspect-square relative">
-                  <Image
+                  <img
                     src="https://img.freepik.com/photos-premium/heureuse-jeune-femme-noire-afro-tient-cadeau-vacances-dans-ses-mains-sourit-cadeaux-concept-magasinage-noel-vendredi-noir_121946-3747.jpg"
                     alt="Jeune femme heureuse tenant un cadeau pour les occasions spéciales"
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    quality={95}
-                    priority
+                    className="w-full h-full object-cover"
+                    loading="eager"
                   />
                   {/* Overlay très léger */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent"></div>
