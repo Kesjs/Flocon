@@ -2,12 +2,28 @@
 
 import { motion } from "framer-motion";
 import { Star, Heart, ArrowRight } from "lucide-react";
-import { products, getProductsByCategory } from "../data/products";
+import { products } from "../data/products";
 import ProductCard from "@/components/ProductCard";
 
 export default function PromoSection() {
-  // Sélectionner 4 produits aléatoires ou spécifiques pour la promo
-  const promoProducts = products.slice(0, 4); // Prendre les 4 premiers produits
+  // Filtrer les produits en promotion et trier par pourcentage de réduction
+  const coupsDeCoeur = products
+    .filter(product => product.oldPrice && product.oldPrice > product.price)
+    .map(product => ({
+      ...product,
+      discountPercentage: Math.round(((product.oldPrice! - product.price) / product.oldPrice!) * 100)
+    }))
+    .sort((a, b) => b.discountPercentage - a.discountPercentage) // Meilleures réductions en premier
+    .slice(0, 4);
+  
+  // Debug pour voir les produits trouvés
+  console.log('Produits en promotion trouvés:', coupsDeCoeur.map(p => ({ 
+    id: p.id, 
+    name: p.name, 
+    price: p.price, 
+    oldPrice: p.oldPrice,
+    discount: p.discountPercentage
+  })));
 
   return (
     <section className="py-16 bg-gradient-to-br from-rose-custom/5 to-pink-50">
@@ -34,7 +50,7 @@ export default function PromoSection() {
 
         {/* Produits en ligne horizontale */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          {promoProducts.map((product, index) => (
+          {coupsDeCoeur.map((product, index) => (
             <motion.div
               key={product.id}
               initial={{ opacity: 0, y: 30 }}

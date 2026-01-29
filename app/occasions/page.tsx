@@ -13,7 +13,27 @@ export default function OccasionsPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [isChatbotOpen, setIsChatbotOpen] = useState(false);
 
-  // Définition des occasions avec leurs produits associés
+  // Fonction pour obtenir des produits aléatoires d'une catégorie
+  const getRandomProducts = (category: string, count: number) => {
+    const categoryProducts = getProductsByCategory(category as any);
+    const shuffled = [...categoryProducts].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, count);
+  };
+
+  // Fonction pour filtrer par mots-clés thématiques
+  const getProductsByKeywords = (keywords: string[], count: number) => {
+    const filtered = products.filter(product => 
+      keywords.some(keyword => 
+        product.name.toLowerCase().includes(keyword) || 
+        product.description.toLowerCase().includes(keyword) ||
+        product.badge?.toLowerCase().includes(keyword)
+      )
+    );
+    const shuffled = [...filtered].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, count);
+  };
+
+  // Définition des occasions avec produits thématiques
   const occasions = [
     {
       id: "saint-valentin",
@@ -21,8 +41,7 @@ export default function OccasionsPage() {
       description: "L'amour mérite d'être célébré",
       icon: Heart,
       color: "from-rose-400 to-pink-500",
-      category: "Saint-Valentin",
-      products: getProductsByCategory("Saint-Valentin")
+      products: getProductsByCategory("Saint-Valentin") // Tous les 12 produits romantiques
     },
     {
       id: "anniversaire",
@@ -30,8 +49,7 @@ export default function OccasionsPage() {
       description: "Une année de plus à fêter",
       icon: Gift,
       color: "from-purple-400 to-indigo-500",
-      category: "Hiver",
-      products: products.filter(p => p.badge?.includes("Anniversaire") || p.name.toLowerCase().includes("anniversaire"))
+      products: getProductsByKeywords(["cadeau", "anniversaire", "fête", "célébration", "bijoux", "montre", "parfum"], 8)
     },
     {
       id: "noel",
@@ -39,8 +57,7 @@ export default function OccasionsPage() {
       description: "La magie du partage",
       icon: Package,
       color: "from-green-400 to-emerald-500",
-      category: "Hiver",
-      products: products.filter(p => p.name.toLowerCase().includes("noël") || p.description.toLowerCase().includes("noël"))
+      products: getProductsByKeywords(["noël", "hiver", "chaud", "cocooning", "lampe", "bougie", "plaid"], 10)
     },
     {
       id: "fete-des-meres",
@@ -48,8 +65,7 @@ export default function OccasionsPage() {
       description: "Pour elle, avec amour",
       icon: Sparkles,
       color: "from-pink-400 to-rose-500",
-      category: "Hiver",
-      products: products.filter(p => p.badge?.includes("Maman") || p.name.toLowerCase().includes("maman"))
+      products: getProductsByKeywords(["femme", "bijoux", "parfum", "soin", "beauté", "élégant", "fleur"], 6)
     },
     {
       id: "nouveau-ne",
@@ -57,8 +73,7 @@ export default function OccasionsPage() {
       description: "Bienvenue dans la vie",
       icon: Gift,
       color: "from-blue-400 to-cyan-500",
-      category: "Hiver",
-      products: products.filter(p => p.badge?.includes("Bébé") || p.name.toLowerCase().includes("bébé"))
+      products: getProductsByKeywords(["bébé", "enfant", "doux", "sécurité", "jeu", "éducation", "coussin"], 5)
     },
     {
       id: "remerciement",
@@ -66,8 +81,7 @@ export default function OccasionsPage() {
       description: "Dire merci avec le cœur",
       icon: Heart,
       color: "from-amber-400 to-orange-500",
-      category: "Hiver",
-      products: products.filter(p => p.badge?.includes("Merci") || p.name.toLowerCase().includes("merci"))
+      products: getProductsByKeywords(["remerciement", "cadeau", "personnalisé", "unique", "spécial", "souvenir"], 7)
     }
   ];
 

@@ -5,21 +5,16 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { Search, Camera, PenTool, Scissors, Heart, Gift, Star, Sparkles, Palette, Brush, Type, Filter } from "lucide-react";
 import ChatbotModal from "@/components/ChatbotModal";
-import { products } from "@/data/products";
+import { useProductDisplay } from "@/hooks/useProductDisplay";
 import ProductCard from "@/components/ProductCard";
 
 export default function PersonnalisePage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [isChatbotOpen, setIsChatbotOpen] = useState(false);
   
-  // Filtrer les produits personnalisables
-  const personalizedProducts = products.filter(product => 
-    product.badge?.includes("Personnalisé") || 
-    product.category === "Saint-Valentin" ||
-    product.name.toLowerCase().includes("personnali") ||
-    product.description.toLowerCase().includes("photo") ||
-    product.description.toLowerCase().includes("texte")
-  );
+  // Utiliser le nouveau système de configuration
+  const { sections } = useProductDisplay('personnalise');
+  const personalizedProducts = sections[0]?.products || [];
 
   const filteredProducts = personalizedProducts.filter(product =>
     product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||

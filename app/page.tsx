@@ -1,23 +1,22 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Star, Heart, Cake, TreePine, Flower2, ChevronRight, ChevronLeft, ChevronRight as ArrowRight, Gift, Truck } from "lucide-react";
-import { products, getProductsByCategory } from "../data/products";
-import ProductCard from "@/components/ProductCard";
+import { useProductDisplay } from "@/hooks/useProductDisplay";
+import { ProductSection } from "@/components/ProductSection";
 import ChatbotModal from "@/components/ChatbotModal";
 import { useScrollOptimization } from "@/hooks/useScrollOptimization";
 import FAQSection from "@/components/FAQSection";
 import PromoSection from "@/components/PromoSection";
 
 export default function HomePage() {
-  const hiverProducts = useMemo(() => getProductsByCategory('Hiver'), []);
-  const valentinProducts = useMemo(() => getProductsByCategory('Saint-Valentin'), []);
+  const { sections } = useProductDisplay('accueil');
   const [isChatbotOpen, setIsChatbotOpen] = useState(false);
   const [currentMomentIndex, setCurrentMomentIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
-  const [shouldReduceMotion] = useState(false); // Simplifié pour éviter les erreurs SSR
+  const [shouldReduceMotion] = useState(false);
   const { scrollY } = useScrollOptimization();
 
   // Détecter si on est côté client et mobile
@@ -88,7 +87,7 @@ export default function HomePage() {
               className="text-3xl md:text-5xl lg:text-7xl font-display font-bold mb-4 md:mb-6 leading-tight will-change-transform"
               style={{ transform: 'translateZ(0)' }}
             >
-              L'amour se mérite.<br />Votre cadeau aussi.
+              L'amour se mérite. <br />Votre cadeau aussi.
             </motion.h1>
 
             <motion.p
@@ -319,27 +318,18 @@ export default function HomePage() {
   </div>
 </section>
 
-      {/* Collections Section */}
-      <section className="bg-white py-12 border-b">
-        <div className="max-w-7xl mx-auto px-4">
-          <div id="collection-hiver" className="mb-16">
-            <h2 className="text-4xl font-display font-bold text-textDark mb-12 text-center">L'Art du Cocooning</h2>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
-              {hiverProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
-          </div>
-          <div id="collection-valentin">
-            <h2 className="text-4xl font-display font-bold text-textDark mb-12 text-center">Flocons de Tendresse</h2>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
-              {valentinProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Collections Section - Nouveau système de configuration */}
+      {sections.map((section, index) => (
+        <ProductSection
+          key={section.title}
+          title={section.title}
+          subtitle={section.subtitle}
+          products={section.products}
+          layout={section.layout}
+          columns={section.columns}
+          className={index > 0 ? 'border-t' : ''}
+        />
+      ))}
 
       {/* Section Onboarding - Feuille bicolore */}
 <section className="py-24 bg-white">

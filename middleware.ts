@@ -8,9 +8,15 @@ export async function middleware(request: NextRequest) {
     },
   })
 
+  // Vérifier si les variables Supabase sont définies
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    // Continuer sans authentification Supabase si les variables ne sont pas définies
+    return response
+  }
+
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     {
       cookies: {
         get(name: string) {
@@ -55,7 +61,14 @@ export async function middleware(request: NextRequest) {
   )
 
   // Rafraîchit la session si elle a expiré.
-  const { data: { user } } = await supabase.auth.getUser()
+  let user = null;
+  try {
+    const { data } = await supabase.auth.getUser();
+    user = data.user;
+  } catch (error) {
+    // En cas d'erreur Supabase, continuer sans utilisateur
+    console.warn('Supabase auth error in middleware:', error);
+  }
 
   // Routes protégées
   const protectedRoutes = ['/dashboard', '/orders', '/wishlist', '/checkout']

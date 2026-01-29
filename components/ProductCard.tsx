@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Star, ShoppingCart, Heart } from "lucide-react";
+import { Star, ShoppingCart } from "lucide-react";
 import { Product } from "../data/products";
 import { useCart } from "@/context/CartContext";
 import { useState } from "react";
@@ -14,7 +14,6 @@ interface ProductCardProps {
 export default function ProductCard({ product, className = "" }: ProductCardProps) {
   const { addToCart } = useCart();
   const [isHovered, setIsHovered] = useState(false);
-  const [isWishlisted, setIsWishlisted] = useState(false);
   const [imageError, setImageError] = useState(false);
 
   const handleAddToCart = (e: React.MouseEvent) => {
@@ -28,11 +27,6 @@ export default function ProductCard({ product, className = "" }: ProductCardProp
     });
   };
 
-  const handleToggleWishlist = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsWishlisted(!isWishlisted);
-  };
 
   const discount = product.oldPrice 
     ? Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100)
@@ -65,17 +59,6 @@ export default function ProductCard({ product, className = "" }: ProductCardProp
         )}
       </div>
 
-      {/* Wishlist button */}
-      <button
-        onClick={handleToggleWishlist}
-        className="absolute top-3 right-3 z-10 p-2 bg-white/80 backdrop-blur-sm rounded-full hover:bg-white transition-colors"
-      >
-        <Heart 
-          className={`w-4 h-4 ${
-            isWishlisted ? 'fill-rose text-rose-custom' : 'text-gray-600'
-          }`}
-        />
-      </button>
 
       {/* Product Image - Version corrigée */}
       <div className="relative aspect-square overflow-hidden bg-gray-50">
@@ -86,7 +69,7 @@ export default function ProductCard({ product, className = "" }: ProductCardProp
             </div>
           ) : (
             <img
-              src={product.images[0].startsWith('/') ? product.images[0] : `/${product.images[0]}`}
+              src={product.images[0].startsWith('http') ? product.images[0] : (product.images[0].startsWith('/') ? product.images[0] : `/${product.images[0]}`)}
               alt={product.name}
               className={`w-full h-full object-cover transition-transform duration-700 ${
                 isHovered ? 'scale-110' : 'scale-100'
@@ -97,13 +80,6 @@ export default function ProductCard({ product, className = "" }: ProductCardProp
           )}
         </Link>
         
-        {/* Discount badge */}
-        {discount > 0 && (
-          <div className="absolute bottom-3 left-3 bg-red-500 text-white px-2 py-1 rounded-md text-sm font-bold">
-            -{discount}%
-          </div>
-        )}
-
         {/* Quick add to cart on hover */}
         <div className={`absolute inset-0 bg-black/40 flex items-center justify-center transition-opacity duration-300 ${
           isHovered ? 'opacity-100' : 'opacity-0'
@@ -176,3 +152,5 @@ export default function ProductCard({ product, className = "" }: ProductCardProp
     </div>
   );
 }
+
+export { ProductCard };

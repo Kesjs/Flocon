@@ -9,6 +9,10 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
+        hostname: '**',
+      },
+      {
+        protocol: 'https',
         hostname: 'images.unsplash.com',
       },
       {
@@ -98,6 +102,10 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'lemondedescadeaux.fr',
+      },
+      {
+        protocol: 'https',
+        hostname: 'www.maisonfans.com',
       },
     ],
     loader: 'custom',
