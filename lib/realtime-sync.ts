@@ -174,15 +174,17 @@ export class RealtimeSync {
   private mapFstStatusToClientStatus(fstStatus?: string): Order['status'] {
     switch (fstStatus) {
       case 'confirmed':
-        return 'Livré';
+        return 'En préparation';  // ✅ CORRECT : Confirmé = En préparation
       case 'declared':
-        return 'En préparation';
+        return 'En préparation';  // ✅ Déclaré = En préparation  
       case 'processing':
-        return 'En cours';
+        return 'En cours';        // ✅ En traitement = En cours
       case 'rejected':
-        return 'En attente';
+        return 'Annulé';         // ✅ Rejeté = Annulé
+      case 'archived':
+        return 'Archivé';        // ✅ Archivé = Archivé
       default:
-        return 'En attente';
+        return 'En attente';       // ✅ Par défaut = En attente
     }
   }
 
