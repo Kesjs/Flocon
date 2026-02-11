@@ -820,5 +820,29 @@
       "phone": "97 91 49 22"
     },
     "date": "2026-02-11T06:26:06.217Z"
+  },
+  "CMD-1770792269242": {
+    "id": "CMD-1770792269242",
+    "userId": "guest",
+    "status": "En attente",
+    "total": 94.5,
+    "items": 5,
+    "products": [
+      {
+        "id": "12",
+        "name": "Chaussettes Laine Mérinos Épaisses Lot 3",
+        "price": 18.9,
+        "quantity": 5,
+        "image": "https://ae01.alicdn.com/kf/Sa0069d693f3a463a81891fdee1262de7V.jpg"
+      }
+    ],
+    "shippingAddress": {
+      "name": "Ken Babatounde",
+      "address": "Togba",
+      "city": "Calavi",
+      "postalCode": "55555",
+      "phone": "97 91 49 22"
+    },
+    "date": "2026-02-11T06:44:29.243Z"
   }
 }

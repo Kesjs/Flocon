@@ -116,7 +116,7 @@ export default function TrackOrder() {
             Suivi de commande
           </h1>
           <p className="text-gray-600 mb-8">
-            Entrez votre numéro de commande pour suivre votre livraison
+            Entrez votre numéro de commande ou votre numéro de suivi pour suivre votre livraison
           </p>
 
           {/* Search Bar */}
@@ -128,7 +128,7 @@ export default function TrackOrder() {
                 value={orderId}
                 onChange={(e) => setOrderId(e.target.value)}
                 onKeyPress={(e) => e.key === "Enter" && handleSearch()}
-                placeholder="Ex: CMD-1770627789044"
+                placeholder="Ex: CMD-1770627789044 ou FLCNX7Y9Z3W4K123456"
                 className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-rose focus:border-transparent outline-none"
               />
             </div>

@@ -20,22 +20,43 @@ export async function GET(request: NextRequest) {
 
     console.log('🔍 Recherche de commande:', orderId);
 
-    // Rechercher la commande dans la base de données
-    const { data: order, error } = await supabase
+    // Rechercher par ID OU par numéro de suivi
+    let order = null;
+    let searchField = '';
+
+    // D'abord essayer par ID de commande
+    const { data: orderById, error: idError } = await supabase
       .from('orders')
       .select('*')
       .eq('id', orderId)
       .single();
 
-    if (error || !order) {
-      console.log('❌ Commande non trouvée:', orderId);
+    if (!idError && orderById) {
+      order = orderById;
+      searchField = 'ID';
+    } else {
+      // Si pas trouvé par ID, essayer par numéro de suivi
+      const { data: orderByTracking, error: trackingError } = await supabase
+        .from('orders')
+        .select('*')
+        .eq('tracking_number', orderId)
+        .single();
+
+      if (!trackingError && orderByTracking) {
+        order = orderByTracking;
+        searchField = 'tracking_number';
+      }
+    }
+
+    if (!order) {
+      console.log('❌ Commande non trouvée:', orderId, 'recherché par:', searchField || 'ID');
       return NextResponse.json(
         { error: 'Commande non trouvée' },
         { status: 404 }
       );
     }
 
-    console.log('✅ Commande trouvée:', order.id, 'statut:', order.fst_status);
+    console.log('✅ Commande trouvée:', order.id, 'statut:', order.fst_status, 'recherché par:', searchField);
 
     // Déterminer le statut de suivi en fonction du statut FST et du numéro de suivi
     let trackingStatus = 'confirmed'; // Par défaut
