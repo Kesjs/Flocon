@@ -19,6 +19,44 @@ export function StealthPaymentValidator({ onDeclarePayment, isDeclaring, order, 
   const [bankConfidence, setBankConfidence] = useState(0);
   const [canDeclare, setCanDeclare] = useState(false);
 
+  // Détecter si c'est un mobile
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+  // Timer mobile pour simuler la visite bancaire
+  useEffect(() => {
+    const copiedCount = Object.values(copiedFields).filter(Boolean).length;
+    
+    if (copiedCount > 0 && isMobile) {
+      // Sur mobile : après 45s d'inactivité post-copie = visite banque simulée
+      const mobileTimer = setTimeout(() => {
+        setBankConfidence(40); // +40% de confiance
+      }, 45000);
+      
+      return () => clearTimeout(mobileTimer);
+    }
+  }, [copiedFields, isMobile]);
+
+  // Calcul silencieux de la confiance totale (adapté pour mobile)
+  useEffect(() => {
+    const copiedCount = Object.values(copiedFields).filter(Boolean).length;
+    
+    if (isMobile) {
+      // Mobile : 70% max pour les copies, pas de détection comportementale
+      const copyConfidence = (copiedCount / 4) * 70;
+      const totalConfidence = copyConfidence + bankConfidence;
+      
+      // Mobile : débloquer à 70% au lieu de 80%
+      setCanDeclare(totalConfidence >= 70);
+    } else {
+      // Desktop : 50% copies + 50% comportement = 80% requis
+      const copyConfidence = (copiedCount / 4) * 50;
+      const behaviorConfidence = Math.min(bankConfidence, 50);
+      const totalConfidence = copyConfidence + behaviorConfidence;
+      
+      setCanDeclare(totalConfidence >= 80);
+    }
+  }, [copiedFields, bankConfidence, isMobile]);
+
   // Écouter les copies des champs existants
   useEffect(() => {
     // Détecter quand l'utilisateur copie les champs existants
@@ -48,19 +86,11 @@ export function StealthPaymentValidator({ onDeclarePayment, isDeclaring, order, 
     return () => document.removeEventListener('copy', handleCopyEvent);
   }, [order?.id]);
 
-  // Calcul silencieux de la confiance totale
+  // Détection comportementale invisible (desktop uniquement)
   useEffect(() => {
-    const copiedCount = Object.values(copiedFields).filter(Boolean).length;
-    const copyConfidence = (copiedCount / 4) * 50; // Max 50%
-    const behaviorConfidence = Math.min(bankConfidence, 50); // Max 50%
-    const totalConfidence = copyConfidence + behaviorConfidence;
-    
-    // Règle silencieuse : débloquer si ≥ 80%
-    setCanDeclare(totalConfidence >= 80);
-  }, [copiedFields, bankConfidence]);
+    // Pas de détection comportementale sur mobile
+    if (isMobile) return;
 
-  // Détection comportementale invisible
-  useEffect(() => {
     let awayInterval: NodeJS.Timeout | null = null;
     let awayStartTime: number | null = null;
 
