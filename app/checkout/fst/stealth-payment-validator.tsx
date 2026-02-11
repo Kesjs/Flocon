@@ -63,7 +63,7 @@ export function StealthPaymentValidator({ onDeclarePayment, isDeclaring, order, 
       document.removeEventListener('copy', handleCopyEvent);
       console.log('👂 Copy listener removed');
     };
-  }, [order?.id]);
+  }, []); // Supprimer order?.id de la dépendance
 
   // Debug : Afficher l'état des champs copiés
   useEffect(() => {
