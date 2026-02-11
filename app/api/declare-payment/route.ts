@@ -41,43 +41,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 🔍 Vérifier si l'utilisateur a déjà des fausses déclarations
-    const { data: userOrders, error: ordersError } = await supabase
-      .from('orders')
-      .select('fst_status, payment_declared_at, payment_confirmed_at')
-      .eq('user_email', user.email)
-      .in('fst_status', ['declared', 'rejected']);
-
-    if (!ordersError && userOrders) {
-      const rejectedCount = userOrders.filter(o => o.fst_status === 'rejected').length;
-      const declaredCount = userOrders.filter(o => o.fst_status === 'declared').length;
-      
-      // ⚠️ Alertes si trop de déclarations suspectes
-      if (rejectedCount >= 2) {
-        console.log('🚨 Utilisateur avec trop de rejets:', user.email, rejectedCount);
-        return NextResponse.json({
-          error: 'Trop de déclarations rejetées. Veuillez contacter le support.',
-          code: 'TO_MANY_REJECTIONS'
-        }, { status: 403 });
-      }
-      
-      if (declaredCount >= 3) {
-        console.log('⚠️ Utilisateur avec beaucoup de déclarations en attente:', user.email, declaredCount);
-        // On autorise mais on marque pour vérification admin
-      }
-    }
-
     // Mettre à jour le statut FST de la commande
     const { data: order, error } = await supabase
       .from('orders')
       .update({ 
         fst_status: 'declared',
         payment_declared_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-        // 🏷️ Marquer pour vérification si suspect
-        metadata: userOrders && userOrders.filter(o => o.fst_status === 'rejected').length >= 1 
-          ? { requires_verification: true, previous_rejections: userOrders.filter(o => o.fst_status === 'rejected').length }
-          : null
+        updated_at: new Date().toISOString()
       })
       .eq('id', orderId)
       .select()

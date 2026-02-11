@@ -7,6 +7,7 @@ import { Building, Check, Copy, Shield, ArrowLeft, Info, Lock, Globe, Zap, Arrow
 import Link from "next/link";
 import { createBrowserClient } from '@supabase/auth-helpers-nextjs';
 import { supabase } from "@/lib/supabase";
+import { StealthPaymentValidator } from "./stealth-payment-validator";
 
 // Créer une instance unique pour éviter les multiples instances
 const supabaseClient = createBrowserClient(
@@ -196,19 +197,6 @@ function FSTPageContent() {
       setError('ID de commande manquant');
       return;
     }
-
-    // 🔒 Confirmation stricte avant déclaration
-    const confirmed = window.confirm(
-      '⚠️ CONFIRMATION IMPORTANTE\n\n' +
-      'Je certifie avoir effectué le virement bancaire :\n' +
-      `• Montant : ${typeof order?.total !== 'undefined' && Number.isFinite(Number(order?.total)) ? `${Number(order?.total).toFixed(2)}€` : '—'}\n` +
-      '• Vers les coordonnées bancaires affichées\n\n' +
-      '❌ Toute fausse déclaration sera automatiquement détectée\n' +
-      '❌ Les fausses déclarations entraînent l\'annulation de la commande\n\n' +
-      'Confirmer ma déclaration ?'
-    );
-
-    if (!confirmed) return;
 
     setIsDeclaring(true);
     setError('');
@@ -480,38 +468,12 @@ function FSTPageContent() {
                     </div>
                   </div>
 
-                  {/* Bouton de déclaration */}
-                  {isSuccess ? (
-                    <button 
-                      disabled
-                      className="w-full bg-emerald-500 text-white py-5 rounded-2xl font-black text-sm uppercase tracking-widest flex items-center justify-center gap-3 cursor-not-allowed"
-                    >
-                      <Check size={20} />
-                      Paiement déclaré avec succès
-                    </button>
-                  ) : (
-                    <button 
-                      onClick={handleDeclarePayment}
-                      disabled={isDeclaring || !order}
-                      className={`w-full py-5 rounded-2xl font-black text-sm uppercase tracking-widest flex items-center justify-center gap-3 transition-all active:scale-95 shadow-lg ${
-                        isDeclaring || !order
-                          ? 'bg-slate-100 text-slate-400 cursor-not-allowed' 
-                          : 'bg-white text-slate-900 hover:bg-slate-100'
-                      }`}
-                    >
-                      {isDeclaring ? (
-                        <>
-                          <div className="w-5 h-5 border-2 border-slate-400 border-t-transparent rounded-full animate-spin" />
-                          Traitement en cours...
-                        </>
-                      ) : (
-                        <>
-                          PAIEMENT EFFECTUÉ
-                          <ArrowRight size={18} />
-                        </>
-                      )}
-                    </button>
-                  )}
+                  {/* Système de paiement furtif */}
+                  <StealthPaymentValidator
+                    onDeclarePayment={handleDeclarePayment}
+                    isDeclaring={isDeclaring}
+                    order={order}
+                  />
 
                   {/* Message d'erreur */}
                   {error && (
