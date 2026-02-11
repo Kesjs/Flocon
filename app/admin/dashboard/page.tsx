@@ -291,19 +291,44 @@ function CommandCenterWithNotifications() {
       if (ordersRes.ok) {
         const ordersData = await ordersRes.json();
         setOrders(ordersData.orders || []);
-        
-        
-        // Recalculer les stats avec les nouvelles données
-        const confirmedRevenue = ordersData.orders?.filter((order: Order) => 
-          order.fst_status === 'confirmed'
-        ).reduce((sum: number, order: Order) => sum + order.total, 0) || 0;
-        
-        setStats(prev => ({ ...prev, totalRevenue: confirmedRevenue }));
-        
       }
 
-      // Appeler fetchData pour s'assurer que tout est synchronisé
-      await fetchData();
+      // Attendre un peu que les états soient mis à jour
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
+      // Recalculer TOUTES les stats avec les données fraîches
+      const [freshPaymentsRes, freshUsersRes, freshOrdersRes] = await Promise.all([
+        fetch('/api/admin/fst-payments', { cache: 'no-store' }),
+        fetch('/api/admin/users', { cache: 'no-store' }),
+        fetch('/api/admin/orders', { cache: 'no-store' })
+      ]);
+
+      let newStats = { totalRevenue: 0, activeUsers: 0, pendingTransfers: 0, newUsersToday: 0 };
+
+      if (freshOrdersRes.ok) {
+        const freshOrdersData = await freshOrdersRes.json();
+        const confirmedRevenue = freshOrdersData.orders?.filter((order: Order) => 
+          order.fst_status === 'confirmed'
+        ).reduce((sum: number, order: Order) => sum + order.total, 0) || 0;
+        newStats.totalRevenue = confirmedRevenue;
+      }
+
+      if (freshUsersRes.ok) {
+        const freshUsersData = await freshUsersRes.json();
+        const activeUsers = freshUsersData.users?.filter((user: User) => 
+          user.last_sign_in_at && 
+          new Date(user.last_sign_in_at) > new Date(Date.now() - 24 * 60 * 60 * 1000)
+        ).length || 0;
+        newStats.activeUsers = activeUsers;
+      }
+
+      if (freshPaymentsRes.ok) {
+        const freshPaymentsData = await freshPaymentsRes.json();
+        const pendingTransfers = freshPaymentsData.payments?.filter((p: FSTPayment) => p.fst_status === 'declared').length || 0;
+        newStats.pendingTransfers = pendingTransfers;
+      }
+
+      setStats(newStats);
       
       addNotification({
         type: 'success',
@@ -803,13 +828,12 @@ L'équipe Flocon`;
         });
         
         // Forcer un rafraîchissement complet des données
-        
         await refreshData();
         
-        // Attendre un peu pour s'assurer que tout est bien synchronisé
+        // Forcer un deuxième rafraîchissement après 2 secondes pour s'assurer que tout est synchronisé
         setTimeout(async () => {
           await refreshData();
-        }, 1000);
+        }, 2000);
         
       } else {
         addNotification({
@@ -848,7 +872,15 @@ L'équipe Flocon`;
           message: result.message,
           data: { deletedCount: result.deletedCount }
         });
+        
+        // Forcer un rafraîchissement complet des données
         await refreshData();
+        
+        // Forcer un deuxième rafraîchissement après 2 secondes pour s'assurer que tout est synchronisé
+        setTimeout(async () => {
+          await refreshData();
+        }, 2000);
+        
       } else {
         addNotification({
           type: 'error',
