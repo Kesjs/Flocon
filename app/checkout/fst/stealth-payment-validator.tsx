@@ -37,7 +37,8 @@ export function StealthPaymentValidator({ onDeclarePayment, isDeclaring, order, 
         } else if (selectedText.includes('megan') || selectedText.includes('lumale')) {
           setCopiedFields(prev => ({ ...prev, titulaire: true }));
           setTimeout(() => setCopiedFields(prev => ({ ...prev, titulaire: false })), 15000); // 15s au lieu de 3s
-        } else if (selectedText.includes('cmd-') || selectedText.includes(order?.id?.slice(-8))) {
+        } else if (selectedText.includes('#cmd-') || selectedText.includes('cmd-')) {
+          // Détecter n'importe quel format de référence CMD
           setCopiedFields(prev => ({ ...prev, reference: true }));
           setTimeout(() => setCopiedFields(prev => ({ ...prev, reference: false })), 15000); // 15s au lieu de 3s
         }
