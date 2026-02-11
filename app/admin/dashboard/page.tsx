@@ -52,7 +52,7 @@ function CommandCenterWithNotifications() {
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [confirmingId, setConfirmingId] = useState<string | null>(null);
-  const [liveSync, setLiveSync] = useState(true);
+  const [liveSync, setLiveSync] = useState(true); // Réactivé avec correction du bug
   const [emailModalOpen, setEmailModalOpen] = useState(false);
   const [selectedPayment, setSelectedPayment] = useState<FSTPayment | null>(null);
   const [emailContent, setEmailContent] = useState('');
@@ -148,14 +148,19 @@ function CommandCenterWithNotifications() {
           const nextTotal = Number(updated?.total);
           const wasConfirmed = previous?.fst_status === 'confirmed';
           const isConfirmed = updated?.fst_status === 'confirmed';
+          const isArchived = updated?.fst_status === 'archived';
+          const isRejected = updated?.fst_status === 'rejected';
 
           setStats(prev => ({
             ...prev,
             pendingTransfers: prev.pendingTransfers + (!wasDeclared && isDeclared ? 1 : 0) + (wasDeclared && !isDeclared ? -1 : 0),
             totalRevenue: prev.totalRevenue + 
-              (wasConfirmed && !isConfirmed ? -prevTotal : 0) + 
-              (!wasConfirmed && isConfirmed ? nextTotal : 0) +
-              (wasConfirmed && isConfirmed && Number.isFinite(prevTotal) && Number.isFinite(nextTotal) ? (nextTotal - prevTotal) : 0)
+              // Ignorer les commandes archivées/rejetées dans le calcul
+              (isArchived || isRejected ? 0 : 
+                (wasConfirmed && !isConfirmed ? -prevTotal : 0) + 
+                (!wasConfirmed && isConfirmed ? nextTotal : 0) +
+                (wasConfirmed && isConfirmed && Number.isFinite(prevTotal) && Number.isFinite(nextTotal) ? (nextTotal - prevTotal) : 0)
+              )
           }));
         }
       )
