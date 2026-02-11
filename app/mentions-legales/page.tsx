@@ -21,7 +21,7 @@ export default function MentionsLegales() {
               <p>TVA intracommunautaire : FR 45 897654321</p>
               <p>Siège social : 123 Avenue des Champs-Élysées, 75008 Paris, France</p>
               <p>Immatriculation : RCS Paris B 897 654 321</p>
-              <p>Site internet : www.flocon.fr</p>
+              <p>Site internet : https://flocon-market.fr</p>
               <p>Email : contact@flocon-market.fr</p>
               <p><em>Boutique en ligne de cadeaux et accessoires</em></p>
             </div>
@@ -34,7 +34,7 @@ export default function MentionsLegales() {
             <div className="space-y-2">
               <p><strong>Direction de Flocon</strong></p>
               <p>Email : contact@flocon-market.fr</p>
-              <p><em>Responsable éditorial du site www.flocon.fr</em></p>
+              <p><em>Responsable éditorial du site https://flocon-market.fr</em></p>
             </div>
           </section>
 
@@ -69,7 +69,7 @@ export default function MentionsLegales() {
               5. Cookies
             </h2>
             <p>
-              Le site www.flocon.fr utilise des cookies nécessaires à son bon fonctionnement 
+              Le site https://flocon-market.fr utilise des cookies nécessaires à son bon fonctionnement 
               et des cookies de mesure d'audience. L'utilisateur a la possibilité de désactiver 
               ces cookies dans les paramètres de son navigateur.
             </p>

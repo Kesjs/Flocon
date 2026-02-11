@@ -16,7 +16,7 @@ export default function CGV() {
             <p>
               Les présentes Conditions Générales de Vente (CGV) régissent les relations contractuelles 
               entre la société Flocon, SAS au capital de 10 000€, et toute personne physique ou morale 
-              achetant des produits sur le site internet www.flocon.fr.
+              achetant des produits sur le site internet https://flocon-market.fr.
             </p>
           </section>
 
@@ -26,7 +26,7 @@ export default function CGV() {
             </h2>
             <p>
               Les produits proposés à la vente sont ceux présents sur le site internet 
-              www.flocon.fr dans la limite des stocks disponibles. Flocon s'engage à fournir 
+              https://flocon-market.fr dans la limite des stocks disponibles. Flocon s'engage à fournir 
               des informations les plus précises possibles sur les caractéristiques des produits. 
               Cependant, les photos des produits ne sont pas contractuelles.
             </p>
@@ -49,7 +49,7 @@ export default function CGV() {
               4. Commande
             </h2>
             <p>
-              Toute commande passée sur le site www.flocon.fr constitue la formation d'un contrat 
+              Toute commande passée sur le site https://flocon-market.fr constitue la formation d'un contrat 
               de vente entre le client et Flocon. La confirmation de la commande intervient après 
               la confirmation du paiement par le client. Flocon se réserve le droit de refuser 
               toute commande pour des motifs légitimes.
@@ -153,7 +153,7 @@ export default function CGV() {
               12. Propriété intellectuelle
             </h2>
             <p>
-              Tous les éléments du site www.flocon.fr, incluant textes, images, 
+              Tous les éléments du site https://flocon-market.fr, incluant textes, images, 
               graphismes, logos et icônes, sont la propriété exclusive de Flocon et sont protégés 
               par le droit d'auteur. Toute reproduction, distribution ou modification de ces éléments 
               est strictement interdite sans autorisation préalable.
