@@ -197,6 +197,19 @@ function FSTPageContent() {
       return;
     }
 
+    // 🔒 Confirmation stricte avant déclaration
+    const confirmed = window.confirm(
+      '⚠️ CONFIRMATION IMPORTANTE\n\n' +
+      'Je certifie avoir effectué le virement bancaire :\n' +
+      `• Montant : ${typeof order?.total !== 'undefined' && Number.isFinite(Number(order?.total)) ? `${Number(order?.total).toFixed(2)}€` : '—'}\n` +
+      '• Vers les coordonnées bancaires affichées\n\n' +
+      '❌ Toute fausse déclaration sera automatiquement détectée\n' +
+      '❌ Les fausses déclarations entraînent l\'annulation de la commande\n\n' +
+      'Confirmer ma déclaration ?'
+    );
+
+    if (!confirmed) return;
+
     setIsDeclaring(true);
     setError('');
 

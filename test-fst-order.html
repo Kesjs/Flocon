@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test FST Order</title>
+</head>
+<body>
+    <h1>Test Commande FST pour Dashboard Utilisateur</h1>
+    
+    <h2>📋 Étapes du test:</h2>
+    <ol>
+        <li><strong>Admin:</strong> Allez sur <a href="http://localhost:3000/admin/dashboard" target="_blank">http://localhost:3000/admin/dashboard</a></li>
+        <li><strong>Admin:</strong> Connectez-vous avec les identifiants admin</li>
+        <li><strong>Admin:</strong> Cliquez sur "VALIDER" une commande FST existante</li>
+        <li><strong>Admin:</strong> Vérifiez que le statut passe à "confirmed"</li>
+        <li><strong>Utilisateur:</strong> Allez sur <a href="http://localhost:3000/dashboard" target="_blank">http://localhost:3000/dashboard</a></li>
+        <li><strong>Utilisateur:</strong> Connectez-vous avec l'email de la commande</li>
+        <li><strong>Utilisateur:</strong> Vérifiez la section "Mes Commandes"</li>
+    </ol>
+
+    <h2>🎯 Résultats attendus:</h2>
+    <ul>
+        <li>✅ La commande FST apparaît dans le dashboard utilisateur</li>
+        <li>✅ Le statut est "En préparation" (pas "Livré")</li>
+        <li>✅ Le numéro de suivi est visible</li>
+        <li>✅ La synchronisation temps réel fonctionne</li>
+    </ul>
+
+    <h2>🐛 Si ça ne marche pas:</h2>
+    <ul>
+        <li>❌ Pas de commande dans le dashboard → Problème de synchronisation</li>
+        <li>❌ Statut "Livré" au lieu de "En préparation" → Bug de mapping (corrigé)</li>
+        <li>❌ Pas de numéro de suivi → Problème de génération</li>
+    </ul>
+
+    <h2>🔍 Debug:</h2>
+    <p>Ouvrez la console (F12) et cherchez ces logs:</p>
+    <ul>
+        <li><code>🚀 Initialisation UnifiedOrderManager</code></li>
+        <li><code>🔄 Synchronisation complète</code></li>
+        <li><code>✅ Commandes Supabase synchronisées</code></li>
+    </ul>
+
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; line-height: 1.6; }
+        h1 { color: #e11d48; }
+        h2 { color: #059669; margin-top: 30px; }
+        li { margin: 10px 0; }
+        a { color: #2563eb; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        code { background: #f3f4f6; padding: 2px 6px; border-radius: 4px; font-family: monospace; }
+    </style>
+</body>
+</html>
