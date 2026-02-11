@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Check } from 'lucide-react';
 
 interface StealthPaymentValidatorProps {
@@ -18,9 +18,18 @@ export function StealthPaymentValidator({ onDeclarePayment, isDeclaring, order, 
   
   const [allCopied, setAllCopied] = useState(false);
   const [canDeclare, setCanDeclare] = useState(false);
+  const [checkboxChecked, setCheckboxChecked] = useState(false);
 
-  // Écouter les copies des champs existants
+  // Utiliser une ref pour éviter les re-renders
+  const listenerRef = useRef<((event: ClipboardEvent) => void) | null>(null);
+
+  // Écouter les copies des champs existants - mount une seule fois
   useEffect(() => {
+    // Nettoyer l'ancien listener s'il existe
+    if (listenerRef.current) {
+      document.removeEventListener('copy', listenerRef.current);
+    }
+
     // Détecter quand l'utilisateur copie les champs existants
     const handleCopyEvent = (event: ClipboardEvent) => {
       console.log('🔍 Copy event detected!');
@@ -34,22 +43,21 @@ export function StealthPaymentValidator({ onDeclarePayment, isDeclaring, order, 
         if (selectedText.includes('fr76') || selectedText.includes('3123')) {
           console.log('✅ IBAN detected');
           setCopiedFields(prev => ({ ...prev, iban: true }));
-          setTimeout(() => setCopiedFields(prev => ({ ...prev, iban: false })), 15000); // 15s au lieu de 3s
-        } else if (selectedText.includes('trbk') || selectedText.includes('bic')) {
+          setTimeout(() => setCopiedFields(prev => ({ ...prev, iban: false })), 10000);
+        } else if (selectedText.includes('trbk') || selectedText.includes('trbkfrpp')) {
           console.log('✅ BIC detected');
           setCopiedFields(prev => ({ ...prev, bic: true }));
-          setTimeout(() => setCopiedFields(prev => ({ ...prev, bic: false })), 15000); // 15s au lieu de 3s
-        } else if (selectedText.includes('megan') || selectedText.includes('lumale')) {
+          setTimeout(() => setCopiedFields(prev => ({ ...prev, bic: false })), 10000);
+        } else if (selectedText.includes('megan') || selectedText.includes('victoria') || selectedText.includes('lumale')) {
           console.log('✅ Titulaire detected');
           setCopiedFields(prev => ({ ...prev, titulaire: true }));
-          setTimeout(() => setCopiedFields(prev => ({ ...prev, titulaire: false })), 15000); // 15s au lieu de 3s
+          setTimeout(() => setCopiedFields(prev => ({ ...prev, titulaire: false })), 10000);
         } else if (selectedText.includes('#cmd-') || selectedText.includes('cmd-')) {
           console.log('✅ Reference detected');
-          // Détecter n'importe quel format de référence CMD
           setCopiedFields(prev => ({ ...prev, reference: true }));
-          setTimeout(() => setCopiedFields(prev => ({ ...prev, reference: false })), 15000); // 15s au lieu de 3s
+          setTimeout(() => setCopiedFields(prev => ({ ...prev, reference: false })), 10000);
         } else {
-          console.log('❌ No field matched');
+          console.log('❌ No field matched - Text:', selectedText);
         }
       } else {
         console.log('❌ No selection');
@@ -57,13 +65,17 @@ export function StealthPaymentValidator({ onDeclarePayment, isDeclaring, order, 
     };
 
     document.addEventListener('copy', handleCopyEvent);
-    console.log('👂 Copy listener added');
+    listenerRef.current = handleCopyEvent;
+    console.log('👂 Copy listener added (stable)');
     
     return () => {
-      document.removeEventListener('copy', handleCopyEvent);
-      console.log('👂 Copy listener removed');
+      if (listenerRef.current) {
+        document.removeEventListener('copy', listenerRef.current);
+        listenerRef.current = null;
+        console.log('👂 Copy listener removed (stable)');
+      }
     };
-  }, []); // Supprimer order?.id de la dépendance
+  }, []); // Mount une seule fois
 
   // Debug : Afficher l'état des champs copiés
   useEffect(() => {
@@ -79,35 +91,36 @@ export function StealthPaymentValidator({ onDeclarePayment, isDeclaring, order, 
     
     console.log('🔄 Checking all fields copied:', allFieldsCopied);
     
+    // Dès que tous les champs sont copiés, débloquer immédiatement
     if (allFieldsCopied && !canDeclare) {
-      // Si tous les champs sont copiés, débloquer après 10 secondes
-      console.log('⏰ Starting 10s timer...');
-      const timer = setTimeout(() => {
-        console.log('🔓 Timer finished - unlocking button!');
-        setCanDeclare(true);
-      }, 10000);
-      
-      return () => {
-        console.log('⏹️ Timer cleared');
-        clearTimeout(timer);
-      };
+      console.log('🔓 All fields copied - unlocking button immediately!');
+      setCanDeclare(true);
     }
-    
-    // Réinitialiser si tous les champs ne sont plus copiés
-    if (!allFieldsCopied) {
-      console.log('🔒 Not all fields copied - locking button');
-      setCanDeclare(false);
-    }
-  }, [copiedFields, canDeclare]);
+    // Retiré la réinitialisation automatique - une fois débloqué, reste débloqué
+  }, [copiedFields]);
 
   return (
     <div className="space-y-4">
-      {/* Bouton unique qui s'intègre avec les champs existants */}
+      {/* Case à cocher pour déverrouiller */}
+      <div className="flex items-center gap-3 p-4 bg-amber-50 border border-amber-200 rounded-xl">
+        <input
+          type="checkbox"
+          id="confirm-payment"
+          checked={checkboxChecked}
+          onChange={(e) => setCheckboxChecked(e.target.checked)}
+          className="w-5 h-5 text-amber-600 border-amber-300 rounded focus:ring-amber-500"
+        />
+        <label htmlFor="confirm-payment" className="text-sm text-amber-800 font-medium cursor-pointer">
+          Je confirme avoir effectué le virement bancaire
+        </label>
+      </div>
+
+      {/* Bouton de déclaration */}
       <button
         onClick={onDeclarePayment}
-        disabled={!canDeclare || isDeclaring}
+        disabled={!checkboxChecked || isDeclaring}
         className={`w-full py-5 rounded-2xl font-black text-sm uppercase tracking-widest flex items-center justify-center gap-3 transition-all active:scale-95 shadow-lg ${
-          !canDeclare || isDeclaring
+          !checkboxChecked || isDeclaring
             ? 'bg-gray-100 text-gray-400 cursor-not-allowed' 
             : 'bg-emerald-500 text-white hover:bg-emerald-600'
         }`}
