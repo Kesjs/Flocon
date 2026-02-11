@@ -16,46 +16,8 @@ export function StealthPaymentValidator({ onDeclarePayment, isDeclaring, order, 
     reference: false
   });
   
-  const [bankConfidence, setBankConfidence] = useState(0);
+  const [allCopied, setAllCopied] = useState(false);
   const [canDeclare, setCanDeclare] = useState(false);
-
-  // Détecter si c'est un mobile
-  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
-  // Timer mobile pour simuler la visite bancaire
-  useEffect(() => {
-    const copiedCount = Object.values(copiedFields).filter(Boolean).length;
-    
-    if (copiedCount > 0 && isMobile) {
-      // Sur mobile : après 45s d'inactivité post-copie = visite banque simulée
-      const mobileTimer = setTimeout(() => {
-        setBankConfidence(40); // +40% de confiance
-      }, 45000);
-      
-      return () => clearTimeout(mobileTimer);
-    }
-  }, [copiedFields, isMobile]);
-
-  // Calcul silencieux de la confiance totale (adapté pour mobile)
-  useEffect(() => {
-    const copiedCount = Object.values(copiedFields).filter(Boolean).length;
-    
-    if (isMobile) {
-      // Mobile : 70% max pour les copies, pas de détection comportementale
-      const copyConfidence = (copiedCount / 4) * 70;
-      const totalConfidence = copyConfidence + bankConfidence;
-      
-      // Mobile : débloquer à 70% au lieu de 80%
-      setCanDeclare(totalConfidence >= 70);
-    } else {
-      // Desktop : 50% copies + 50% comportement = 80% requis
-      const copyConfidence = (copiedCount / 4) * 50;
-      const behaviorConfidence = Math.min(bankConfidence, 50);
-      const totalConfidence = copyConfidence + behaviorConfidence;
-      
-      setCanDeclare(totalConfidence >= 80);
-    }
-  }, [copiedFields, bankConfidence, isMobile]);
 
   // Écouter les copies des champs existants
   useEffect(() => {
@@ -86,73 +48,25 @@ export function StealthPaymentValidator({ onDeclarePayment, isDeclaring, order, 
     return () => document.removeEventListener('copy', handleCopyEvent);
   }, [order?.id]);
 
-  // Détection comportementale invisible (desktop uniquement)
+  // Vérifier si tous les champs sont copiés
   useEffect(() => {
-    // Pas de détection comportementale sur mobile
-    if (isMobile) return;
-
-    let awayInterval: NodeJS.Timeout | null = null;
-    let awayStartTime: number | null = null;
-
-    const startAwayTimer = () => {
-      if (!awayStartTime) {
-        awayStartTime = Date.now();
-        
-        awayInterval = setInterval(() => {
-          const awayTime = Date.now() - (awayStartTime || 0);
-          
-          // Calcul silencieux de la confiance bancaire
-          let confidence = 0;
-          if (awayTime >= 300000) confidence = 50; // 5min+
-          else if (awayTime >= 120000) confidence = 35; // 2-5min
-          else if (awayTime >= 30000) confidence = 20; // 30s-2min
-          else if (awayTime >= 10000) confidence = 10; // 10-30s
-          
-          setBankConfidence(confidence);
-        }, 1000);
-      }
-    };
-
-    const stopAwayTimer = () => {
-      if (awayInterval) {
-        clearInterval(awayInterval);
-        awayInterval = null;
-      }
+    const allFieldsCopied = Object.values(copiedFields).every(Boolean);
+    setAllCopied(allFieldsCopied);
+    
+    if (allFieldsCopied && !canDeclare) {
+      // Si tous les champs sont copiés, débloquer après 10 secondes
+      const timer = setTimeout(() => {
+        setCanDeclare(true);
+      }, 10000);
       
-      if (awayStartTime) {
-        const totalAwayTime = Date.now() - awayStartTime;
-        
-        // Confiance finale basée sur le temps total
-        let finalConfidence = 0;
-        if (totalAwayTime >= 300000) finalConfidence = 50; // 5min+
-        else if (totalAwayTime >= 120000) finalConfidence = 35; // 2-5min
-        else if (totalAwayTime >= 30000) finalConfidence = 20; // 30s-2min
-        else if (totalAwayTime >= 10000) finalConfidence = 10; // 10-30s
-        
-        setBankConfidence(finalConfidence);
-      }
-      
-      awayStartTime = null;
-    };
-
-    // Écouteurs invisibles
-    window.addEventListener('blur', startAwayTimer);
-    window.addEventListener('focus', stopAwayTimer);
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden) {
-        startAwayTimer();
-      } else {
-        stopAwayTimer();
-      }
-    });
-
-    return () => {
-      window.removeEventListener('blur', startAwayTimer);
-      window.removeEventListener('focus', stopAwayTimer);
-      document.removeEventListener('visibilitychange', stopAwayTimer);
-      if (awayInterval) clearInterval(awayInterval);
-    };
-  }, []);
+      return () => clearTimeout(timer);
+    }
+    
+    // Réinitialiser si tous les champs ne sont plus copiés
+    if (!allFieldsCopied) {
+      setCanDeclare(false);
+    }
+  }, [copiedFields, canDeclare]);
 
   return (
     <div className="space-y-4">
