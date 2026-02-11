@@ -50,7 +50,11 @@ export async function processFSTValidation(orderId: string) {
     }
     
     if (existingOrder.hasOwnProperty('tracking_number')) {
-      updateData.tracking_number = `EN_PREPARATION_${orderId}_${Date.now()}`;
+      // Générer un vrai numéro de suivi format transporteur
+      const trackingPrefix = 'FLCN'; // Flocon
+      const randomDigits = Math.random().toString(36).substring(2, 10).toUpperCase();
+      const timestamp = Date.now().toString().slice(-6);
+      updateData.tracking_number = `${trackingPrefix}${randomDigits}${timestamp}`;
     }
 
     console.log('🔄 Données de mise à jour:', updateData);

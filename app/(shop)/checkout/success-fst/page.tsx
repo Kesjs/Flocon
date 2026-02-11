@@ -446,6 +446,34 @@ function SuccessFSTPageContent() {
             </div>
           )}
 
+          {/* Numéro de suivi - discret */}
+          {isConfirmed && order?.tracking_number && (
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-8 p-4 bg-emerald-50/30 border border-emerald-200/50 rounded-2xl text-left"
+            >
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center">
+                  <MapPin size={14} className="text-emerald-600" />
+                </div>
+                <h4 className="text-[10px] font-bold text-emerald-700 uppercase tracking-widest">Numéro de suivi</h4>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-sm text-emerald-800 font-semibold">{order.tracking_number}</span>
+                <button
+                  onClick={() => navigator.clipboard.writeText(order.tracking_number)}
+                  className="text-xs text-emerald-600 hover:text-emerald-800 transition-colors"
+                >
+                  Copier
+                </button>
+              </div>
+              <p className="text-xs text-emerald-700 mt-2 leading-relaxed">
+                Utilisez ce numéro sur la page <span className="font-semibold">Suivre mon colis</span> pour suivre votre livraison en temps réel.
+              </p>
+            </motion.div>
+          )}
+
           {/* Bouton Rose Identité */}
           <div className="space-y-4">
             <Link
