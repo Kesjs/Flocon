@@ -23,48 +23,79 @@ export function StealthPaymentValidator({ onDeclarePayment, isDeclaring, order, 
   useEffect(() => {
     // Détecter quand l'utilisateur copie les champs existants
     const handleCopyEvent = (event: ClipboardEvent) => {
+      console.log('🔍 Copy event detected!');
+      
       const selection = document.getSelection();
       if (selection && selection.toString()) {
         const selectedText = selection.toString().toLowerCase();
+        console.log('📋 Text copied:', selectedText);
         
         // Détecter quel champ est copié
         if (selectedText.includes('fr76') || selectedText.includes('3123')) {
+          console.log('✅ IBAN detected');
           setCopiedFields(prev => ({ ...prev, iban: true }));
           setTimeout(() => setCopiedFields(prev => ({ ...prev, iban: false })), 15000); // 15s au lieu de 3s
         } else if (selectedText.includes('trbk') || selectedText.includes('bic')) {
+          console.log('✅ BIC detected');
           setCopiedFields(prev => ({ ...prev, bic: true }));
           setTimeout(() => setCopiedFields(prev => ({ ...prev, bic: false })), 15000); // 15s au lieu de 3s
         } else if (selectedText.includes('megan') || selectedText.includes('lumale')) {
+          console.log('✅ Titulaire detected');
           setCopiedFields(prev => ({ ...prev, titulaire: true }));
           setTimeout(() => setCopiedFields(prev => ({ ...prev, titulaire: false })), 15000); // 15s au lieu de 3s
         } else if (selectedText.includes('#cmd-') || selectedText.includes('cmd-')) {
+          console.log('✅ Reference detected');
           // Détecter n'importe quel format de référence CMD
           setCopiedFields(prev => ({ ...prev, reference: true }));
           setTimeout(() => setCopiedFields(prev => ({ ...prev, reference: false })), 15000); // 15s au lieu de 3s
+        } else {
+          console.log('❌ No field matched');
         }
+      } else {
+        console.log('❌ No selection');
       }
     };
 
     document.addEventListener('copy', handleCopyEvent);
-    return () => document.removeEventListener('copy', handleCopyEvent);
+    console.log('👂 Copy listener added');
+    
+    return () => {
+      document.removeEventListener('copy', handleCopyEvent);
+      console.log('👂 Copy listener removed');
+    };
   }, [order?.id]);
+
+  // Debug : Afficher l'état des champs copiés
+  useEffect(() => {
+    console.log('🔄 Copied fields state:', copiedFields);
+    console.log('🎯 All copied?', Object.values(copiedFields).every(Boolean));
+    console.log('🔓 Can declare?', canDeclare);
+  }, [copiedFields, canDeclare]);
 
   // Vérifier si tous les champs sont copiés
   useEffect(() => {
     const allFieldsCopied = Object.values(copiedFields).every(Boolean);
     setAllCopied(allFieldsCopied);
     
+    console.log('🔄 Checking all fields copied:', allFieldsCopied);
+    
     if (allFieldsCopied && !canDeclare) {
       // Si tous les champs sont copiés, débloquer après 10 secondes
+      console.log('⏰ Starting 10s timer...');
       const timer = setTimeout(() => {
+        console.log('🔓 Timer finished - unlocking button!');
         setCanDeclare(true);
       }, 10000);
       
-      return () => clearTimeout(timer);
+      return () => {
+        console.log('⏹️ Timer cleared');
+        clearTimeout(timer);
+      };
     }
     
     // Réinitialiser si tous les champs ne sont plus copiés
     if (!allFieldsCopied) {
+      console.log('🔒 Not all fields copied - locking button');
       setCanDeclare(false);
     }
   }, [copiedFields, canDeclare]);
