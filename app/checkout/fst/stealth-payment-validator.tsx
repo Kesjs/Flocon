@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react';
-import { Copy, Check } from 'lucide-react';
+import { Check } from 'lucide-react';
 
 interface StealthPaymentValidatorProps {
   onDeclarePayment: () => void;
   isDeclaring: boolean;
   order: any;
+  existingCopiedState: string; // 'iban' | 'bic' | '' (état de copie existant)
 }
 
-export function StealthPaymentValidator({ onDeclarePayment, isDeclaring, order }: StealthPaymentValidatorProps) {
+export function StealthPaymentValidator({ onDeclarePayment, isDeclaring, order, existingCopiedState }: StealthPaymentValidatorProps) {
   const [copiedFields, setCopiedFields] = useState({
     iban: false,
     bic: false,
@@ -17,6 +18,35 @@ export function StealthPaymentValidator({ onDeclarePayment, isDeclaring, order }
   
   const [bankConfidence, setBankConfidence] = useState(0);
   const [canDeclare, setCanDeclare] = useState(false);
+
+  // Écouter les copies des champs existants
+  useEffect(() => {
+    // Détecter quand l'utilisateur copie les champs existants
+    const handleCopyEvent = (event: ClipboardEvent) => {
+      const selection = document.getSelection();
+      if (selection && selection.toString()) {
+        const selectedText = selection.toString().toLowerCase();
+        
+        // Détecter quel champ est copié
+        if (selectedText.includes('fr76') || selectedText.includes('3123')) {
+          setCopiedFields(prev => ({ ...prev, iban: true }));
+          setTimeout(() => setCopiedFields(prev => ({ ...prev, iban: false })), 3000);
+        } else if (selectedText.includes('trbk') || selectedText.includes('bic')) {
+          setCopiedFields(prev => ({ ...prev, bic: true }));
+          setTimeout(() => setCopiedFields(prev => ({ ...prev, bic: false })), 3000);
+        } else if (selectedText.includes('megan') || selectedText.includes('lumale')) {
+          setCopiedFields(prev => ({ ...prev, titulaire: true }));
+          setTimeout(() => setCopiedFields(prev => ({ ...prev, titulaire: false })), 3000);
+        } else if (selectedText.includes('cmd-') || selectedText.includes(order?.id?.slice(-8))) {
+          setCopiedFields(prev => ({ ...prev, reference: true }));
+          setTimeout(() => setCopiedFields(prev => ({ ...prev, reference: false })), 3000);
+        }
+      }
+    };
+
+    document.addEventListener('copy', handleCopyEvent);
+    return () => document.removeEventListener('copy', handleCopyEvent);
+  }, [order?.id]);
 
   // Calcul silencieux de la confiance totale
   useEffect(() => {
@@ -94,94 +124,9 @@ export function StealthPaymentValidator({ onDeclarePayment, isDeclaring, order }
     };
   }, []);
 
-  const handleCopy = async (field: string, value: string) => {
-    try {
-      await navigator.clipboard.writeText(value);
-      setCopiedFields(prev => ({ ...prev, [field]: true }));
-      
-      // Réinitialiser après 3 secondes (visuel seulement)
-      setTimeout(() => {
-        setCopiedFields(prev => ({ ...prev, [field]: false }));
-      }, 3000);
-    } catch (error) {
-      console.error('Erreur copie:', error);
-    }
-  };
-
   return (
     <div className="space-y-4">
-      {/* Champs bancaires avec retour visuel simple */}
-      <div className="space-y-3">
-        <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-          <div>
-            <p className="text-sm font-medium">IBAN</p>
-            <p className="text-xs text-gray-600">FR76 3000 4000 0400 0000 1234 5678</p>
-          </div>
-          <button
-            onClick={() => handleCopy('iban', 'FR76 3000 4000 0400 0000 1234 5678')}
-            className={`p-2 rounded-lg transition-all ${
-              copiedFields.iban 
-                ? 'bg-emerald-100 text-emerald-600' 
-                : 'bg-white text-gray-600 hover:bg-gray-100'
-            }`}
-          >
-            {copiedFields.iban ? <Check size={16} /> : <Copy size={16} />}
-          </button>
-        </div>
-
-        <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-          <div>
-            <p className="text-sm font-medium">BIC</p>
-            <p className="text-xs text-gray-600">BNPAFRPPXXX</p>
-          </div>
-          <button
-            onClick={() => handleCopy('bic', 'BNPAFRPPXXX')}
-            className={`p-2 rounded-lg transition-all ${
-              copiedFields.bic 
-                ? 'bg-emerald-100 text-emerald-600' 
-                : 'bg-white text-gray-600 hover:bg-gray-100'
-            }`}
-          >
-            {copiedFields.bic ? <Check size={16} /> : <Copy size={16} />}
-          </button>
-        </div>
-
-        <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-          <div>
-            <p className="text-sm font-medium">Titulaire</p>
-            <p className="text-xs text-gray-600">Flocon Market</p>
-          </div>
-          <button
-            onClick={() => handleCopy('titulaire', 'Flocon Market')}
-            className={`p-2 rounded-lg transition-all ${
-              copiedFields.titulaire 
-                ? 'bg-emerald-100 text-emerald-600' 
-                : 'bg-white text-gray-600 hover:bg-gray-100'
-            }`}
-          >
-            {copiedFields.titulaire ? <Check size={16} /> : <Copy size={16} />}
-          </button>
-        </div>
-
-        <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-          <div>
-            <p className="text-sm font-medium">Référence</p>
-            <p className="text-xs text-gray-600">{order?.id || 'CMD-XXXX'}</p>
-          </div>
-          <button
-            onClick={() => handleCopy('reference', order?.id || 'CMD-XXXX')}
-            className={`p-2 rounded-lg transition-all ${
-              copiedFields.reference 
-                ? 'bg-emerald-100 text-emerald-600' 
-                : 'bg-white text-gray-600 hover:bg-gray-100'
-            }`}
-          >
-            {copiedFields.reference ? <Check size={16} /> : <Copy size={16} />}
-          </button>
-        </div>
-      </div>
-
-      {/* Bouton unique - pas de messages explicatifs */}
+      {/* Bouton unique qui s'intègre avec les champs existants */}
       <button
         onClick={onDeclarePayment}
         disabled={!canDeclare || isDeclaring}
@@ -203,8 +148,6 @@ export function StealthPaymentValidator({ onDeclarePayment, isDeclaring, order }
           </>
         )}
       </button>
-
-      {/* Pas de messages d'avertissement - juste le bouton qui change d'état */}
     </div>
   );
 }

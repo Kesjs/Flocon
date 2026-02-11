@@ -473,6 +473,7 @@ function FSTPageContent() {
                     onDeclarePayment={handleDeclarePayment}
                     isDeclaring={isDeclaring}
                     order={order}
+                    existingCopiedState={copied}
                   />
 
                   {/* Message d'erreur */}

@@ -906,5 +906,36 @@
       "phone": "97 91 49 22"
     },
     "date": "2026-02-11T07:50:06.765Z"
+  },
+  "CMD-1770797125395": {
+    "id": "CMD-1770797125395",
+    "userId": "guest",
+    "status": "En attente",
+    "total": 62.89999999999999,
+    "items": 2,
+    "products": [
+      {
+        "id": "9",
+        "name": "Kit Spa Maison Bio",
+        "price": 44.91,
+        "quantity": 1,
+        "image": "https://m.media-amazon.com/images/I/81wYM37+cbL.jpg"
+      },
+      {
+        "id": "3",
+        "name": "Tasse Isotherme Design Mate 500ml",
+        "price": 17.99,
+        "quantity": 1,
+        "image": "https://m.media-amazon.com/images/I/71-o-qlvlJL._AC_UF1000,1000_QL80_.jpg"
+      }
+    ],
+    "shippingAddress": {
+      "name": "Ken Babatounde",
+      "address": "Togba",
+      "city": "Calavi",
+      "postalCode": "55555",
+      "phone": "97 91 49 22"
+    },
+    "date": "2026-02-11T08:05:25.396Z"
   }
 }
