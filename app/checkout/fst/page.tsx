@@ -510,15 +510,6 @@ function FSTPageContent() {
                     </div>
                   )}
 
-                  {/* Message de succès */}
-                  {isSuccess && (
-                    <div className="mt-4 p-4 bg-emerald-50 border border-emerald-200 rounded-2xl flex items-center gap-3">
-                      <div className="w-5 h-5 bg-emerald-100 rounded-full flex items-center justify-center">
-                        <div className="w-3 h-3 border-2 border-emerald-600 border-t-transparent rounded-full animate-spin" />
-                      </div>
-                      <p className="text-sm text-emerald-700 font-medium">Paiement déclaré avec succès</p>
-                    </div>
-                  )}
                </div>
             </div>
 
