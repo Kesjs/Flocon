@@ -89,9 +89,10 @@ function SuccessFSTPageContent() {
         }
         
         setOrder(finalOrder);
-        if (finalOrder.fst_status === 'confirmed') {
-          setIsConfirmed(true);
-        }
+        
+        // Utiliser la même logique pour la confirmation que pour l'affichage
+        const isOrderConfirmed = finalOrder.fst_status === 'confirmed';
+        setIsConfirmed(isOrderConfirmed);
         setError('');
         return;
       }
@@ -118,9 +119,10 @@ function SuccessFSTPageContent() {
           };
           
           setOrder(convertedOrder);
-          if (convertedOrder.fst_status === 'confirmed') {
-            setIsConfirmed(true);
-          }
+          
+          // Utiliser la même logique pour la confirmation que pour l'affichage
+          const isOrderConfirmed = convertedOrder.fst_status === 'confirmed';
+          setIsConfirmed(isOrderConfirmed);
           setError('');
           return;
         } else {
@@ -138,7 +140,10 @@ function SuccessFSTPageContent() {
           };
           
           setOrder(testOrder);
-          setIsConfirmed(true);
+          
+          // Utiliser la même logique pour la confirmation que pour l'affichage
+          const isOrderConfirmed = testOrder.fst_status === 'confirmed';
+          setIsConfirmed(isOrderConfirmed);
           setError('');
           return;
         }
@@ -172,11 +177,17 @@ function SuccessFSTPageContent() {
         table: 'orders', 
         filter: `id=eq.${orderId}` 
       }, (payload) => {
-        if (payload.new.fst_status === 'confirmed') {
+        const newStatus = payload.new.fst_status;
+        const isConfirmed = newStatus === 'confirmed';
+        
+        if (isConfirmed) {
           // Vibration subtile sur mobile
           if (typeof window !== 'undefined' && window.navigator.vibrate) {
             window.navigator.vibrate(50);
           }
+          // Mettre à jour l'état de confirmation ET l'order
+          setIsConfirmed(true);
+          setOrder((prev: any) => prev ? { ...prev, fst_status: 'confirmed' } : null);
           checkOrderStatus();
         }
       }).subscribe();
