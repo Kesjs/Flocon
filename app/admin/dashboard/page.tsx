@@ -874,6 +874,65 @@ L'équipe Flocon`;
     }
   };
 
+  const handleHardReset = async () => {
+    if (!confirm('🔄 RESET COMPLET DU CACHE ?\n\nCette action va:\n1. Vider complètement le cache du navigateur\n2. Réinitialiser tous les états du dashboard\n3. Recharger toutes les données depuis la base\n\nUTILE si les revenus ne se réinitialisent pas.')) {
+      return;
+    }
+
+    try {
+      addNotification({
+        type: 'info',
+        title: 'Reset Cache en cours',
+        message: 'Vidage du cache et réinitialisation complète...'
+      });
+
+      // 1. Désactiver le live sync
+      setLiveSync(false);
+
+      // 2. Vider tous les états
+      setOrders([]);
+      setFstPayments([]);
+      setUsers([]);
+      setStats({
+        totalRevenue: 0,
+        activeUsers: 0,
+        pendingTransfers: 0,
+        newUsersToday: 0
+      });
+
+      // 3. Vider le localStorage
+      if (typeof window !== 'undefined') {
+        Object.keys(localStorage).forEach(key => {
+          if (key.includes('admin') || key.includes('revenue') || key.includes('order') || key.includes('stats')) {
+            localStorage.removeItem(key);
+          }
+        });
+      }
+
+      // 4. Attendre un peu et recharger les données fraîches
+      setTimeout(async () => {
+        await fetchData();
+        
+        // 5. Réactiver le live sync après 2 secondes
+        setTimeout(() => {
+          setLiveSync(true);
+          addNotification({
+            type: 'success',
+            title: 'Cache Reset Réussi',
+            message: 'Toutes les données ont été rechargées depuis la base'
+          });
+        }, 2000);
+      }, 1000);
+
+    } catch (error) {
+      addNotification({
+        type: 'error',
+        title: 'Erreur Reset Cache',
+        message: 'Impossible de réinitialiser le cache'
+      });
+    }
+  };
+
   const handleResetOrders = async () => {
     if (!confirm('⚠️ Réinitialiser toutes les commandes ?\n\nCette action va supprimer TOUTES les commandes (confirmées, rejetées, en attente).\n\nCette action est IRRÉVERSIBLE et affectera tous les utilisateurs.\n\nÊtes-vous absolument certain ?')) {
       return;
@@ -1073,6 +1132,14 @@ L'équipe Flocon`;
               >
                 <div className="w-3 h-3 bg-red-500 rounded-full" />
                 <span className="text-[10px] font-black uppercase tracking-[0.15em]">Réinitialiser Revenus</span>
+              </button>
+
+              <button
+                onClick={handleHardReset}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-purple-200 bg-purple-50 text-purple-700 hover:bg-purple-100 transition-all active:scale-95"
+              >
+                <RefreshCw className="w-3 h-3" />
+                <span className="text-[10px] font-black uppercase tracking-[0.15em]">Reset Cache</span>
               </button>
 
               <button
