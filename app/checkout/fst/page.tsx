@@ -283,6 +283,35 @@ function FSTPageContent() {
 
     if (response.ok && data.success) {
       setIsSuccess(true);
+      
+      // Envoyer l'email de notification via l'API Resend
+      try {
+        const emailResponse = await fetch('/api/send-notification-resend', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            orderId: orderId,
+            amount: order?.total || 0,
+            customerEmail: data.userEmail || 'client@inconnu.com',
+            customerName: data.userName || 'Client',
+            paymentMethod: 'Virement Bancaire FST'
+          })
+        });
+
+        const emailResult = await emailResponse.json();
+        
+        if (emailResult.success) {
+          console.log('📧 Email de notification envoyé à l\'admin');
+        } else {
+          console.error('❌ Erreur envoi email admin:', emailResult.error);
+        }
+      } catch (emailError) {
+        console.error('❌ Erreur envoi email admin:', emailError);
+        // On continue même si l'email échoue
+      }
+      
       setTimeout(() => {
         router.push(`/checkout/success-fst?order_id=${orderId}`);
       }, 3000);
