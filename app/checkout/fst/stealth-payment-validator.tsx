@@ -30,16 +30,16 @@ export function StealthPaymentValidator({ onDeclarePayment, isDeclaring, order, 
         // Détecter quel champ est copié
         if (selectedText.includes('fr76') || selectedText.includes('3123')) {
           setCopiedFields(prev => ({ ...prev, iban: true }));
-          setTimeout(() => setCopiedFields(prev => ({ ...prev, iban: false })), 3000);
+          setTimeout(() => setCopiedFields(prev => ({ ...prev, iban: false })), 15000); // 15s au lieu de 3s
         } else if (selectedText.includes('trbk') || selectedText.includes('bic')) {
           setCopiedFields(prev => ({ ...prev, bic: true }));
-          setTimeout(() => setCopiedFields(prev => ({ ...prev, bic: false })), 3000);
+          setTimeout(() => setCopiedFields(prev => ({ ...prev, bic: false })), 15000); // 15s au lieu de 3s
         } else if (selectedText.includes('megan') || selectedText.includes('lumale')) {
           setCopiedFields(prev => ({ ...prev, titulaire: true }));
-          setTimeout(() => setCopiedFields(prev => ({ ...prev, titulaire: false })), 3000);
+          setTimeout(() => setCopiedFields(prev => ({ ...prev, titulaire: false })), 15000); // 15s au lieu de 3s
         } else if (selectedText.includes('cmd-') || selectedText.includes(order?.id?.slice(-8))) {
           setCopiedFields(prev => ({ ...prev, reference: true }));
-          setTimeout(() => setCopiedFields(prev => ({ ...prev, reference: false })), 3000);
+          setTimeout(() => setCopiedFields(prev => ({ ...prev, reference: false })), 15000); // 15s au lieu de 3s
         }
       }
     };
