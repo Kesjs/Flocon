@@ -805,6 +805,9 @@ L'équipe Flocon`;
       return;
     }
 
+    // Désactiver temporairement le live sync pour éviter les conflits
+    setLiveSync(false);
+
     try {
       
       addNotification({
@@ -838,6 +841,15 @@ L'équipe Flocon`;
         // Forcer un deuxième rafraîchissement après 2 secondes pour s'assurer que tout est synchronisé
         setTimeout(async () => {
           await refreshData();
+          // Réactiver le live sync après 3 secondes
+          setTimeout(() => {
+            setLiveSync(true);
+            addNotification({
+              type: 'success',
+              title: 'Synchronisation réactivée',
+              message: 'Le mode temps réel est de nouveau actif'
+            });
+          }, 3000);
         }, 2000);
         
       } else {
@@ -854,6 +866,11 @@ L'équipe Flocon`;
         title: 'Erreur Système',
         message: 'Une erreur est survenue lors de la réinitialisation des revenus'
       });
+    } finally {
+      // Toujours réactiver le live sync en cas d'erreur
+      setTimeout(() => {
+        setLiveSync(true);
+      }, 5000);
     }
   };
 
